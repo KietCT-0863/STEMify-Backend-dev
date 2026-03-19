@@ -100,7 +100,8 @@ namespace ApiGateway.Middleware
                 "/api/invitations/accept-oauth",  
                 "/api/auth/google/callback",
                 "/.well-known",
-                "/connect"
+                "/connect",
+                "/account"
             };
 
             var skipExtensions = new[]
