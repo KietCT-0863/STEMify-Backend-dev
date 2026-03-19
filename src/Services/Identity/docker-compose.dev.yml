@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # 🐘 Standalone PostgreSQL for Identity Service Development
+  stemify-identity-postgres:
+    image: postgres:16
+    container_name: stemify-identity-postgres
+    environment:
+      POSTGRES_DB: stemifyidentity
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - stemify_identity_postgres_data:/var/lib/postgresql/data
+    networks:
+      - stemify-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d stemifyidentity"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # pgAdmin for database management (optional)
+  stemify-identity-pgadmin:
+    image: dpage/pgadmin4
+    container_name: stemify-identity-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@stemify.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8080:80"
+    volumes:
+      - stemify_identity_pgadmin_data:/var/lib/pgadmin
+    networks:
+      - stemify-network
+    depends_on:
+      - stemify-identity-postgres
+    restart: unless-stopped
+
+volumes:
+  stemify_identity_postgres_data:
+    driver: local
+  stemify_identity_pgadmin_data:
+    driver: local
+
+networks:
+  stemify-network:
+    driver: bridge 

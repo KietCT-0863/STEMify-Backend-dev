@@ -1,0 +1,139 @@
+﻿/* STEMify Login Page - Additional Animations and Responsive Styles */
+
+/* Animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    25% {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    75% {
+        transform: scale(0.9) rotate(5deg);
+    }
+}
+
+@keyframes rocket {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+
+    75% {
+        transform: translateY(-5px) rotate(-3deg);
+    }
+}
+
+/* Apply animations */
+.heart, .chat-bubble, .target {
+    animation: float 3s ease-in-out infinite;
+}
+
+.heart-1 {
+    animation-delay: 0s;
+}
+
+.heart-2 {
+    animation-delay: 1s;
+}
+
+.heart-3 {
+    animation-delay: 2s;
+}
+
+.chat-bubble {
+    animation-delay: 0.5s;
+}
+
+.target {
+    animation-delay: 1.5s;
+}
+
+.megaphone {
+    animation: bounce 2s infinite;
+}
+
+.rocket {
+    animation: rocket 4s ease-in-out infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .login-wrapper {
+        flex-direction: column;
+    }
+
+    .login-form-section {
+        padding: 40px 60px;
+    }
+
+    .illustration-section {
+        min-height: 300px;
+        padding: 40px 20px;
+    }
+
+    .hero-text h2 {
+        font-size: 24px;
+    }
+
+    .hero-text h3 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-form-section {
+        padding: 40px 30px;
+    }
+
+    .brand-logo {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .social-login {
+        flex-direction: column;
+    }
+
+    .illustration-section {
+        min-height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-form-section {
+        padding: 30px 20px;
+    }
+
+    .brand-text h1 {
+        font-size: 28px;
+    }
+
+    .hero-text h2 {
+        font-size: 20px;
+    }
+
+    .hero-text h3 {
+        font-size: 16px;
+    }
+
+    .hero-text p {
+        font-size: 14px;
+    }
+}body {
+}

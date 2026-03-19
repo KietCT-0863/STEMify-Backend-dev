@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Notification";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package notification;
+
+service NotificationService {
+    rpc CreateNotification (CreateNotificationRequest) returns (NotificationResponse) {
+        option (google.api.http) = {
+            post: "/api/notifications"
+            body: "*"
+        };
+    }
+    rpc GetNotification (GetNotificationRequest) returns (NotificationResponse) {
+        option (google.api.http) = {
+            get: "/api/notifications/{id}"
+        };
+    }
+    rpc UpdateNotification (UpdateNotificationRequest) returns (NotificationResponse) {
+        option (google.api.http) = {
+            patch: "/api/notifications/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteNotification (DeleteNotificationRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/notifications/{id}"
+        };
+    }
+    rpc ListNotifications (google.protobuf.Empty) returns (NotificationList);
+    rpc QueryNotifications (QueryNotificationsRequest) returns (PagedNotificationList) {
+        option (google.api.http) = {
+            get: "/api/notifications"
+        };
+    }
+}
+
+message Notification {
+    int32 id = 1;
+    string userId = 2;
+    string title = 3;
+    string message = 4;
+    bool isRead = 5;
+    string clickUrl = 6;
+    google.protobuf.Timestamp createdDate = 7;
+    google.protobuf.Timestamp lastModifiedDate = 8;
+}
+
+message CreateNotificationRequest {
+    string userId = 1;
+    string title = 2;
+    string message = 3;
+    string clickUrl = 4;
+}
+
+message UpdateNotificationRequest {
+    int32 id = 1;
+    bool isRead = 2;
+}
+
+message GetNotificationRequest {
+    int32 id = 1;
+}
+
+message DeleteNotificationRequest {
+    int32 id = 1;
+}
+
+message NotificationList {
+    repeated NotificationResponse notifications = 1;
+}
+
+message PagedNotificationList {
+    repeated NotificationResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message NotificationResponse {
+    int32 id = 1;
+    string userId = 2;
+    string title = 3;
+    string message = 4;
+    bool isRead = 5;
+    google.protobuf.StringValue clickUrl = 6;
+    google.protobuf.Timestamp createdDate = 7;
+    google.protobuf.Timestamp lastModifiedDate = 8;
+}
+
+message QueryNotificationsRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    string userId = 5;
+    google.protobuf.BoolValue isRead = 6;
+}

@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Product";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+package product;
+
+service GrpcKitProductService {
+    rpc CreateKit (CreateKitRequest) returns (KitResponse) {
+        option (google.api.http) = {
+            post: "/api/kit-products"
+            body: "*"
+        };
+    }
+    rpc GetKit (GetKitRequest) returns (KitDetail) {
+        option (google.api.http) = {
+            get: "/api/kit-products/{id}"
+        };
+    }
+    rpc UpdateKit (UpdateKitRequest) returns (KitResponse) {
+        option (google.api.http) = {
+            patch: "/api/kit-products/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteKit (DeleteKitRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/kit-products/{id}"
+        };
+    }
+    rpc ListKits (google.protobuf.Empty) returns (KitList);
+    rpc QueryKits (QueryKitsRequest) returns (PagedKitList) {
+        option (google.api.http) = {
+            get: "/api/kit-products"
+        };
+    }
+}
+
+message Kit {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    int32 totalComponents = 4;
+    google.protobuf.Timestamp createdDate = 5;
+    google.protobuf.Timestamp lastModifiedDate = 6;
+}
+
+message CreateKitRequest {
+    google.protobuf.StringValue name = 1;
+    google.protobuf.StringValue description = 2;
+    repeated KitImageUpload images = 3;
+    int64 weight = 4;
+    google.protobuf.StringValue dimensions = 5;
+    int32 ageRangeId = 6;
+    string createdByUserId = 7;
+}
+
+message UpdateKitRequest {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    repeated KitImageUpload images = 4;
+    google.protobuf.Int64Value weight = 5;
+    google.protobuf.StringValue dimensions = 6;
+    google.protobuf.Int32Value ageRangeId = 7;
+    google.protobuf.StringValue status = 8;
+}
+
+message GetKitRequest {
+    int32 id = 1;
+}
+
+message DeleteKitRequest {
+    int32 id = 1;
+}
+
+message KitList {
+    repeated KitResponse kits = 1;
+}
+
+message PagedKitList {
+    repeated KitResponseV2 items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message KitResponse {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    int32 totalComponents = 4;
+    google.protobuf.Timestamp createdDate = 5;
+    google.protobuf.Timestamp lastModifiedDate = 6;
+}
+
+message KitResponseV2 {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue imageUrl = 4;
+    google.protobuf.StringValue altText = 5;
+    int32 totalComponents = 6;
+    google.protobuf.Timestamp createdDate = 7;
+    google.protobuf.Timestamp lastModifiedDate = 8;
+    string status = 9;
+}
+
+message KitDetail {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    repeated KitImageDetail images = 4;
+    int32 totalComponents = 5;
+    repeated KitComponentModel components = 6;
+    google.protobuf.Timestamp createdDate = 7;
+    google.protobuf.Timestamp lastModifiedDate = 8;
+    int64 weight = 9;
+    google.protobuf.StringValue dimensions = 10;
+    string status = 11;
+}
+
+message QueryKitsRequest {
+    google.protobuf.StringValue search = 1;
+    google.protobuf.Int32Value pageNumber = 2;
+    google.protobuf.Int32Value pageSize = 3;
+    google.protobuf.StringValue orderBy = 4;
+    google.protobuf.Int32Value ageRangeId = 5;
+    google.protobuf.StringValue status = 6;
+    google.protobuf.StringValue sortDirection = 7;
+}
+
+message KitImageUpload {
+  bytes imageUrl = 1;
+  string altText = 2;
+}
+
+message KitImageDetail {
+    string imageUrl = 1;
+    google.protobuf.StringValue altText = 2;
+}
+
+message KitComponentModel {
+    int32 id = 1;
+    int32 componentId = 2;
+    int32 quantity = 3;
+    bool isMainComponent = 4;
+    string name = 5;
+    google.protobuf.StringValue description = 6;
+    google.protobuf.StringValue imageUrl = 7;
+}
+

@@ -1,0 +1,17 @@
+[
+  {
+    "AgeRangeLabel": "4-7",
+    "MinAge": 4,
+    "MaxAge": 7
+  },
+  {
+    "AgeRangeLabel": "8-11",
+    "MinAge": 8,
+    "MaxAge": 11
+  },
+  {
+    "AgeRangeLabel": "11-15",
+    "MinAge": 12,
+    "MaxAge": 15
+  }
+]

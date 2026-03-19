@@ -1,0 +1,82 @@
+[
+  {
+    "Title": "Bài kiểm tra trắc nghiệm số 1",
+    "TotalMarks": 100,
+    "PassingMarks": 80,
+    "DurationDays": 30,
+    "ContentId": 2,
+    "TimeLimitInMinutes": 30,
+    "MaxAttemptAllowed": 3,
+    "CooldownHours": 6
+  },
+  {
+    "Title": "Bài kiểm tra trắc nghiệm số 2",
+    "TotalMarks": 100,
+    "PassingMarks": 80,
+    "DurationDays": 30,
+    "ContentId": 7,
+    "TimeLimitInMinutes": 30,
+    "MaxAttemptAllowed": 3,
+    "CooldownHours": 6
+  },
+  {
+    "Title": "Bài kiểm tra trắc nghiệm số 3",
+    "TotalMarks": 100,
+    "PassingMarks": 80,
+    "DurationDays": 30,
+    "ContentId": 8,
+    "TimeLimitInMinutes": 30,
+    "MaxAttemptAllowed": 3,
+    "CooldownHours": 6
+  },
+  {
+    "Title": "Bài kiểm tra trắc nghiệm số 4",
+    "TotalMarks": 100,
+    "PassingMarks": 80,
+    "DurationDays": 30,
+    "ContentId": 9,
+    "TimeLimitInMinutes": 30,
+    "MaxAttemptAllowed": 3,
+    "CooldownHours": 6
+  },
+  {
+    "Title": "Bài kiểm tra trắc nghiệm số 5",
+    "TotalMarks": 100,
+    "PassingMarks": 80,
+    "DurationDays": 30,
+    "ContentId": 10,
+    "TimeLimitInMinutes": 30,
+    "MaxAttemptAllowed": 3,
+    "CooldownHours": 6
+  },
+  {
+    "Title": "Bài kiểm tra trắc nghiệm số 6",
+    "TotalMarks": 100,
+    "PassingMarks": 80,
+    "DurationDays": 30,
+    "ContentId": 11,
+    "TimeLimitInMinutes": 30,
+    "MaxAttemptAllowed": 3,
+    "CooldownHours": 6
+  },
+  {
+    "Title": "Bài kiểm tra trắc nghiệm số 1",
+    "TotalMarks": 100,
+    "PassingMarks": 80,
+    "DurationDays": 30,
+    "ContentId": 12,
+    "TimeLimitInMinutes": 30,
+    "MaxAttemptAllowed": 3,
+    "CooldownHours": 6
+  },
+  {
+    "Title": "Bài kiểm tra trắc nghiệm số 2",
+    "TotalMarks": 100,
+    "PassingMarks": 80,
+    "DurationDays": 30,
+    "ContentId": 13,
+    "TimeLimitInMinutes": 30,
+    "MaxAttemptAllowed": 3,
+    "CooldownHours": 6
+  }
+]

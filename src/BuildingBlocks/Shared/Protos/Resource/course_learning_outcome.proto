@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package resource;
+
+service CourseLearningOutcomeService {
+    rpc CreateCourseLearningOutcome (CreateCourseLearningOutcomeRequest) returns (CourseLearningOutcomeResponse) {
+        option (google.api.http) = {
+            post: "/api/course-learning-outcomes"
+            body: "*"
+        };
+    }
+    rpc GetCourseLearningOutcome (GetCourseLearningOutcomeRequest) returns (CourseLearningOutcomeResponse) {
+        option (google.api.http) = {
+            get: "/api/course-learning-outcomes/{id}"
+        };
+    }
+    rpc UpdateCourseLearningOutcome (UpdateCourseLearningOutcomeRequest) returns (CourseLearningOutcomeResponse) {
+        option (google.api.http) = {
+            patch: "/api/course-learning-outcomes/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteCourseLearningOutcome (DeleteCourseLearningOutcomeRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/course-learning-outcomes/{id}"
+        };
+    }
+    rpc ListCourseLearningOutcomes (google.protobuf.Empty) returns (CourseLearningOutcomeList);
+    rpc QueryCourseLearningOutcomes (QueryCourseLearningOutcomesRequest) returns (PagedCourseLearningOutcomeList) {
+        option (google.api.http) = {
+            get: "/api/course-learning-outcomes"
+        };
+    }
+}
+
+message CourseLearningOutcome {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    int32 courseId = 4;
+}
+
+message CreateCourseLearningOutcomeRequest {
+    string name = 1;
+    string description = 2;
+    int32 courseId = 3;
+    repeated int32 programLearningOutcomeIds = 4;
+}
+
+message UpdateCourseLearningOutcomeRequest {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.Int32Value courseId = 4;
+    repeated int32 programLearningOutcomeIds = 5;
+}
+
+message GetCourseLearningOutcomeRequest {
+    int32 id = 1;
+}
+
+message DeleteCourseLearningOutcomeRequest {
+    int32 id = 1;
+}
+
+message CourseLearningOutcomeList {
+    repeated CourseLearningOutcomeResponse courseLearningOutcomes = 1;
+}
+
+message PagedCourseLearningOutcomeList {
+    repeated CourseLearningOutcomeResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message CourseLearningOutcomeResponse {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    int32 courseId = 4;
+    repeated int32 programLearningOutcomeIds = 5;
+}
+
+message QueryCourseLearningOutcomesRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    google.protobuf.Int32Value courseId = 5;
+}

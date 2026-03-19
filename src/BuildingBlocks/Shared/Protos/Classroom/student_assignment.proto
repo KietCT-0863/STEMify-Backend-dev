@@ -1,0 +1,88 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "Protos/Classroom/assignment_attempt.proto";
+import "google/protobuf/timestamp.proto";
+
+package studentAssignment;
+
+service GrpcStudentAssignment {
+	rpc GetStudentAssignmentById (GetStudentAssignmentByIdRequest) returns (GrpcStudentAssignmentResponse) {
+		option (google.api.http) = {
+			get: "/api/student-assignments/{id}"
+		};
+	}
+	rpc GetPagedStudentAssignmentByClassroom (GetStudentAssignmentParams) returns (GrpcPagedStudentAssignmentsResponse) {
+		option (google.api.http) = {
+			get: "/api/student-assignments"
+		};
+	}
+	rpc GetStudentAssignmentByAssignmentId (GetStudentAssignmentByAssignmentIdRequest) returns (GrpcAssignmentStatisticResponse) {
+		option (google.api.http) = {
+			get: "/api/classrooms/{classroomId}/assignments/{assignmentId}/student-assignments"
+		};
+	}
+}
+
+message GetStudentAssignmentByIdRequest {
+	int32 id = 1;
+}
+
+message GetStudentAssignmentParams {
+	google.protobuf.Int32Value pageNumber = 1;
+	google.protobuf.Int32Value pageSize = 2;
+	google.protobuf.StringValue status = 3;
+	int32 classroomId = 4;
+}
+
+message GetStudentAssignmentByAssignmentIdRequest {
+	int32 assignmentId = 1;
+	int32 classroomId = 2;
+}
+
+message GrpcStudentAssignmentResponse {
+	int32 id = 1;
+	int32 assignmentId = 2;
+	string studentId = 3;
+	string status = 4;
+	google.protobuf.DoubleValue finalScore= 5;
+	google.protobuf.StringValue assignedAt = 6;
+	google.protobuf.StringValue dueDate = 7;
+	google.protobuf.Int32Value maxAttemptAllowed = 8;
+	google.protobuf.Int32Value attemptCount = 9;
+	repeated assignmentAttempt.GrpcAssignmentAttemptResponse attempts = 10;
+	google.protobuf.Timestamp nextAttemptAvailableAt = 11;
+}
+
+message GrpcPagedStudentAssignmentsResponse {
+	repeated GrpcAssignmentStatisticResponse items = 1;
+	int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}
+
+message GrpcAssignmentStatisticResponse {
+	int32 assignmentId = 1;
+	string assignmentTitle = 2;
+	int32 submissions = 4;
+	google.protobuf.Int64Value averageScore = 5;
+	google.protobuf.Int64Value passRate = 6;
+	int32 totalQuestions = 7;
+	repeated GrpcStudentAssignmentStatisticResponse studentStatistics = 8;
+}
+
+message GrpcStudentAssignmentStatisticResponse {
+  string studentId = 1;
+  string studentName = 2;
+  google.protobuf.StringValue imageUrl = 3;
+
+  google.protobuf.Int64Value totalScore = 4;                 
+  string status = 5;               
+  google.protobuf.StringValue lastSubmittedAt = 6;
+
+  repeated assignmentAttempt.GrpcAssignmentAttemptResponse attempts = 7;
+}

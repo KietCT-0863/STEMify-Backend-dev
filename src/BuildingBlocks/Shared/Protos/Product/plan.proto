@@ -1,0 +1,157 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Product";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Protos/Product/plan_billing_cycle.proto";
+
+package product;
+
+service GrpcPlanService {
+    rpc CreatePlan (CreatePlanRequest) returns (GrpcPlanResponse) {
+        option (google.api.http) = {
+            post: "/api/plans"
+            body: "*"
+        };
+    }
+
+    rpc UpdatePlan (UpdatePlanRequest) returns (GrpcPlanResponse) {
+        option (google.api.http) = {
+            patch: "/api/plans/{id}"
+            body: "*"
+        };
+    }
+
+    rpc DeletePlan (DeletePlanRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/plans/{id}"
+        };
+    }
+
+    rpc GetPlanById (GetPlanRequest) returns (GrpcPlanDetail) {
+        option (google.api.http) = {
+            get: "/api/plans/{id}"
+        };
+    }
+
+    rpc GetPagedPlan (GetPlanParams) returns (GrpcPagedPlanResponse) {
+        option (google.api.http) = {
+            get: "/api/plans"
+        };
+    }
+}
+
+message CreatePlanRequest {
+    string name = 1;
+    google.protobuf.StringValue description = 2;
+    google.protobuf.StringValue accessSupportDetail = 3;
+    int32 maxTeacherSeats = 4;
+    int32 maxStudentSeats = 5;
+    repeated CreateBillingCycleRequest billingCycles = 6;
+    bool isAddOn = 7;
+    google.protobuf.Int32Value parentPlanBillingCycleId = 8;
+    repeated int32 curriculumIds = 9;
+    int32 curriculumCount = 10;
+}
+
+message CreateBillingCycleRequest {
+    string billingCycle = 1;
+    double price = 2;
+}
+
+message UpdatePlanRequest {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue accessSupportDetail = 4;
+    google.protobuf.Int32Value maxTeacherSeats = 5;
+    google.protobuf.Int32Value maxStudentSeats = 6;
+    repeated CreateBillingCycleRequest billingCycles = 7;
+    google.protobuf.BoolValue isAddOn = 8;
+    google.protobuf.Int32Value parentPlanBillingCycleId = 9;
+    repeated int32 curriculumIds = 10;
+    google.protobuf.StringValue status = 11;
+    google.protobuf.Int32Value curriculumCount = 12;
+}
+
+message DeletePlanRequest {
+    int32 id = 1;
+}
+
+message GetPlanRequest {
+    int32 id = 1;
+}
+
+message GetPlanParams {
+    google.protobuf.Int32Value pageNumber = 1;
+    google.protobuf.Int32Value pageSize = 2;
+    google.protobuf.StringValue search = 3;
+    google.protobuf.StringValue orderBy = 4;
+    google.protobuf.StringValue sortDirection = 5;
+    google.protobuf.StringValue billingCycle = 6;
+    google.protobuf.BoolValue isAddOn = 7;
+    google.protobuf.StringValue status = 8;
+}
+
+message GrpcPlanResponse {
+    GrpcPlanModel plan = 1;
+}
+
+message GrpcPagedPlanResponse {
+    repeated GrpcPlanDetail items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message GrpcPlanModel {
+    int32 id = 1;
+    string name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue accessSupportDetail = 4;
+    int32 curriculumCount = 5;
+    google.protobuf.Int32Value maxTeacherSeats = 6;
+    google.protobuf.Int32Value maxStudentSeats = 7;
+    google.protobuf.Timestamp createdAt = 8;
+    google.protobuf.Timestamp updatedAt = 9;
+    repeated int32 curriculumIds = 10;
+}
+
+message GrpcPlanDetail {
+    int32 id = 1;
+    string name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue accessSupportDetail = 4;
+    int32 curriculumCount = 5;
+    google.protobuf.Int32Value maxTeacherSeats = 6;
+    google.protobuf.Int32Value maxStudentSeats = 7;
+    google.protobuf.Timestamp createdAt = 8;
+    google.protobuf.Timestamp updatedAt = 9;
+    repeated GrpcPlanCurriculumModel curriculums = 10;
+    repeated product.GrpcPlanBillingCycleDetail planBillingCycles = 11;
+    string status = 12;
+}
+
+message GrpcPlanInformation {
+    int32 id = 1;
+    string name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue accessSupportDetail = 4;
+    int32 curriculumCount = 5;
+    google.protobuf.Int32Value maxTeacherSeats = 6;
+    google.protobuf.Int32Value maxStudentSeats = 7;
+    google.protobuf.Timestamp createdDate = 8;
+    google.protobuf.Timestamp lastModifiedDate = 9;
+    repeated GrpcPlanCurriculumModel curriculums = 10;
+    repeated product.GrpcPlanBillingCycleDetail planBillingCycles = 11;
+}
+
+message GrpcPlanCurriculumModel {
+    int32 id = 1;
+    string title = 2;
+    string imageUrl = 3;
+}

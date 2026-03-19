@@ -1,0 +1,89 @@
+apiVersion: 1
+
+datasources:
+  # Prometheus - Metrics data source
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: $PROMETHEUS_ENDPOINT
+    uid: prometheus
+    isDefault: true
+    jsonData:
+      httpMethod: POST
+      manageAlerts: true
+      prometheusType: Prometheus
+      prometheusVersion: 3.5.0
+      cacheLevel: 'High'
+      timeInterval: 15s
+      exemplarTraceIdDestinations:
+        - name: traceID
+          datasourceUid: tempo
+          urlDisplayLabel: "View in Tempo"
+
+  # Loki - Logs data source
+  - name: Loki
+    type: loki
+    access: proxy
+    url: $LOKI_ENDPOINT
+    uid: loki
+    jsonData:
+      httpMethod: POST
+      maxLines: 1000
+      derivedFields:
+        - datasourceUid: tempo
+          matcherRegex: "traceID=(\\w+)"
+          name: TraceID
+          url: '$${__value.raw}'
+        - datasourceUid: tempo
+          matcherRegex: "trace_id=(\\w+)"
+          name: TraceID
+          url: '$${__value.raw}'
+
+  # Tempo - Distributed tracing data source
+  - name: Tempo
+    type: tempo
+    access: proxy
+    url: $TEMPO_ENDPOINT
+    uid: tempo
+    jsonData:
+      httpMethod: GET
+      # Link traces to logs (using V2 API)
+      tracesToLogsV2:
+        datasourceUid: loki
+        spanStartTimeShift: '-1h'
+        spanEndTimeShift: '1h'
+        tags: ['job', 'instance', 'pod', 'namespace', 'service.name']
+        filterByTraceID: false
+        filterBySpanID: false
+        customQuery: true
+        query: '{service.name="$${__span.tags.service.name}"}'
+      # Link traces to metrics
+      tracesToMetrics:
+        datasourceUid: prometheus
+        spanStartTimeShift: '-1h'
+        spanEndTimeShift: '1h'
+        tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+        queries:
+          - name: 'Sample query'
+            query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
+      # Enable node graph visualization
+      nodeGraph:
+        enabled: true
+      # Enable search functionality
+      search:
+        hide: false
+      # Service map configuration
+      serviceMap:
+        datasourceUid: prometheus
+      # Trace query settings
+      traceQuery:
+        timeShiftEnabled: true
+        spanStartTimeShift: '-1h'
+        spanEndTimeShift: '1h'
+      # Span bar configuration
+      spanBar:
+        type: 'Tag'
+        tag: 'http.path'
+      # Enable streaming for better performance
+      streamingEnabled:
+        search: true

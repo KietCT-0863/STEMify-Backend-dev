@@ -1,0 +1,33 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service CurriculumEmulationService {
+    rpc CreateCurriculumEmulation (CreateCurriculumEmulationRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/api/curriculums/{curriculumId}/emulations"
+            body: "*"
+        };
+    }
+    rpc DeleteCurriculumEmulation (DeleteCurriculumEmulationRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/curriculums/{curriculumId}/emulations"
+            body: "*"
+        };
+    }
+}
+
+message CreateCurriculumEmulationRequest {
+    int32 curriculumId = 1;
+    repeated string emulationIds = 2;   
+}
+
+message DeleteCurriculumEmulationRequest {
+    int32 curriculumId = 1;
+    repeated string emulationIds = 2;   
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "Name": "Bộ Dụng Cụ Nhập Môn STEAM",
+    "Description": "Đây là bộ công cụ nhập môn được thiết kế dành cho giáo viên trong môi trường giáo dục và các nhà sáng tạo trẻ tại nhà đang tìm kiếm một giải pháp học tập theo định hướng STEM/STEAM.\nBộ kit này là sự khởi đầu tuyệt vời để bước vào thế giới giáo dục STEAM, mang đến cách học vui nhộn, hấp dẫn giúp người học khám phá khoa học, công nghệ, kỹ thuật, nghệ thuật và toán học thông qua trải nghiệm thực hành.",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "Weight": 1200,
+    "Dimensions": "30 x 20 x 10 cm",
+    "AgeRangeId": 1,
+    "Status": "Active"
+  },
+  {
+    "Name": "Bộ Dụng Cụ STEAM Toàn Diện",
+    "Description": "Đây là bộ giải pháp tạo mẫu nhanh toàn diện của Stemify, được thiết kế cho việc học tập thực hành và hợp tác trong lớp học. Bộ kit cho phép giáo viên và học sinh tiếp cận các bài học của Stemify cũng như các hoạt động học tập do học sinh chủ động dẫn dắt, hỗ trợ phát triển tư duy sáng tạo, kỹ năng làm việc nhóm và ứng dụng STEM/STEAM thông qua trải nghiệm thực tế.",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "Weight": 1300,
+    "Dimensions": "30 x 20 x 10 cm",
+    "AgeRangeId": 1,
+    "Status": "Active"
+  },
+  {
+    "Name": "Bộ kit STEAM & Robotics",
+    "Description": "Bộ kit Robot học trong Giáo dục STEM được thiết kế nhằm giúp học sinh tiếp cận các khái niệm cốt lõi của robotics thông qua học tập thực hành và dựa trên dự án. Thông qua việc lắp ráp mô hình robot, lập trình điều khiển và thử nghiệm chuyển động, học sinh phát triển tư duy logic, kỹ năng giải quyết vấn đề và hiểu rõ mối liên hệ giữa khoa học, công nghệ, kỹ thuật và toán học.",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "Weight": 1100,
+    "Dimensions": "32 x 25 x 10 cm",
+    "AgeRangeId": 2,
+    "Status": "Active"
+  }
+]

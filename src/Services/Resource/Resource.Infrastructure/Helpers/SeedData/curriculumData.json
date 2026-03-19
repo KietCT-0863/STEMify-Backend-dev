@@ -1,0 +1,26 @@
+[
+  {
+    "Title": "Tư Duy Kỹ Thuật & Thiết Kế Trong STEM",
+    "Code": "STEM-DESIGN-101",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_urban-planning_cover.jpg&w=1920&q=75",
+    "Description": "Khung chương trình khám phá thiết kế kiến trúc, cấu trúc và mô hình kỹ thuật thông qua các hoạt động xây dựng sáng tạo.\n- **Beginner:** Làm quen với các dạng hình học, khối cơ bản và cách chúng tạo nên độ vững chắc. Học sinh xây mô hình nhỏ như cầu, tháp hoặc mái vòm.\n- **Intermediate:** Thiết kế bản phác thảo, thử nghiệm độ bền, điều chỉnh cấu trúc và khám phá lực – tải trọng. Học sinh xây các mô hình công trình có chức năng.\n- **Advanced:** Thực hiện dự án hoàn chỉnh: thiết kế – mô phỏng – xây dựng công trình phức hợp (nhà cao tầng, cây cầu đa nhịp, công trình cơ khí), thử nghiệm và tối ưu hóa.",
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5"
+  },
+  {
+    "Title": "STEM Thông Minh với micro:bit",
+    "Code": "STEM-MIC-202",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_harnessing-wind-energy_cover.jpg&w=1920&q=75",
+    "Description": "Khung chương trình này tích hợp kiến thức STEM với lập trình micro:bit nhằm tạo ra các mô hình thông minh có khả năng tương tác với môi trường. Học sinh sẽ học cách sử dụng cảm biến, điều khiển động cơ và xây dựng logic chương trình để điều khiển hành vi của mô hình.\nThông qua các hoạt động lập trình trực quan và dự án thực tế, học sinh hiểu rõ nguyên lý hoạt động của hệ thống nhúng đơn giản, đồng thời phát triển tư duy thuật toán và kỹ năng giải quyết vấn đề bằng công nghệ.",
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5"
+  },
+  {
+    "Title": "AI & Tự Động Hóa trong STEM Thực Tiễn",
+    "Code": "STEM-AI-303",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-savanna-biome_cover.jpg&w=1920&q=75",
+    "Description": "Chương trình tập trung vào việc ứng dụng trí tuệ nhân tạo và hệ thống tự động hóa trong các dự án STEM mang tính thực tiễn cao. Học sinh sẽ được làm quen với các khái niệm AI như nhận diện hình ảnh, xử lý tín hiệu và ra quyết định thông minh, kết hợp cùng các hệ thống điều khiển tự động.\nThông qua các dự án theo hướng học tập dựa trên vấn đề (problem-based learning), học sinh học cách phân tích bối cảnh thực tế, thiết kế giải pháp công nghệ và đánh giá hiệu quả của hệ thống. Chương trình không chỉ cung cấp kiến thức công nghệ hiện đại mà còn giúp học sinh phát triển tư duy đổi mới, hiểu vai trò của AI và tự động hóa trong xã hội và tương lai nghề nghiệp.",
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5"
+  }
+]

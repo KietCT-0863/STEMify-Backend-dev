@@ -1,0 +1,158 @@
+api-version: 2024-02-02-preview
+location: {{ .Env.AZURE_LOCATION }}
+identity:
+  type: UserAssigned
+  userAssignedIdentities:
+    ? "{{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}"
+    : {}
+properties:
+  environmentId: {{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+  configuration:
+    activeRevisionsMode: single
+    runtime:
+      dotnet:
+        autoConfigureDataProtection: false
+    ingress:
+      external: true
+      targetPort: {{ targetPortOrDefault 8084 }}
+      transport: auto
+      allowInsecure: true
+    registries:
+      - server: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+        identity: {{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+    secrets:
+      - name: connectionstrings--stemifyidentity
+        value: Host=stemify-postgres;Port=5432;Username=postgres;Password={{ .Env.POSTGRES_PASSWORD }};Database=stemifyidentity
+  template:
+    containers:
+      - image: {{ .Image }}
+        name: identity
+        env:
+          - name: AZURE_CLIENT_ID
+            value: {{ if .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ else }}{{ end }}
+          - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+            value: "true"
+          # - name: HTTP_PORTS
+          #   value: '{{ targetPortOrDefault 0 }}'
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY
+            value: in_memory
+          - name: ConnectionStrings__stemifyidentity
+            secretRef: connectionstrings--stemifyidentity
+          - name: RabbitMq__Url
+            value: {{ if .Env.RABBITMQ_URL }}{{ .Env.RABBITMQ_URL }}{{ else }}{{ end }}
+          - name: OpenIddict__Issuer
+            value: https://identity.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: OpenIddict__Authority
+            value: https://identity.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: KeyVaultUrl
+            value: {{ if .Env.KEYVAULT_URL }}{{ .Env.KEYVAULT_URL }}{{ else }}{{ end }}
+          - name: KeyVaultCertName
+            value: {{ if .Env.KEYVAULT_CERT_NAME }}{{ .Env.KEYVAULT_CERT_NAME }}{{ else }}{{ end }}
+          - name: IdentityClientId
+            value: {{ if .Env.IDENTITY_CLIENT_ID }}{{ .Env.IDENTITY_CLIENT_ID }}{{ else }}{{ end }}
+          - name: OpenIddict__SigningKey
+            value: {{ if .Env.OPENIDDICT_SIGNING_KEY }}{{ .Env.OPENIDDICT_SIGNING_KEY }}{{ else }}{{ end }}
+          - name: OpenIddict__EncryptionKey
+            value: {{ if .Env.OPENIDDICT_ENCRYPTION_KEY }}{{ .Env.OPENIDDICT_ENCRYPTION_KEY }}{{ else }}{{ end }}
+          - name: OpenIddict__ApiClientSecret
+            value: {{ if .Env.OPENIDDICT_API_CLIENT_SECRET }}{{ .Env.OPENIDDICT_API_CLIENT_SECRET }}{{ else }}{{ end }}
+          - name: OpenIddict__ForceRecreateClients
+            value: {{ if .Env.OPENIDDICT_FORCE_RECREATE_CLIENTS }}{{ .Env.OPENIDDICT_FORCE_RECREATE_CLIENTS }}{{ else }}true{{ end }}
+          - name: OpenIddict__DisableHttpsRequirement
+            value: {{ if .Env.OPENIDDICT_DISABLE_HTTPS }}{{ .Env.OPENIDDICT_DISABLE_HTTPS }}{{ else }}true{{ end }}
+          - name: Cors__Origins
+            value: {{ if .Env.IDENTITY_CORS_ORIGINS }}{{ .Env.IDENTITY_CORS_ORIGINS }}{{ else }}https://localhost:3000{{ end }}
+          - name: ClientApp
+            value: {{ if .Env.CLIENT_APP_URL }}{{ .Env.CLIENT_APP_URL }}{{ else }}https://localhost:3000{{ end }}
+          - name: BackendUrl
+            value: {{ if .Env.IDENTITY_BACKEND_URL }}{{ .Env.IDENTITY_BACKEND_URL }}{{ else }}http://apigateway.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}{{ end }}
+          - name: Authentication__Google__ClientId
+            value: {{ if .Env.GOOGLE_CLIENT_ID }}{{ .Env.GOOGLE_CLIENT_ID }}{{ else }}{{ end }}
+          - name: Authentication__Google__ClientSecret
+            value: {{ if .Env.GOOGLE_CLIENT_SECRET }}{{ .Env.GOOGLE_CLIENT_SECRET }}{{ else }}{{ end }}
+          - name: Authentication__Google__RedirectUri
+            value: https://identity-api.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}/api/auth/google/callback
+          - name: EmailSettings__SMTPServer
+            value: {{ if .Env.IDENTITY_EMAIL_SMTP_SERVER }}{{ .Env.IDENTITY_EMAIL_SMTP_SERVER }}{{ else }}{{ end }}
+          - name: EmailSettings__Port
+            value: {{ if .Env.IDENTITY_EMAIL_PORT }}{{ .Env.IDENTITY_EMAIL_PORT }}{{ else }}{{ end }}
+          - name: EmailSettings__UseSSL
+            value: {{ if .Env.IDENTITY_EMAIL_USE_SSL }}{{ .Env.IDENTITY_EMAIL_USE_SSL }}{{ else }}{{ end }}
+          - name: EmailSettings__Username
+            value: {{ if .Env.IDENTITY_EMAIL_USERNAME }}{{ .Env.IDENTITY_EMAIL_USERNAME }}{{ else }}{{ end }}
+          - name: EmailSettings__Password
+            value: {{ if .Env.IDENTITY_EMAIL_PASSWORD }}{{ .Env.IDENTITY_EMAIL_PASSWORD }}{{ else }}{{ end }}
+          - name: EmailSettings__From
+            value: {{ if .Env.IDENTITY_EMAIL_FROM }}{{ .Env.IDENTITY_EMAIL_FROM }}{{ else }}{{ end }}
+          - name: EmailSettings__DisplayName
+            value: {{ if .Env.IDENTITY_EMAIL_DISPLAY_NAME }}{{ .Env.IDENTITY_EMAIL_DISPLAY_NAME }}{{ else }}{{ end }}
+          - name: EmailSettings__ApplicationName
+            value: {{ if .Env.IDENTITY_EMAIL_APP_NAME }}{{ .Env.IDENTITY_EMAIL_APP_NAME }}{{ else }}{{ end }}
+          - name: EmailSettings__SupportEmail
+            value: {{ if .Env.IDENTITY_EMAIL_SUPPORT }}{{ .Env.IDENTITY_EMAIL_SUPPORT }}{{ else }}{{ end }}
+          - name: EmailSettings__Enabled
+            value: {{ if .Env.IDENTITY_EMAIL_ENABLED }}{{ .Env.IDENTITY_EMAIL_ENABLED }}{{ else }}{{ end }}
+          - name: EmailSettings__EnableVerification
+            value: {{ if .Env.IDENTITY_EMAIL_ENABLE_VERIFICATION }}{{ .Env.IDENTITY_EMAIL_ENABLE_VERIFICATION }}{{ else }}{{ end }}
+          - name: EmailSettings__TimeoutMs
+            value: {{ if .Env.IDENTITY_EMAIL_TIMEOUT_MS }}{{ .Env.IDENTITY_EMAIL_TIMEOUT_MS }}{{ else }}{{ end }}
+          - name: EmailSettings__MaxRetryAttempts
+            value: {{ if .Env.IDENTITY_EMAIL_MAX_RETRY }}{{ .Env.IDENTITY_EMAIL_MAX_RETRY }}{{ else }}{{ end }}
+          - name: EmailSettings__LogEmailContent
+            value: {{ if .Env.IDENTITY_EMAIL_LOG_CONTENT }}{{ .Env.IDENTITY_EMAIL_LOG_CONTENT }}{{ else }}{{ end }}
+          - name: GrpcServices__OrderService__Address
+            value: http://order-api:5085
+          - name: DatabaseOptions__MaxRetryCount
+            value: "5"
+          - name: DatabaseOptions__MaxRetryDelay
+            value: "00:00:10"
+          - name: DatabaseOptions__CommandTimeout
+            value: "30"
+          - name: DatabaseOptions__EnableRetryOnFailure
+            value: "true"
+          - name: DatabaseOptions__EnableSensitiveDataLogging
+            value: {{ if .Env.DB_ENABLE_SENSITIVE_LOGGING }}{{ .Env.DB_ENABLE_SENSITIVE_LOGGING }}{{ else }}false{{ end }}
+          - name: DatabaseOptions__EnableDetailedErrors
+            value: {{ if .Env.DB_ENABLE_DETAILED_ERRORS }}{{ .Env.DB_ENABLE_DETAILED_ERRORS }}{{ else }}false{{ end }}
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          - name: ASPNETCORE_URLS
+            value: http://+:{{ targetPortOrDefault 8084 }}
+          - name: ASPNETCORE_DATA_PROTECTION_KEYS_PATH
+            value: /tmp/keys
+          
+        # Add health probes to ensure proper startup order (within Azure limits)
+        # probes:
+        #   - type: Startup
+        #     httpGet:
+        #       path: "/health/ready"
+        #       port: {{ targetPortOrDefault 8080 }}
+        #     initialDelaySeconds: 60
+        #     periodSeconds: 10
+        #     timeoutSeconds: 5
+        #     failureThreshold: 90
+        #   - type: Readiness
+        #     httpGet:
+        #       path: "/health/ready"
+        #       port: {{ targetPortOrDefault 8080 }}
+        #     initialDelaySeconds: 30
+        #     periodSeconds: 5
+        #     timeoutSeconds: 5
+        #     failureThreshold: 24
+        #   - type: Liveness
+        #     httpGet:
+        #       path: "/health"
+        #       port: {{ targetPortOrDefault 8080 }}
+        #     initialDelaySeconds: 60
+        #     periodSeconds: 30
+        #     timeoutSeconds: 5
+        #     failureThreshold: 3
+    scale:
+      minReplicas: 1
+tags:
+  azd-service-name: identity
+  aspire-resource-name: identity

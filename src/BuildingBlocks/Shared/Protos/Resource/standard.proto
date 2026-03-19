@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package resource;
+
+service StandardService {
+    rpc CreateStandard (CreateStandardRequest) returns (StandardResponse) {
+        option (google.api.http) = {
+            post: "/api/standards"
+            body: "*"
+        };
+    }
+    rpc GetStandard (GetStandardRequest) returns (StandardResponse) {
+        option (google.api.http) = {
+            get: "/api/standards/{id}"
+        };
+    }
+    rpc UpdateStandard (UpdateStandardRequest) returns (StandardResponse) {
+        option (google.api.http) = {
+            patch: "/api/standards/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteStandard (DeleteStandardRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/standards/{id}"
+        };
+    }
+    rpc ListStandards (google.protobuf.Empty) returns (StandardList);
+    rpc QueryStandards (QueryStandardsRequest) returns (PagedStandardList) {
+        option (google.api.http) = {
+            get: "/api/standards"
+        };
+    }
+}
+
+message Standard {
+    int32 id = 1;
+    google.protobuf.StringValue standardName = 2;
+    google.protobuf.StringValue description = 3;
+}
+
+message CreateStandardRequest {
+    google.protobuf.StringValue standardName = 1;
+    google.protobuf.StringValue description = 2;
+}
+
+message UpdateStandardRequest {
+    int32 id = 1;
+    google.protobuf.StringValue standardName = 2;
+    google.protobuf.StringValue description = 3;
+}
+
+message GetStandardRequest {
+    int32 id = 1;
+}
+
+message DeleteStandardRequest {
+    int32 id = 1;
+}
+
+message StandardList {
+    repeated StandardResponse standards = 1;
+}
+
+message PagedStandardList {
+    repeated StandardResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message StandardResponse {
+    int32 id = 1;
+    google.protobuf.StringValue standardName = 2;
+    google.protobuf.StringValue description = 3;
+}
+
+message QueryStandardsRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+}

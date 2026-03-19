@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Tư duy phản biện trong STEM",
+    "description": "Học sinh áp dụng tư duy phản biện để phân tích và giải quyết các vấn đề STEM liên môn.",
+    "curriculumId": 1
+  },
+  {
+    "name": "Nhận thức về phát triển bền vững",
+    "description": "Học sinh hiểu và vận dụng kiến thức về năng lượng tái tạo và các thực hành phát triển bền vững.",
+    "curriculumId": 2
+  },
+  {
+    "name": "Nguyên lý cơ học và đòn bẩy",
+    "description": "Học sinh hiểu và áp dụng các nguyên lý cơ học cơ bản như đòn bẩy, đối trọng và chuyển động trong các mô hình thực tế.",
+    "curriculumId": 1
+  },
+  {
+    "name": "Kỹ thuật và thiết kế kỹ thuật",
+    "description": "Học sinh thực hành quy trình thiết kế kỹ thuật để xây dựng, thử nghiệm và cải tiến các mô hình STEM.",
+    "curriculumId": 1
+  },
+  {
+    "name": "Lập trình và điều khiển thiết bị",
+    "description": "Học sinh sử dụng lập trình để điều khiển thiết bị phần cứng như micro:bit, servo motor và cảm biến.",
+    "curriculumId": 1
+  },
+  {
+    "name": "Ứng dụng Trí tuệ Nhân tạo trong đời sống",
+    "description": "Học sinh nhận biết và ứng dụng trí tuệ nhân tạo để giải quyết các vấn đề thực tế như nhận diện hình ảnh và tự động hóa.",
+    "curriculumId": 2
+  },
+  {
+    "name": "STEM và giao thông thông minh",
+    "description": "Học sinh khám phá cách STEM được ứng dụng trong các hệ thống giao thông thông minh, bao gồm cầu nâng và điều khiển tự động.",
+    "curriculumId": 2
+  },
+  {
+    "name": "Giải quyết vấn đề và làm việc nhóm",
+    "description": "Học sinh phát triển kỹ năng giải quyết vấn đề thông qua làm việc nhóm trong các dự án STEM thực hành.",
+    "curriculumId": 1
+  }
+]

@@ -1,0 +1,43 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service CurriculumCourseService {
+    rpc CreateCurriculumCourse (CreateCurriculumCourseRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/api/curriculums/{curriculumId}/courses"
+            body: "*"
+        };
+    }
+    rpc DeleteCurriculumCourse (DeleteCurriculumCourseRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/curriculums/{curriculumId}/courses"
+            body: "*"
+        };
+    }
+    rpc UpdateCoursesOrder (UpdateCoursesOrderRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            patch: "/api/curriculums/{curriculumId}/courses"
+            body: "*"
+        };
+    }
+}
+
+message CreateCurriculumCourseRequest {
+    int32 curriculumId = 1;
+    repeated int32 courseIds = 2;   
+}
+
+message DeleteCurriculumCourseRequest {
+    int32 curriculumId = 1;
+    repeated int32 courseIds = 2;   
+}
+message UpdateCoursesOrderRequest {
+    int32 curriculumId = 1;
+    repeated int32 orderedCourseIds = 2;
+}

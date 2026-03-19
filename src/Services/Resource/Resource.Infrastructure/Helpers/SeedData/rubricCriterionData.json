@@ -1,0 +1,220 @@
+[
+  {
+    "AssignmentQuestionId": 1,
+    "CriterionName": "Hiểu biết về nguyên lý đòn bẩy",
+    "Description": "Đánh giá mức độ hiểu biết về nguyên lý đòn bẩy và cách áp dụng vào cầu nâng. Giải thích rõ ràng, chính xác về các bộ phận và vai trò của chúng.",
+    "MaxPoints": 15
+  },
+  {
+    "AssignmentQuestionId": 1,
+    "CriterionName": "Mô tả chi tiết và logic",
+    "Description": "Câu trả lời có cấu trúc rõ ràng, logic, dễ hiểu. Sử dụng thuật ngữ kỹ thuật phù hợp.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 2,
+    "CriterionName": "Chất lượng mô hình",
+    "Description": "Mô hình được xây dựng chắc chắn, đúng cấu trúc, thể hiện được các bộ phận chính của cầu nâng. Mô hình có thể hoạt động hoặc mô phỏng được chức năng.",
+    "MaxPoints": 20
+  },
+  {
+    "AssignmentQuestionId": 2,
+    "CriterionName": "Chất lượng hình ảnh/video",
+    "Description": "Hình ảnh/video rõ ràng, đủ ánh sáng, thể hiện được toàn bộ mô hình và các chi tiết quan trọng.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 3,
+    "CriterionName": "Hiểu biết về nguyên lý đòn bẩy",
+    "Description": "Đánh giá mức độ hiểu biết về nguyên lý đòn bẩy và cách áp dụng vào cầu nâng. Giải thích rõ ràng, chính xác về các bộ phận và vai trò của chúng.",
+    "MaxPoints": 15
+  },
+  {
+    "AssignmentQuestionId": 3,
+    "CriterionName": "Mô tả chi tiết và logic",
+    "Description": "Câu trả lời có cấu trúc rõ ràng, logic, dễ hiểu. Sử dụng thuật ngữ kỹ thuật phù hợp.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 4,
+    "CriterionName": "Chất lượng mô hình",
+    "Description": "Mô hình được xây dựng chắc chắn, đúng cấu trúc, thể hiện được các bộ phận chính của cầu nâng. Mô hình có thể hoạt động hoặc mô phỏng được chức năng.",
+    "MaxPoints": 20
+  },
+  {
+    "AssignmentQuestionId": 4,
+    "CriterionName": "Chất lượng hình ảnh/video",
+    "Description": "Hình ảnh/video rõ ràng, đủ ánh sáng, thể hiện được toàn bộ mô hình và các chi tiết quan trọng.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 5,
+    "CriterionName": "Hiểu biết về nguyên lý đòn bẩy",
+    "Description": "Đánh giá mức độ hiểu biết về nguyên lý đòn bẩy và cách áp dụng vào cầu nâng. Giải thích rõ ràng, chính xác về các bộ phận và vai trò của chúng.",
+    "MaxPoints": 15
+  },
+  {
+    "AssignmentQuestionId": 5,
+    "CriterionName": "Mô tả chi tiết và logic",
+    "Description": "Câu trả lời có cấu trúc rõ ràng, logic, dễ hiểu. Sử dụng thuật ngữ kỹ thuật phù hợp.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 6,
+    "CriterionName": "Chất lượng mô hình",
+    "Description": "Mô hình được xây dựng chắc chắn, đúng cấu trúc, thể hiện được các bộ phận chính của cầu nâng. Mô hình có thể hoạt động hoặc mô phỏng được chức năng.",
+    "MaxPoints": 20
+  },
+  {
+    "AssignmentQuestionId": 6,
+    "CriterionName": "Chất lượng hình ảnh/video",
+    "Description": "Hình ảnh/video rõ ràng, đủ ánh sáng, thể hiện được toàn bộ mô hình và các chi tiết quan trọng.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 7,
+    "CriterionName": "Hiểu biết về nguyên lý đòn bẩy",
+    "Description": "Đánh giá mức độ hiểu biết về nguyên lý đòn bẩy và cách áp dụng vào cầu nâng. Giải thích rõ ràng, chính xác về các bộ phận và vai trò của chúng.",
+    "MaxPoints": 15
+  },
+  {
+    "AssignmentQuestionId": 7,
+    "CriterionName": "Mô tả chi tiết và logic",
+    "Description": "Câu trả lời có cấu trúc rõ ràng, logic, dễ hiểu. Sử dụng thuật ngữ kỹ thuật phù hợp.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 8,
+    "CriterionName": "Chất lượng mô hình",
+    "Description": "Mô hình được xây dựng chắc chắn, đúng cấu trúc, thể hiện được các bộ phận chính của cầu nâng. Mô hình có thể hoạt động hoặc mô phỏng được chức năng.",
+    "MaxPoints": 20
+  },
+  {
+    "AssignmentQuestionId": 8,
+    "CriterionName": "Chất lượng hình ảnh/video",
+    "Description": "Hình ảnh/video rõ ràng, đủ ánh sáng, thể hiện được toàn bộ mô hình và các chi tiết quan trọng.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 9,
+    "CriterionName": "Hiểu biết về nguyên lý đòn bẩy",
+    "Description": "Đánh giá mức độ hiểu biết về nguyên lý đòn bẩy và cách áp dụng vào cầu nâng. Giải thích rõ ràng, chính xác về các bộ phận và vai trò của chúng.",
+    "MaxPoints": 15
+  },
+  {
+    "AssignmentQuestionId": 9,
+    "CriterionName": "Mô tả chi tiết và logic",
+    "Description": "Câu trả lời có cấu trúc rõ ràng, logic, dễ hiểu. Sử dụng thuật ngữ kỹ thuật phù hợp.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 10,
+    "CriterionName": "Chất lượng mô hình",
+    "Description": "Mô hình được xây dựng chắc chắn, đúng cấu trúc, thể hiện được các bộ phận chính của cầu nâng. Mô hình có thể hoạt động hoặc mô phỏng được chức năng.",
+    "MaxPoints": 20
+  },
+  {
+    "AssignmentQuestionId": 10,
+    "CriterionName": "Chất lượng hình ảnh/video",
+    "Description": "Hình ảnh/video rõ ràng, đủ ánh sáng, thể hiện được toàn bộ mô hình và các chi tiết quan trọng.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 11,
+    "CriterionName": "Hiểu biết về nguyên lý đòn bẩy",
+    "Description": "Đánh giá mức độ hiểu biết về nguyên lý đòn bẩy và cách áp dụng vào cầu nâng. Giải thích rõ ràng, chính xác về các bộ phận và vai trò của chúng.",
+    "MaxPoints": 15
+  },
+  {
+    "AssignmentQuestionId": 11,
+    "CriterionName": "Mô tả chi tiết và logic",
+    "Description": "Câu trả lời có cấu trúc rõ ràng, logic, dễ hiểu. Sử dụng thuật ngữ kỹ thuật phù hợp.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 12,
+    "CriterionName": "Chất lượng mô hình",
+    "Description": "Mô hình được xây dựng chắc chắn, đúng cấu trúc, thể hiện được các bộ phận chính của cầu nâng. Mô hình có thể hoạt động hoặc mô phỏng được chức năng.",
+    "MaxPoints": 20
+  },
+  {
+    "AssignmentQuestionId": 12,
+    "CriterionName": "Chất lượng hình ảnh/video",
+    "Description": "Hình ảnh/video rõ ràng, đủ ánh sáng, thể hiện được toàn bộ mô hình và các chi tiết quan trọng.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 13,
+    "CriterionName": "Hiểu biết về nguyên lý đòn bẩy",
+    "Description": "Đánh giá mức độ hiểu biết về nguyên lý đòn bẩy và cách áp dụng vào cầu nâng. Giải thích rõ ràng, chính xác về các bộ phận và vai trò của chúng.",
+    "MaxPoints": 15
+  },
+  {
+    "AssignmentQuestionId": 13,
+    "CriterionName": "Mô tả chi tiết và logic",
+    "Description": "Câu trả lời có cấu trúc rõ ràng, logic, dễ hiểu. Sử dụng thuật ngữ kỹ thuật phù hợp.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 14,
+    "CriterionName": "Chất lượng mô hình",
+    "Description": "Mô hình được xây dựng chắc chắn, đúng cấu trúc, thể hiện được các bộ phận chính của cầu nâng. Mô hình có thể hoạt động hoặc mô phỏng được chức năng.",
+    "MaxPoints": 20
+  },
+  {
+    "AssignmentQuestionId": 14,
+    "CriterionName": "Chất lượng hình ảnh/video",
+    "Description": "Hình ảnh/video rõ ràng, đủ ánh sáng, thể hiện được toàn bộ mô hình và các chi tiết quan trọng.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 15,
+    "CriterionName": "Hiểu biết về nguyên lý đòn bẩy",
+    "Description": "Đánh giá mức độ hiểu biết về nguyên lý đòn bẩy và cách áp dụng vào cầu nâng. Giải thích rõ ràng, chính xác về các bộ phận và vai trò của chúng.",
+    "MaxPoints": 15
+  },
+  {
+    "AssignmentQuestionId": 15,
+    "CriterionName": "Mô tả chi tiết và logic",
+    "Description": "Câu trả lời có cấu trúc rõ ràng, logic, dễ hiểu. Sử dụng thuật ngữ kỹ thuật phù hợp.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 16,
+    "CriterionName": "Chất lượng mô hình",
+    "Description": "Mô hình được xây dựng chắc chắn, đúng cấu trúc, thể hiện được các bộ phận chính của cầu nâng. Mô hình có thể hoạt động hoặc mô phỏng được chức năng.",
+    "MaxPoints": 20
+  },
+  {
+    "AssignmentQuestionId": 16,
+    "CriterionName": "Chất lượng hình ảnh/video",
+    "Description": "Hình ảnh/video rõ ràng, đủ ánh sáng, thể hiện được toàn bộ mô hình và các chi tiết quan trọng.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 17,
+    "CriterionName": "Hiểu biết về nguyên lý đòn bẩy",
+    "Description": "Đánh giá mức độ hiểu biết về nguyên lý đòn bẩy và cách áp dụng vào cầu nâng. Giải thích rõ ràng, chính xác về các bộ phận và vai trò của chúng.",
+    "MaxPoints": 15
+  },
+  {
+    "AssignmentQuestionId": 17,
+    "CriterionName": "Mô tả chi tiết và logic",
+    "Description": "Câu trả lời có cấu trúc rõ ràng, logic, dễ hiểu. Sử dụng thuật ngữ kỹ thuật phù hợp.",
+    "MaxPoints": 10
+  },
+  {
+    "AssignmentQuestionId": 18,
+    "CriterionName": "Chất lượng mô hình",
+    "Description": "Mô hình được xây dựng chắc chắn, đúng cấu trúc, thể hiện được các bộ phận chính của cầu nâng. Mô hình có thể hoạt động hoặc mô phỏng được chức năng.",
+    "MaxPoints": 20
+  },
+  {
+    "AssignmentQuestionId": 18,
+    "CriterionName": "Chất lượng hình ảnh/video",
+    "Description": "Hình ảnh/video rõ ràng, đủ ánh sáng, thể hiện được toàn bộ mô hình và các chi tiết quan trọng.",
+    "MaxPoints": 10
+  }
+]
+
+

@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package studentProgress;
+
+service GrpcStudentProgress {
+	rpc UpdateLessonProgress (UpdateLessonProgressRequest) returns (GrpcLessonProgressResponse) {
+		option (google.api.http) = {
+			patch: "/api/student-progress/lessons"
+			body: "*"
+		};
+	}
+	rpc UpdateSectionProgress (UpdateSectionProgressRequest) returns (GrpcSectionProgressResponse) {
+		option (google.api.http) = {
+			patch: "/api/student-progress/sections"
+			body: "*"
+		};
+	}
+	rpc GetLessonProgress (GetLessonProgressRequest) returns (GrpcPagedLessonProgressResponse) {
+		option (google.api.http) = {
+			get: "/api/student-progress/lessons"
+		};
+	}
+	rpc GetSectionProgress (GetSectionProgressRequest) returns (GrpcPagedSectionProgressResponse) {
+		option (google.api.http) = {
+			get: "/api/student-progress/sections"
+		};
+	}
+	rpc GetStudentProgressByClassroomId (GetStudentProgressByClassroomIdRequest) returns (GrpcClassroomStudentProgressResponse) {
+		option (google.api.http) = {
+			get: "/api/classrooms/{classroomId}/student-progress"
+		};
+	}
+}
+
+message UpdateLessonProgressRequest {
+	int32 enrollmentId = 1;
+	int32 lessonId = 2;
+}
+
+message UpdateSectionProgressRequest {
+	int32 enrollmentId = 1;
+	int32 lessonId = 2;
+	int32 sectionId = 3;
+	string status = 4;
+}
+
+message GetLessonProgressRequest {
+	int32 enrollmentId = 1;
+}
+
+message GetSectionProgressRequest {
+	int32 enrollmentId = 1;
+	int32 lessonId = 2;
+}
+
+message LessonProgressModel {
+	int32 id = 1;
+	int32 lessonId = 2;
+	string status = 3;
+	google.protobuf.Timestamp completedAt = 4;
+	repeated SectionProgressModel sectionProgresses = 5;
+}
+message SectionProgressModel {
+	int32 id = 1;
+	int32 sectionId = 2;
+	string status = 3;
+	google.protobuf.Timestamp completedAt = 4;
+	google.protobuf.Int32Value studentQuizId = 5;
+	google.protobuf.Int32Value studentAssignmentId = 6;
+}
+
+message GetStudentProgressByClassroomIdRequest {
+	int32 classroomId = 1;
+	int32 courseId = 2;
+}
+
+message Lesson {
+  int32 lessonId = 1;
+  string lessonTitle = 2;
+  repeated int32 sectionIds = 3;
+}
+
+message StudentProgress {
+	string studentId = 1;
+	string studentName = 2;
+	int32 courseEnrollmentId = 3;
+	repeated LessonProgressModel lessonProgresses = 4;
+}
+
+message GrpcClassroomStudentProgressResponse {
+	int32 courseId = 1;
+	int32 classroomId = 2;
+	repeated Lesson lessons = 3;
+	repeated StudentProgress StudentProgress = 4;
+}
+
+message GrpcLessonProgressResponse {
+	LessonProgressModel lessonProgress = 1;
+}
+message GrpcSectionProgressResponse {
+	SectionProgressModel sectionProgress = 1;
+}
+
+message GrpcPagedLessonProgressResponse {
+	repeated LessonProgressModel items = 1;
+	int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}
+message GrpcPagedSectionProgressResponse {
+	repeated SectionProgressModel items = 1;
+	int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}

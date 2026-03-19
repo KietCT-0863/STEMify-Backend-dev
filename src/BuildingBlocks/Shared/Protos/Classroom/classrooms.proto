@@ -1,0 +1,413 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package classroom;
+
+service GrpcClassroom {
+	rpc CreateClassroom (CreateClassroomRequest) returns (GrpcCreateClassroomResponse) {
+		option (google.api.http) = {
+			post: "/api/classrooms"
+			body: "*"
+		};
+	}
+	rpc UpdateClassroom (UpdateClassroomRequest) returns (GrpcClassroomResponse) {
+		option (google.api.http) = {
+			patch: "/api/classrooms/{id}"
+			body: "*"
+		};
+	}
+	rpc DeleteClassroom (DeleteClassroomRequest) returns (DeleteClassroomResponse) {
+		option (google.api.http) = {
+			delete: "/api/classrooms/{id}"
+		};
+	}
+	rpc GetClassroomById (GetClassroomRequest) returns (GrpcClassroomResponse) {
+		option (google.api.http) = {
+			get: "/api/classrooms/{id}"
+		};
+	}
+	rpc GetPagedClassrooms (GetClassroomsRequest) returns (GrpcPagedClassroomsResponse) {
+		option (google.api.http) = {
+			get: "/api/classrooms"
+		};
+	}
+	rpc GetClassroomSchedule (GetClassroomRequest) returns (GrpcClassroomScheduleResponse) {
+		option (google.api.http) = {
+			get: "/api/classrooms/{id}/schedule"
+		};
+	}
+	rpc GetClassroomStatistic (GetClassroomRequest) returns (GrpcClassroomStatisticResponse) {
+		option (google.api.http) = {
+			get: "/api/classrooms/{id}/statistic"
+		};
+	}
+	rpc GetClassroomLearningSnapshot (GetClassroomLearningSnapshotRequest) returns (GrpcClassroomLearningSnapshotResponse) {
+		option (google.api.http) = {
+			get: "/api/classrooms/{classroom_id}/learning-snapshot"
+		};
+	}
+
+}
+
+message CreateClassroomRequest {
+	google.protobuf.StringValue description= 1;
+	google.protobuf.Timestamp startDate = 2;
+	google.protobuf.Timestamp endDate = 3;
+	google.protobuf.StringValue coverImageUrl = 4;
+	int32 courseId = 5;
+	int32 organizationSubscriptionOrderId = 6;
+	repeated StudentGroup studentGroups = 7;
+}
+
+message StudentGroup {
+	string groupCode = 1;
+	repeated string studentIds = 2;
+	string teacherId = 3;
+	string groupName = 4;
+	string grade = 5;
+}
+
+message GrpcCreateClassroomResponse {
+	repeated GrpcCreateClassroomModel classrooms = 1;
+}
+message GrpcCreateClassroomModel {
+	int32 id = 1;
+	string classCode = 2;
+	string className = 3;
+}
+
+message UpdateClassroomRequest {
+	int32 id = 1;
+	google.protobuf.StringValue name = 2;
+	google.protobuf.StringValue grade = 3;
+	google.protobuf.StringValue description = 4;
+	optional google.protobuf.Timestamp startDate = 5;
+	optional google.protobuf.Timestamp endDate = 6;
+	google.protobuf.StringValue coverImageUrl = 7;
+	google.protobuf.StringValue teacherId = 8;
+	google.protobuf.Int32Value courseId = 9;
+	google.protobuf.StringValue classCode = 10;
+}
+
+message DeleteClassroomRequest {
+	int32 id = 1;
+}
+
+message GetClassroomRequest {
+	int32 id = 1;
+}
+
+message GetClassroomsRequest {
+	int32 pageNumber = 1;
+	int32 pageSize = 2;
+	google.protobuf.StringValue search = 3;
+	google.protobuf.StringValue orderBy = 4;
+	google.protobuf.StringValue teacherId = 5;
+	google.protobuf.Int32Value courseId = 6;
+	google.protobuf.StringValue status = 7;
+	google.protobuf.Int32Value organizationId = 8;
+	google.protobuf.Timestamp fromDate = 9;
+	google.protobuf.Timestamp toDate = 10;
+	google.protobuf.StringValue studentId = 11;
+	google.protobuf.Int32Value organizationSubscriptionOrderId = 12;
+}
+
+message GrpcClassroomResponse {
+	int32 id = 1;
+	string name = 2;
+	string grade = 3;
+	google.protobuf.StringValue description = 4;
+	string createdAt = 5;
+	google.protobuf.StringValue updatedAt = 6;
+	string startDate = 7;
+	string endDate = 8;
+	GrpcUserModel teacher = 9;
+	string classCode = 10;
+	google.protobuf.StringValue coverImageUrl = 11;
+	string status = 12;
+	int32 numberOfStudents = 13;
+	repeated GrpcUserModel students = 14;
+	GrpcCourseModel course = 15;
+	int32 organizationSubscriptionOrderId = 16;
+	int32 organizationId = 17;
+}
+
+message GrpcPagedClassroomsResponse {
+	repeated GrpcClassroomResponse items = 1;
+	int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}
+
+message DeleteClassroomResponse {
+  bool success = 1;
+}
+
+message GrpcUserModel {
+	string id = 1;
+	string name = 2;
+	string email = 3;
+	google.protobuf.StringValue imageUrl = 4;
+}
+
+message GrpcCourseModel {
+	int32 id = 1;
+	string title = 2;
+	string description = 3;
+	google.protobuf.StringValue imageUrl = 4;
+	int32 lessonCount = 5;
+	int32 totalDuration = 6;
+	string code = 7;
+}
+
+message GrpcClassroomScheduleResponse {
+	int32 minutesPerWeek = 1;
+	int32 totalWeeks = 2;
+	int32 courseId = 3;
+	string courseTitle = 4;
+	repeated GrpcCourseScheduleItem scheduleItems = 5;
+}
+
+message GrpcCourseScheduleItem {
+	int32 weekNumber = 1;
+	repeated GrpcLessonSchedule lessonSchedule = 2;
+}
+message GrpcLessonSchedule {
+	int32 lessonId = 1;
+	string lessonTitle = 2;
+	int32 duration = 3;
+}
+
+message GrpcClassroomStatisticResponse {
+	GrpcQuizStatistic quizStatistic = 1;
+	GrpcAssignmentStatistic assignmentStatistic = 2;
+	repeated GrpcUngradedAssignment ungradedAssignments = 3;
+	GrpcCourseStatistic courseStats = 4;
+}
+
+message GrpcQuizStatistic {
+	double averageScore = 1;
+	int32 submissions = 2;
+	double passRate = 3;
+}
+
+message GrpcAssignmentStatistic {
+	double averageScore = 1;
+	int32 submissions = 2;
+	double passRate = 3;
+	double failedRate = 4;
+}
+
+message GrpcUngradedAssignment {
+	int32 studentAssignmentId = 1;
+	string studentName = 2;
+	string assignmentTitle = 3;
+	int32 assignmentAttemptId = 4;
+}
+
+message GrpcCourseStatistic {
+	int32 id = 1;
+	string name = 2;
+	GrpcDetailedQuizStatistic quizStats = 3;
+	GrpcDetailedAssignmentStatistic assignmentStats = 4;
+	GrpcStudentScoreHistogramResponse studentScoreHistogram = 5;
+}
+
+message GrpcDetailedQuizStatistic {
+	double mean = 1;
+	double median = 2;
+	double min = 3;
+	double max = 4;
+	double q1 = 5;
+	double q3 = 6;
+	repeated double outliers = 7;
+}
+
+message GrpcDetailedAssignmentStatistic {
+	double mean = 1;
+	double median = 2;
+	double min = 3;
+	double max = 4;
+	double q1 = 5;
+	double q3 = 6;
+	repeated double outliers = 7;
+}
+
+message GrpcStudentScoreHistogramResponse {
+  repeated HistogramBin bins = 1;
+  int32 totalStudents = 2;
+}
+message HistogramBin {
+  double rangeStart = 1;
+  double rangeEnd = 2;
+  int32 count = 3;
+}
+
+message GetClassroomLearningSnapshotRequest {
+	int32 classroom_id = 1;
+	google.protobuf.StringValue student_id = 2;
+	google.protobuf.Int32Value days_back = 3;
+}
+
+message GrpcStudentProgressSummary {
+	string student_id = 1;
+
+	double assessment_completion_rate = 2; 
+	int32 total_assessments = 3;
+	int32 completed_assessments = 4;
+
+	double content_completion_rate = 5;
+	int32 total_sections = 6;
+	int32 completed_sections = 7;
+}
+
+message GrpcClassroomLearningSnapshotResponse {
+	GrpcClassroomBasicInfo classroom = 1;
+	repeated GrpcStudentLearningData students = 2;
+	repeated GrpcStudentQuizData student_quizzes = 3;
+	repeated GrpcQuizAttemptData quiz_attempts = 4;
+	repeated GrpcStudentAssignmentData student_assignments = 5;
+	repeated GrpcEngagementMetricData engagement_metrics = 6;
+	repeated GrpcSectionProgressData section_progress = 7;
+	repeated GrpcTopicCatalogItem topics_catalog = 8;
+	GrpcAnalysisPeriod analysis_period = 9;
+
+	repeated GrpcStudentProgressSummary student_progress_summaries = 10;
+}
+
+message GrpcClassroomBasicInfo {
+	int32 id = 1;
+	string name = 2;
+}
+
+message GrpcStudentLearningData {
+	string student_id = 1;
+	string student_name = 2;
+	google.protobuf.StringValue joined_at = 3;
+	repeated GrpcEnrollmentData enrollments = 4;
+}
+
+message GrpcEnrollmentData {
+	string student_id = 1;
+	google.protobuf.StringValue curriculum_name = 2;
+	double progress_percentage = 3;
+	google.protobuf.StringValue enrollment_type = 4; 
+	int32 course_id = 5;
+	google.protobuf.StringValue course_name = 6;
+	int32 curriculum_id = 7;
+	google.protobuf.StringValue status = 8;
+}
+
+message GrpcStudentQuizData {
+	int32 id = 1;
+	string student_id = 2;
+	string quiz_title = 3;
+	google.protobuf.StringValue quiz_description = 4;
+	int32 attempt_count = 5;
+	double final_score = 6;
+	google.protobuf.StringValue status = 7;
+	google.protobuf.StringValue assigned_at = 8;
+	google.protobuf.StringValue completed_at = 9;
+	google.protobuf.Int32Value max_attempt_allowed = 10;
+}
+
+message GrpcQuizAttemptData {
+	int32 student_quiz_id = 1;
+	int32 attempt_number = 2;
+	double total_score = 3;
+	string status = 4;
+	double time_spent_minutes = 5;
+	google.protobuf.StringValue started_at = 6;
+	google.protobuf.StringValue completed_at = 7;
+	repeated GrpcQuestionAttemptData question_attempts = 8;
+}
+
+message GrpcQuestionAttemptData {
+	int32 question_id = 1;
+	string question_content = 2;
+	string question_type = 3;
+	bool is_correct = 4;
+	string answer_content = 5;
+	bool is_selected = 6;
+	repeated string topics = 7;
+}
+
+message GrpcStudentAssignmentData {
+	string student_id = 1;
+	double final_score = 2;
+	int32 submission_count = 3;
+	google.protobuf.StringValue submitted_at = 4;
+	google.protobuf.StringValue due_date = 5;
+	repeated GrpcAssignmentQuestionAttemptData question_attempts = 6;
+}
+
+message GrpcAssignmentQuestionAttemptData {
+	int32 question_id = 1;
+	string question_content = 2;
+	string answer_text = 3;
+	double points = 4;
+	google.protobuf.StringValue feedback = 5;
+	repeated GrpcRubricScoreData rubric_scores = 6;
+	repeated string topics = 7;
+}
+
+message GrpcRubricScoreData {
+	int32 id = 1;
+	int32 rubric_criterion_id = 2;
+	string criterion_name = 3;
+	google.protobuf.StringValue criterion_description = 4;
+	double max_points = 5;
+	double points = 6;
+}
+
+message GrpcEngagementMetricData {
+	string student_id = 1;
+	double completion_rate = 2;
+	int32 days_since_last_activity = 3;
+	int32 active_days_last_7_days = 4;
+	double avg_session_duration_minutes = 5;
+}
+
+message GrpcSectionProgressData {
+	string student_id = 1;
+	int32 section_id = 2;
+	string section_name = 3;
+	string status = 4;
+	google.protobuf.StringValue last_activity_at = 5;
+}
+
+message GrpcTopicCatalogItem {
+	int32 topic_id = 1;
+	string topic_name = 2;
+	google.protobuf.Int32Value parent_topic_id = 3;
+	repeated GrpcLessonData lessons = 4;
+	repeated GrpcSectionCatalogData sections = 5;
+}
+
+message GrpcLessonData {
+	string lesson_title = 1;
+	google.protobuf.StringValue lesson_description = 2;
+}
+
+message GrpcSectionCatalogData {
+	int32 section_id = 1;
+	string section_title = 2;
+	repeated GrpcContentItem contents = 3;
+}
+
+message GrpcContentItem {
+	string content_type = 1; // "Quiz", "Assignment", etc.
+	string content_title = 2;
+}
+
+message GrpcAnalysisPeriod {
+	string from_date = 1;
+	string to_date = 2;
+	int32 days_back = 3;
+}

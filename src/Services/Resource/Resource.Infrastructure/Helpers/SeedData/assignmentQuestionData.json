@@ -1,0 +1,130 @@
+[
+  {
+    "AssignmentId": 1,
+    "Type": "Text",
+    "Content": "Hãy nộp link chia sẻ (shared link) của project micro:bit mà bạn đã hoàn thành ở Section 4. Đảm bảo project đã được chia sẻ công khai và có thể truy cập được để giáo viên kiểm tra.",
+    "OrderIndex": 1,
+    "Points": 25
+  },
+  {
+    "AssignmentId": 1,
+    "Type": "FileUpload",
+    "Content": "Truy cập vào link sau (https://www.stemifi.com/vi/lab/microbit-ai), import mô hình AI đã được train ở Section 5. Kết nối mô hình này với micro:bit đã được nạp code trước đó và gắn micro:bit vào mô hình vật lý. Quan sát tín hiệu được gửi từ mô hình AI đến micro:bit để điều khiển hoạt động của mô hình. Ghi lại toàn bộ quá trình và nộp video minh chứng.",
+    "OrderIndex": 2,
+    "Points": 30
+  },
+  {
+    "AssignmentId": 2,
+    "Type": "Text",
+    "Content": "Hãy nộp link chia sẻ (shared link) của project micro:bit mà bạn đã hoàn thành ở Section 4. Đảm bảo project đã được chia sẻ công khai và có thể truy cập được để giáo viên kiểm tra.",
+    "OrderIndex": 1,
+    "Points": 25
+  },
+  {
+    "AssignmentId": 2,
+    "Type": "FileUpload",
+    "Content": "Truy cập vào link sau (https://www.stemifi.com/vi/lab/microbit-ai), import mô hình AI đã được train ở Section 5. Kết nối mô hình này với micro:bit đã được nạp code trước đó và gắn micro:bit vào mô hình vật lý. Quan sát tín hiệu được gửi từ mô hình AI đến micro:bit để điều khiển hoạt động của mô hình. Ghi lại toàn bộ quá trình và nộp video minh chứng.",
+    "OrderIndex": 2,
+    "Points": 30
+  },
+  {
+    "AssignmentId": 3,
+    "Type": "Text",
+    "Content": "Hãy nộp link chia sẻ (shared link) của project micro:bit mà bạn đã hoàn thành ở Section 4. Đảm bảo project đã được chia sẻ công khai và có thể truy cập được để giáo viên kiểm tra.",
+    "OrderIndex": 1,
+    "Points": 25
+  },
+  {
+    "AssignmentId": 3,
+    "Type": "FileUpload",
+    "Content": "Truy cập vào link sau (https://www.stemifi.com/vi/lab/microbit-ai), import mô hình AI đã được train ở Section 5. Kết nối mô hình này với micro:bit đã được nạp code trước đó và gắn micro:bit vào mô hình vật lý. Quan sát tín hiệu được gửi từ mô hình AI đến micro:bit để điều khiển hoạt động của mô hình. Ghi lại toàn bộ quá trình và nộp video minh chứng.",
+    "OrderIndex": 2,
+    "Points": 30
+  },
+  {
+    "AssignmentId": 4,
+    "Type": "Text",
+    "Content": "Hãy nộp link chia sẻ (shared link) của project micro:bit mà bạn đã hoàn thành ở Section 4. Đảm bảo project đã được chia sẻ công khai và có thể truy cập được để giáo viên kiểm tra.",
+    "OrderIndex": 1,
+    "Points": 25
+  },
+  {
+    "AssignmentId": 4,
+    "Type": "FileUpload",
+    "Content": "Truy cập vào link sau (https://www.stemifi.com/vi/lab/microbit-ai), import mô hình AI đã được train ở Section 5. Kết nối mô hình này với micro:bit đã được nạp code trước đó và gắn micro:bit vào mô hình vật lý. Quan sát tín hiệu được gửi từ mô hình AI đến micro:bit để điều khiển hoạt động của mô hình. Ghi lại toàn bộ quá trình và nộp video minh chứng.",
+    "OrderIndex": 2,
+    "Points": 30
+  },
+  {
+    "AssignmentId": 5,
+    "Type": "Text",
+    "Content": "Hãy nộp link chia sẻ (shared link) của project micro:bit mà bạn đã hoàn thành ở Section 4. Đảm bảo project đã được chia sẻ công khai và có thể truy cập được để giáo viên kiểm tra.",
+    "OrderIndex": 1,
+    "Points": 25
+  },
+  {
+    "AssignmentId": 5,
+    "Type": "FileUpload",
+    "Content": "Truy cập vào link sau (https://www.stemifi.com/vi/lab/microbit-ai), import mô hình AI đã được train ở Section 5. Kết nối mô hình này với micro:bit đã được nạp code trước đó và gắn micro:bit vào mô hình vật lý. Quan sát tín hiệu được gửi từ mô hình AI đến micro:bit để điều khiển hoạt động của mô hình. Ghi lại toàn bộ quá trình và nộp video minh chứng.",
+    "OrderIndex": 2,
+    "Points": 30
+  },
+  {
+    "AssignmentId": 6,
+    "Type": "Text",
+    "Content": "Hãy nộp link chia sẻ (shared link) của project micro:bit mà bạn đã hoàn thành ở Section 4. Đảm bảo project đã được chia sẻ công khai và có thể truy cập được để giáo viên kiểm tra.",
+    "OrderIndex": 1,
+    "Points": 25
+  },
+  {
+    "AssignmentId": 6,
+    "Type": "FileUpload",
+    "Content": "Truy cập vào link sau (https://www.stemifi.com/vi/lab/microbit-ai), import mô hình AI đã được train ở Section 5. Kết nối mô hình này với micro:bit đã được nạp code trước đó và gắn micro:bit vào mô hình vật lý. Quan sát tín hiệu được gửi từ mô hình AI đến micro:bit để điều khiển hoạt động của mô hình. Ghi lại toàn bộ quá trình và nộp video minh chứng.",
+    "OrderIndex": 2,
+    "Points": 30
+  },
+  {
+    "AssignmentId": 7,
+    "Type": "Text",
+    "Content": "Hãy nộp link chia sẻ (shared link) của project micro:bit mà bạn đã hoàn thành ở Section 4. Đảm bảo project đã được chia sẻ công khai và có thể truy cập được để giáo viên kiểm tra.",
+    "OrderIndex": 1,
+    "Points": 25
+  },
+  {
+    "AssignmentId": 7,
+    "Type": "FileUpload",
+    "Content": "Truy cập vào link sau (https://www.stemifi.com/vi/lab/microbit-ai), import mô hình AI đã được train ở Section 5. Kết nối mô hình này với micro:bit đã được nạp code trước đó và gắn micro:bit vào mô hình vật lý. Quan sát tín hiệu được gửi từ mô hình AI đến micro:bit để điều khiển hoạt động của mô hình. Ghi lại toàn bộ quá trình và nộp video minh chứng.",
+    "OrderIndex": 2,
+    "Points": 30
+  },
+  {
+    "AssignmentId": 8,
+    "Type": "Text",
+    "Content": "Hãy nộp link chia sẻ (shared link) của project micro:bit mà bạn đã hoàn thành ở Section 4. Đảm bảo project đã được chia sẻ công khai và có thể truy cập được để giáo viên kiểm tra.",
+    "OrderIndex": 1,
+    "Points": 25
+  },
+  {
+    "AssignmentId": 8,
+    "Type": "FileUpload",
+    "Content": "Truy cập vào link sau (https://www.stemifi.com/vi/lab/microbit-ai), import mô hình AI đã được train ở Section 5. Kết nối mô hình này với micro:bit đã được nạp code trước đó và gắn micro:bit vào mô hình vật lý. Quan sát tín hiệu được gửi từ mô hình AI đến micro:bit để điều khiển hoạt động của mô hình. Ghi lại toàn bộ quá trình và nộp video minh chứng.",
+    "OrderIndex": 2,
+    "Points": 30
+  },
+  {
+    "AssignmentId": 9,
+    "Type": "Text",
+    "Content": "Hãy nộp link chia sẻ (shared link) của project micro:bit mà bạn đã hoàn thành ở Section 4. Đảm bảo project đã được chia sẻ công khai và có thể truy cập được để giáo viên kiểm tra.",
+    "OrderIndex": 1,
+    "Points": 25
+  },
+  {
+    "AssignmentId": 9,
+    "Type": "FileUpload",
+    "Content": "Truy cập vào link sau (https://www.stemifi.com/vi/lab/microbit-ai), import mô hình AI đã được train ở Section 5. Kết nối mô hình này với micro:bit đã được nạp code trước đó và gắn micro:bit vào mô hình vật lý. Quan sát tín hiệu được gửi từ mô hình AI đến micro:bit để điều khiển hoạt động của mô hình. Ghi lại toàn bộ quá trình và nộp video minh chứng.",
+    "OrderIndex": 2,
+    "Points": 30
+  }
+]
+
+

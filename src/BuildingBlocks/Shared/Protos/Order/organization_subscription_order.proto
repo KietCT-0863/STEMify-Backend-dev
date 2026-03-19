@@ -1,0 +1,169 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Order";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Protos/Order/organization.proto";
+import "Protos/Order/contract.proto";
+import "Protos/Resource/curriculum.proto";
+
+package organization_subscription_order;
+
+service GrpcOrganizationSubscriptionOrderService {
+    rpc CreateOrganizationSubscriptionOrder (CreateOrganizationSubscriptionOrderRequest) returns (GrpcOrganizationSubscriptionOrderDetail) {
+        option (google.api.http) = {
+            post: "/api/organization-subscription-orders"
+            body: "*"
+        };
+    }
+
+    rpc UpdateOrganizationSubscriptionOrder (UpdateOrganizationSubscriptionOrderRequest) returns (GrpcOrganizationSubscriptionOrderDetail) {
+        option (google.api.http) = {
+            patch: "/api/organization-subscription-orders/{id}"
+            body: "*"
+        };
+    }
+
+    rpc DeleteOrganizationSubscriptionOrder (DeleteOrganizationSubscriptionOrderRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/organization-subscription-orders/{id}"
+        };
+    }
+
+    rpc CancelOrganizationSubscriptionOrder (CancelOrganizationSubscriptionOrderRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/api/organization-subscription-orders/{id}/cancel"
+            body: "*"
+        };
+    }
+
+    rpc GetOrganizationSubscriptionOrderById (GetOrganizationSubscriptionOrderRequest) returns (GrpcOrganizationSubscriptionOrderDetail) {
+        option (google.api.http) = {
+            get: "/api/organization-subscription-orders/{id}"
+        };
+    }
+
+    rpc GetPagedOrganizationSubscriptionOrder (GetOrganizationSubscriptionOrderParams) returns (GrpcPagedOrganizationSubscriptionOrderResponse) {
+        option (google.api.http) = {
+            get: "/api/organization-subscription-orders"
+        };
+    }
+}
+
+message CreateOrganizationSubscriptionOrderRequest {
+    int32 organizationId = 1;
+    int32 planBillingCycleId = 2;
+    google.protobuf.Int32Value contractId = 3;
+    google.protobuf.Int32Value parentSubscriptionId = 4;
+    double discountPercent = 8;    
+    string startDate = 9;
+    int32 maxStudentSeats = 11;
+    int32 maxTeacherSeats = 12;
+    repeated int32 curriculumIds = 13;
+
+    contract.CreateContractRequest contract = 14;
+}
+
+
+
+message UpdateOrganizationSubscriptionOrderRequest {
+    int32 id = 1;
+    //int32 organizationId = 2;
+    //int32 planBillingCycleId = 3;
+    //int32 contractId = 4;
+    //google.protobuf.Int32Value parentSubscriptionId = 5;
+    google.protobuf.DoubleValue discountPercent = 9;
+    google.protobuf.StringValue status = 10;
+    string startDate = 11;
+    google.protobuf.Int32Value maxStudentSeats = 13;
+    google.protobuf.Int32Value maxTeacherSeats = 14;
+    repeated int32 curriculumIds = 15;
+}
+
+message DeleteOrganizationSubscriptionOrderRequest {
+    int32 id = 1;
+}
+
+message CancelOrganizationSubscriptionOrderRequest {
+    int32 id = 1;
+}
+
+message GetOrganizationSubscriptionOrderRequest {
+    int32 id = 1;
+}
+
+message GetOrganizationSubscriptionOrderParams {
+    google.protobuf.Int32Value pageNumber = 1;
+    google.protobuf.Int32Value pageSize = 2;
+    google.protobuf.StringValue search = 3;
+    google.protobuf.StringValue orderBy = 4;
+    google.protobuf.StringValue sortDirection = 5;
+    google.protobuf.Int32Value organizationId = 6;
+    google.protobuf.Int32Value planBillingCycleId = 7;
+    google.protobuf.Int32Value contractId = 8;
+    google.protobuf.Int32Value parentSubscriptionId = 9;
+    google.protobuf.StringValue status = 10;
+}
+
+message GrpcPagedOrganizationSubscriptionOrderResponse {
+    repeated GrpcOrganizationSubscriptionOrderResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message GrpcOrganizationSubscriptionOrderResponse {
+    int32 id = 1;
+    int32 organizationId = 2;
+    int32 planBillingCycleId = 3;
+    int32 contractId = 4;
+    google.protobuf.Int32Value parentSubscriptionId = 5;
+    string planName = 6;
+    double grossAmount = 7;
+    double netAmount = 8;
+    double discountPercent = 9;
+    string status = 10;
+    google.protobuf.Timestamp startDate = 11;
+    google.protobuf.Timestamp endDate = 12;
+    int32 maxStudentSeats = 13;
+    int32 maxTeacherSeats = 14;
+    int32 curriculumCount = 15;
+    int32 currentStudentSeats = 16;
+    int32 currentTeacherSeats = 17;
+    google.protobuf.Timestamp createdDate = 18;
+    google.protobuf.Timestamp lastModifiedDate = 19;
+    string planBillingCycle = 20;
+    string code = 21;
+}
+
+message GrpcOrganizationSubscriptionOrderDetail {
+    int32 id = 1;
+    int32 organizationId = 2;
+    int32 planBillingCycleId = 3;
+    int32 contractId = 4;
+    google.protobuf.Int32Value parentSubscriptionId = 5;
+    string planName = 6;
+    double grossAmount = 7;
+    double netAmount = 8;
+    double discountPercent = 9;
+    string status = 10;
+    google.protobuf.Timestamp startDate = 11;
+    google.protobuf.Timestamp endDate = 12;
+    int32 maxStudentSeats = 13;
+    int32 maxTeacherSeats = 14;
+    int32 curriculumCount = 15;
+    int32 currentStudentSeats = 16;
+    int32 currentTeacherSeats = 17;
+    google.protobuf.Timestamp createdDate = 18;
+    google.protobuf.Timestamp lastModifiedDate = 19;
+    organization.GrpcOrganizationInformation organization = 20;
+    repeated resource.GrpcCurriculumInformation curriculums = 21;
+    contract.GrpcContractInformation contract = 22;
+    string planBillingCycle = 23;
+    repeated string licenseAssignmentUserIds = 24;
+    string code = 25;
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "Name": "Khớp nối 1 nhánh",
+    "Description": "Khớp nối một nhánh dùng để kết nối và cố định một ống xây dựng tại một điểm, phù hợp cho các cấu trúc đơn giản và điểm kết nối đơn.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765126806/connector_1_leg_nd2fnb.png"
+  },
+  {
+    "Name": "Khớp nối 2 nhánh",
+    "Description": "Khớp nối hai nhánh cho phép nối hai ống xây dựng với nhau, thường dùng để tạo các đoạn thẳng hoặc góc cơ bản trong mô hình.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765126807/connector_2_leg_wbp6mg.png"
+  },
+  {
+    "Name": "Khớp nối 3 nhánh",
+    "Description": "Khớp nối ba nhánh giúp tạo các điểm giao nhau, hỗ trợ xây dựng các cấu trúc ổn định như khung tam giác hoặc chân đỡ.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765126807/connector_3_leg_xonfhx.png"
+  },
+  {
+    "Name": "Khớp nối 5 nhánh",
+    "Description": "Khớp nối năm nhánh dùng để tạo các điểm kết nối phức tạp, thích hợp cho các cấu trúc lớn, đa hướng và mô hình kỹ thuật nâng cao.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765126806/connector_5_leg_gffu75.png"
+  },
+  {
+    "Name": "Ống hút xanh lá - 205mm",
+    "Description": "Ống hút dài 205mm phù hợp cho các cấu trúc trung bình, hỗ trợ cân bằng và liên kết giữa các phần của mô hình.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765126805/straw_green_wzsgfa.png"
+  },
+  {
+    "Name": "Ống hút xanh dương - 240mm",
+    "Description": "Ống hút dài 240mm dùng để tạo các dầm chính, khung dài và cấu trúc chịu lực trong mô hình.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765126806/straw_blue_nkyzgi.png"
+  },
+  {
+    "Name": "Ống hút hồng - 112mm",
+    "Description": "Ống hút ngắn 112mm dùng cho các chi tiết nhỏ, tạo điểm nối phụ và tăng độ linh hoạt trong thiết kế mô hình.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765126806/straw_pink_vzksup.png"
+  },
+  {
+    "Name": "Ống hút vàng - 80mm",
+    "Description": "Ống hút rất ngắn, thích hợp cho các chi tiết bổ trợ, cấu trúc gọn nhẹ và các mô hình yêu cầu độ chính xác cao.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765126806/straw_yellow_rxkx4m.png"
+  },
+  {
+    "Name": "Ống hút cam- 48mm",
+    "Description": "Ống hút ngắn nhất trong bộ, dùng để hoàn thiện chi tiết, tăng độ chắc chắn và điều chỉnh nhanh cấu trúc mô hình.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765126806/straw_orange_o9xehh.png"
+  },
+  {
+    "Name": "Micro:bit V2",
+    "Description": "Bo mạch lập trình giáo dục tích hợp cảm biến gia tốc, ánh sáng, microphone và Bluetooth. micro:bit cho phép học sinh học lập trình, điều khiển thiết bị và xây dựng các dự án STEM",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765127331/Front_md69td.png"
+  },
+  {
+    "Name": "Servo Motor",
+    "Description": "Động cơ servo dùng để tạo chuyển động quay có kiểm soát góc, phù hợp cho các mô hình cầu nâng, tay đòn, cửa tự động và hệ thống chuyển động",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765127330/SG90_2-800x800_krz3q9.webp"
+  },
+  {
+    "Name": "USB Cable",
+    "Description": "Cáp kết nối micro:bit với máy tính để lập trình, nạp chương trình và cấp nguồn trong quá trình học tập và thử nghiệm.",
+    "ImageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765127329/CAB-24508-Micro-bit-USB-Cable-330mm-Black-feature_kw3ica.webp"
+  }
+]

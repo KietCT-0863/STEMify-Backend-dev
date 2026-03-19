@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service AgeRangeService {
+    rpc CreateAgeRange (CreateAgeRangeRequest) returns (AgeRangeResponse) {
+        option (google.api.http) = {
+            post: "/api/ageranges"
+            body: "*"
+        };
+    }
+    rpc GetAgeRange (GetAgeRangeRequest) returns (AgeRangeResponse) {
+        option (google.api.http) = {
+            get: "/api/ageranges/{id}"
+        };
+    }
+    rpc UpdateAgeRange (UpdateAgeRangeRequest) returns (AgeRangeResponse) {
+        option (google.api.http) = {
+            patch: "/api/ageranges/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteAgeRange (DeleteAgeRangeRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/ageranges/{id}"
+        };
+    }
+    rpc ListAgeRanges (google.protobuf.Empty) returns (AgeRangeList);
+    rpc QueryAgeRanges (QueryAgeRangesRequest) returns (PagedAgeRangeList) {
+        option (google.api.http) = {
+            get: "/api/ageranges"
+        };
+    }
+}
+
+message AgeRange {
+    int32 id = 1;
+    string ageRangeLabel = 2;
+    int32 minAge = 3;
+    int32 maxAge = 4;
+}
+
+message CreateAgeRangeRequest {
+    string ageRangeLabel = 1;
+    int32 minAge = 2;
+    int32 maxAge = 3;
+}
+
+message UpdateAgeRangeRequest {
+    int32 id = 1;
+    string ageRangeLabel = 2;
+    int32 minAge = 3;
+    int32 maxAge = 4;
+}
+
+message GetAgeRangeRequest {
+    int32 id = 1;
+}
+
+message DeleteAgeRangeRequest {
+    int32 id = 1;
+}
+
+message AgeRangeList {
+    repeated AgeRangeResponse ageRanges = 1;
+}
+
+message PagedAgeRangeList {
+    repeated AgeRangeResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message AgeRangeResponse {
+    int32 id = 1;
+    string ageRangeLabel = 2;
+    int32 minAge = 3;
+    int32 maxAge = 4;
+    repeated int32 courseIds = 5;
+}
+
+message QueryAgeRangesRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    google.protobuf.Int32Value age = 5;
+}

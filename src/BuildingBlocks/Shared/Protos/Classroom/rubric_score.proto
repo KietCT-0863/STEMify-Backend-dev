@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/wrappers.proto";
+
+package rubricScore;
+
+message GrpcRubricScoreModel {
+    int32 rubricCriterionId = 1;
+    string criterionName = 2;
+    google.protobuf.StringValue description = 3;
+    double maxPoints = 4;
+    google.protobuf.DoubleValue currentPoints = 5;
+}
+
+message CreateRubricScoreRequest {
+    int32 rubricCriterionId = 1;
+    double points = 2;
+}

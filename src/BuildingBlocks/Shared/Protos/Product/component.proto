@@ -1,0 +1,89 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Product";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package product;
+
+service GrpcComponentService {
+    rpc CreateComponent (CreateComponentRequest) returns (ComponentResponse) {
+        option (google.api.http) = {
+            post: "/api/components"
+            body: "*"
+        };
+    }
+    rpc GetComponentById (GetComponentRequest) returns (ComponentResponse) {
+        option (google.api.http) = {
+            get: "/api/components/{id}"
+        };
+    }
+    rpc UpdateComponent (UpdateComponentRequest) returns (ComponentResponse) {
+        option (google.api.http) = {
+            patch: "/api/components/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteComponent (DeleteComponentRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/components/{id}"
+        };
+    }
+    rpc QueryComponents (QueryComponentsRequest) returns (PagedComponentList) {
+        option (google.api.http) = {
+            get: "/api/components"
+        };
+    }
+}
+
+message Component {
+    int32 id = 1;
+    int32 kitId = 2;
+    google.protobuf.StringValue name = 3;
+    google.protobuf.StringValue imageUrl = 4;
+    google.protobuf.StringValue description = 5;
+    int32 quantity = 6;
+    bool isMainComponent = 7;
+}
+
+message CreateComponentRequest {
+    string name = 1;
+    google.protobuf.StringValue description = 2;
+    google.protobuf.BytesValue image = 3;
+}
+
+message UpdateComponentRequest {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.BytesValue image = 4;
+}
+
+message GetComponentRequest {
+    int32 id = 1;
+}
+
+message DeleteComponentRequest {
+    int32 id = 1;
+}
+message PagedComponentList {
+    repeated ComponentResponse items = 1;
+    int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}
+message ComponentResponse {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue imageUrl = 3;
+    google.protobuf.StringValue description = 4;
+}
+
+message QueryComponentsRequest {
+    google.protobuf.Int32Value pageNumber = 1;
+    google.protobuf.Int32Value pageSize = 2;
+    google.protobuf.StringValue search = 3;
+}

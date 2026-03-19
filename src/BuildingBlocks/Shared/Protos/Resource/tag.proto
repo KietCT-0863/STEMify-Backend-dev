@@ -1,0 +1,35 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service TagService {
+	rpc GetTagList (TagParams) returns (PagedTagList){
+        option (google.api.http) = {
+            get: "/api/tags"
+        };
+    };
+}
+
+message TagParams {
+    google.protobuf.StringValue search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+}
+
+message TagModel {
+    int32 id = 1;
+    string name = 2;
+}
+
+message PagedTagList {
+    repeated TagModel items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}

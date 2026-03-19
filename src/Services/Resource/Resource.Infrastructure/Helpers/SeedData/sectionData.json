@@ -1,0 +1,378 @@
+[
+  {
+    "Title": "Lý thuyết trọng tâm",
+    "Description": "Cung cấp kiến thức nền tảng liên quan đến bài học: khái niệm khoa học, nguyên lý kỹ thuật, hoặc bối cảnh thực tế. Học sinh được tiếp cận giải thích trực quan và ví dụ dễ hiểu, giúp chuẩn bị cho phần thực hành.",
+    "Duration": 15,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "LessonId": 1
+  },
+  {
+    "Title": "Quiz ôn tập nhanh",
+    "Description": "Học sinh trả lời các câu hỏi trắc nghiệm ngắn để kiểm tra hiểu biết sau phần lý thuyết. Quiz giúp củng cố kiến thức, phát hiện sai sót và tạo động lực trước khi bước vào hoạt động thực hành.",
+    "Duration": 10,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "LessonId": 1
+  },
+  {
+    "Title": "Xây dựng mô hình",
+    "Description": "Học sinh xây dựng mô hình thực tế bằng vật liệu như ống hút, khớp nối hoặc các bộ dụng cụ khác. Hoạt động tập trung vào tư duy kỹ thuật: thử nghiệm cấu trúc, điều chỉnh thiết kế, và rèn luyện khả năng giải quyết vấn đề.",
+    "Duration": 20,
+    "OrderIndex": 3,
+    "Status": "Published",
+    "LessonId": 1
+  },
+  {
+    "Title": "Lập trình micro:bit",
+    "Description": "Học sinh viết mã điều khiển cảm biến hoặc mô hình đã xây dựng bằng micro:bit. Các bài lập trình giúp phát triển tư duy thuật toán, xử lý tín hiệu đầu vào – đầu ra, và quan sát kết quả trong môi trường thực tế.",
+    "Duration": 20,
+    "OrderIndex": 4,
+    "Status": "Published",
+    "LessonId": 1
+  },
+  {
+    "Title": "Xây dựng mô hình AI Classification",
+    "Description": "Học sinh sử dụng công cụ AI để thu thập dữ liệu mẫu, huấn luyện mô hình phân loại và kiểm tra độ chính xác. Hoạt động giúp hiểu cách AI nhận diện mẫu, xử lý dữ liệu và ứng dụng AI trong các tình huống thực tế.",
+    "Duration": 25,
+    "OrderIndex": 5,
+    "Status": "Published",
+    "LessonId": 1
+  },
+  {
+    "Title": "ASM – Bài đánh giá cuối bài học",
+    "Description": "Học sinh hoàn thành bài đánh giá cuối bài nhằm tổng hợp kiến thức đã học. Bao gồm mô tả sản phẩm, nộp mô hình hoặc mã lập trình, trả lời câu hỏi phân tích và tự đánh giá quá trình học tập.",
+    "Duration": 20,
+    "OrderIndex": 6,
+    "Status": "Published",
+    "LessonId": 1
+  },
+  {
+    "Title": "Giới thiệu & Mục tiêu bài học",
+    "Description": "Giới thiệu nội dung chính của bài học, mục tiêu và kỹ năng học sinh sẽ đạt được. Phần này giúp học sinh định hình vấn đề, xây dựng sự tò mò và kết nối kiến thức với thực tiễn.",
+    "Duration": 10,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "LessonId": 2
+  },
+  {
+    "Title": "Lý thuyết trọng tâm",
+    "Description": "Cung cấp kiến thức nền tảng liên quan đến bài học: khái niệm khoa học, nguyên lý kỹ thuật, hoặc bối cảnh thực tế. Học sinh được tiếp cận giải thích trực quan và ví dụ dễ hiểu, giúp chuẩn bị cho phần thực hành.",
+    "Duration": 15,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "LessonId": 2
+  },
+  {
+    "Title": "Quiz ôn tập nhanh",
+    "Description": "Học sinh trả lời các câu hỏi trắc nghiệm ngắn để kiểm tra hiểu biết sau phần lý thuyết. Quiz giúp củng cố kiến thức, phát hiện sai sót và tạo động lực trước khi bước vào hoạt động thực hành.",
+    "Duration": 10,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "LessonId": 2
+  },
+  {
+    "Title": "Xây dựng mô hình (Build Activity)",
+    "Description": "Học sinh xây dựng mô hình thực tế bằng vật liệu như ống hút, khớp nối hoặc các bộ dụng cụ khác. Hoạt động tập trung vào tư duy kỹ thuật: thử nghiệm cấu trúc, điều chỉnh thiết kế, và rèn luyện khả năng giải quyết vấn đề.",
+    "Duration": 20,
+    "OrderIndex": 3,
+    "Status": "Published",
+    "LessonId": 2
+  },
+  {
+    "Title": "Lập trình micro:bit",
+    "Description": "Học sinh viết mã điều khiển cảm biến hoặc mô hình đã xây dựng bằng micro:bit. Các bài lập trình giúp phát triển tư duy thuật toán, xử lý tín hiệu đầu vào – đầu ra, và quan sát kết quả trong môi trường thực tế.",
+    "Duration": 20,
+    "OrderIndex": 4,
+    "Status": "Published",
+    "LessonId": 2
+  },
+  {
+    "Title": "Xây dựng mô hình AI Classification",
+    "Description": "Học sinh sử dụng công cụ AI để thu thập dữ liệu mẫu, huấn luyện mô hình phân loại và kiểm tra độ chính xác. Hoạt động giúp hiểu cách AI nhận diện mẫu, xử lý dữ liệu và ứng dụng AI trong các tình huống thực tế.",
+    "Duration": 25,
+    "OrderIndex": 5,
+    "Status": "Published",
+    "LessonId": 2
+  },
+  {
+    "Title": "ASM – Bài đánh giá cuối bài học",
+    "Description": "Học sinh hoàn thành bài đánh giá cuối bài nhằm tổng hợp kiến thức đã học. Bao gồm mô tả sản phẩm, nộp mô hình hoặc mã lập trình, trả lời câu hỏi phân tích và tự đánh giá quá trình học tập.",
+    "Duration": 20,
+    "OrderIndex": 6,
+    "Status": "Published",
+    "LessonId": 2
+  },
+  {
+    "Title": "Giới thiệu & Mục tiêu bài học",
+    "Description": "Giới thiệu nội dung chính của bài học, mục tiêu và kỹ năng học sinh sẽ đạt được. Phần này giúp học sinh định hình vấn đề, xây dựng sự tò mò và kết nối kiến thức với thực tiễn.",
+    "Duration": 10,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "LessonId": 3
+  },
+  {
+    "Title": "Lý thuyết trọng tâm",
+    "Description": "Cung cấp kiến thức nền tảng liên quan đến bài học: khái niệm khoa học, nguyên lý kỹ thuật, hoặc bối cảnh thực tế. Học sinh được tiếp cận giải thích trực quan và ví dụ dễ hiểu, giúp chuẩn bị cho phần thực hành.",
+    "Duration": 15,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "LessonId": 3
+  },
+  {
+    "Title": "Quiz ôn tập nhanh",
+    "Description": "Học sinh trả lời các câu hỏi trắc nghiệm ngắn để kiểm tra hiểu biết sau phần lý thuyết. Quiz giúp củng cố kiến thức, phát hiện sai sót và tạo động lực trước khi bước vào hoạt động thực hành.",
+    "Duration": 10,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "LessonId": 3
+  },
+  {
+    "Title": "Xây dựng mô hình (Build Activity)",
+    "Description": "Học sinh xây dựng mô hình thực tế bằng vật liệu như ống hút, khớp nối hoặc các bộ dụng cụ khác. Hoạt động tập trung vào tư duy kỹ thuật: thử nghiệm cấu trúc, điều chỉnh thiết kế, và rèn luyện khả năng giải quyết vấn đề.",
+    "Duration": 20,
+    "OrderIndex": 3,
+    "Status": "Published",
+    "LessonId": 3
+  },
+  {
+    "Title": "Lập trình micro:bit",
+    "Description": "Học sinh viết mã điều khiển cảm biến hoặc mô hình đã xây dựng bằng micro:bit. Các bài lập trình giúp phát triển tư duy thuật toán, xử lý tín hiệu đầu vào – đầu ra, và quan sát kết quả trong môi trường thực tế.",
+    "Duration": 20,
+    "OrderIndex": 4,
+    "Status": "Published",
+    "LessonId": 3
+  },
+  {
+    "Title": "Xây dựng mô hình AI Classification",
+    "Description": "Học sinh sử dụng công cụ AI để thu thập dữ liệu mẫu, huấn luyện mô hình phân loại và kiểm tra độ chính xác. Hoạt động giúp hiểu cách AI nhận diện mẫu, xử lý dữ liệu và ứng dụng AI trong các tình huống thực tế.",
+    "Duration": 25,
+    "OrderIndex": 5,
+    "Status": "Published",
+    "LessonId": 3
+  },
+  {
+    "Title": "ASM – Bài đánh giá cuối bài học",
+    "Description": "Học sinh hoàn thành bài đánh giá cuối bài nhằm tổng hợp kiến thức đã học. Bao gồm mô tả sản phẩm, nộp mô hình hoặc mã lập trình, trả lời câu hỏi phân tích và tự đánh giá quá trình học tập.",
+    "Duration": 20,
+    "OrderIndex": 6,
+    "Status": "Published",
+    "LessonId": 3
+  },
+  {
+    "Title": "Giới thiệu & Mục tiêu bài học",
+    "Description": "Giới thiệu nội dung chính của bài học, mục tiêu và kỹ năng học sinh sẽ đạt được. Phần này giúp học sinh định hình vấn đề, xây dựng sự tò mò và kết nối kiến thức với thực tiễn.",
+    "Duration": 10,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "LessonId": 4
+  },
+  {
+    "Title": "Lý thuyết trọng tâm",
+    "Description": "Cung cấp kiến thức nền tảng liên quan đến bài học: khái niệm khoa học, nguyên lý kỹ thuật, hoặc bối cảnh thực tế. Học sinh được tiếp cận giải thích trực quan và ví dụ dễ hiểu, giúp chuẩn bị cho phần thực hành.",
+    "Duration": 15,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "LessonId": 4
+  },
+  {
+    "Title": "Giới thiệu & Mục tiêu bài học",
+    "Description": "Giới thiệu nội dung chính của bài học, mục tiêu và kỹ năng học sinh sẽ đạt được. Phần này giúp học sinh định hình vấn đề, xây dựng sự tò mò và kết nối kiến thức với thực tiễn.",
+    "Duration": 10,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "LessonId": 5
+  },
+  {
+    "Title": "Lý thuyết trọng tâm",
+    "Description": "Cung cấp kiến thức nền tảng liên quan đến bài học: khái niệm khoa học, nguyên lý kỹ thuật, hoặc bối cảnh thực tế. Học sinh được tiếp cận giải thích trực quan và ví dụ dễ hiểu, giúp chuẩn bị cho phần thực hành.",
+    "Duration": 15,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "LessonId": 5
+  },
+  {
+    "Title": "Giới thiệu & Mục tiêu bài học",
+    "Description": "Giới thiệu nội dung chính của bài học, mục tiêu và kỹ năng học sinh sẽ đạt được. Phần này giúp học sinh định hình vấn đề, xây dựng sự tò mò và kết nối kiến thức với thực tiễn.",
+    "Duration": 10,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "LessonId": 6
+  },
+  {
+    "Title": "Lý thuyết trọng tâm",
+    "Description": "Cung cấp kiến thức nền tảng liên quan đến bài học: khái niệm khoa học, nguyên lý kỹ thuật, hoặc bối cảnh thực tế. Học sinh được tiếp cận giải thích trực quan và ví dụ dễ hiểu, giúp chuẩn bị cho phần thực hành.",
+    "Duration": 15,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "LessonId": 6
+  },
+  {
+    "Title": "Giới thiệu & Mục tiêu bài học",
+    "Description": "Giới thiệu nội dung chính của bài học, mục tiêu và kỹ năng học sinh sẽ đạt được. Phần này giúp học sinh định hình vấn đề, xây dựng sự tò mò và kết nối kiến thức với thực tiễn.",
+    "Duration": 10,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "LessonId": 13
+  },
+  {
+    "Title": "Lý thuyết trọng tâm",
+    "Description": "Cung cấp kiến thức nền tảng liên quan đến bài học: khái niệm khoa học, nguyên lý kỹ thuật, hoặc bối cảnh thực tế. Học sinh được tiếp cận giải thích trực quan và ví dụ dễ hiểu, giúp chuẩn bị cho phần thực hành.",
+    "Duration": 15,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "LessonId": 13
+  },
+  {
+    "Title": "Quiz ôn tập nhanh",
+    "Description": "Học sinh trả lời các câu hỏi trắc nghiệm ngắn để kiểm tra hiểu biết sau phần lý thuyết. Quiz giúp củng cố kiến thức, phát hiện sai sót và tạo động lực trước khi bước vào hoạt động thực hành.",
+    "Duration": 10,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "LessonId": 13
+  },
+  {
+    "Title": "Xây dựng mô hình (Build Activity)",
+    "Description": "Học sinh xây dựng mô hình thực tế bằng vật liệu như ống hút, khớp nối hoặc các bộ dụng cụ khác. Hoạt động tập trung vào tư duy kỹ thuật: thử nghiệm cấu trúc, điều chỉnh thiết kế, và rèn luyện khả năng giải quyết vấn đề.",
+    "Duration": 20,
+    "OrderIndex": 3,
+    "Status": "Published",
+    "LessonId": 13
+  },
+  {
+    "Title": "Lập trình micro:bit",
+    "Description": "Học sinh viết mã điều khiển cảm biến hoặc mô hình đã xây dựng bằng micro:bit. Các bài lập trình giúp phát triển tư duy thuật toán, xử lý tín hiệu đầu vào – đầu ra, và quan sát kết quả trong môi trường thực tế.",
+    "Duration": 20,
+    "OrderIndex": 4,
+    "Status": "Published",
+    "LessonId": 13
+  },
+  {
+    "Title": "Xây dựng mô hình AI Classification",
+    "Description": "Học sinh sử dụng công cụ AI để thu thập dữ liệu mẫu, huấn luyện mô hình phân loại và kiểm tra độ chính xác. Hoạt động giúp hiểu cách AI nhận diện mẫu, xử lý dữ liệu và ứng dụng AI trong các tình huống thực tế.",
+    "Duration": 25,
+    "OrderIndex": 5,
+    "Status": "Published",
+    "LessonId": 13
+  },
+  {
+    "Title": "ASM – Bài đánh giá cuối bài học",
+    "Description": "Học sinh hoàn thành bài đánh giá cuối bài nhằm tổng hợp kiến thức đã học. Bao gồm mô tả sản phẩm, nộp mô hình hoặc mã lập trình, trả lời câu hỏi phân tích và tự đánh giá quá trình học tập.",
+    "Duration": 20,
+    "OrderIndex": 6,
+    "Status": "Published",
+    "LessonId": 13
+  },
+  {
+    "Title": "Giới thiệu & Mục tiêu bài học",
+    "Description": "Giới thiệu nội dung chính của bài học, mục tiêu và kỹ năng học sinh sẽ đạt được. Phần này giúp học sinh định hình vấn đề, xây dựng sự tò mò và kết nối kiến thức với thực tiễn.",
+    "Duration": 10,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "LessonId": 14
+  },
+  {
+    "Title": "Lý thuyết trọng tâm",
+    "Description": "Cung cấp kiến thức nền tảng liên quan đến bài học: khái niệm khoa học, nguyên lý kỹ thuật, hoặc bối cảnh thực tế. Học sinh được tiếp cận giải thích trực quan và ví dụ dễ hiểu, giúp chuẩn bị cho phần thực hành.",
+    "Duration": 15,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "LessonId": 14
+  },
+  {
+    "Title": "Quiz ôn tập nhanh",
+    "Description": "Học sinh trả lời các câu hỏi trắc nghiệm ngắn để kiểm tra hiểu biết sau phần lý thuyết. Quiz giúp củng cố kiến thức, phát hiện sai sót và tạo động lực trước khi bước vào hoạt động thực hành.",
+    "Duration": 10,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "LessonId": 14
+  },
+  {
+    "Title": "Xây dựng mô hình (Build Activity)",
+    "Description": "Học sinh xây dựng mô hình thực tế bằng vật liệu như ống hút, khớp nối hoặc các bộ dụng cụ khác. Hoạt động tập trung vào tư duy kỹ thuật: thử nghiệm cấu trúc, điều chỉnh thiết kế, và rèn luyện khả năng giải quyết vấn đề.",
+    "Duration": 20,
+    "OrderIndex": 3,
+    "Status": "Published",
+    "LessonId": 14
+  },
+  {
+    "Title": "Lập trình micro:bit",
+    "Description": "Học sinh viết mã điều khiển cảm biến hoặc mô hình đã xây dựng bằng micro:bit. Các bài lập trình giúp phát triển tư duy thuật toán, xử lý tín hiệu đầu vào – đầu ra, và quan sát kết quả trong môi trường thực tế.",
+    "Duration": 20,
+    "OrderIndex": 4,
+    "Status": "Published",
+    "LessonId": 14
+  },
+  {
+    "Title": "Xây dựng mô hình AI Classification",
+    "Description": "Học sinh sử dụng công cụ AI để thu thập dữ liệu mẫu, huấn luyện mô hình phân loại và kiểm tra độ chính xác. Hoạt động giúp hiểu cách AI nhận diện mẫu, xử lý dữ liệu và ứng dụng AI trong các tình huống thực tế.",
+    "Duration": 25,
+    "OrderIndex": 5,
+    "Status": "Published",
+    "LessonId": 14
+  },
+  {
+    "Title": "ASM – Bài đánh giá cuối bài học",
+    "Description": "Học sinh hoàn thành bài đánh giá cuối bài nhằm tổng hợp kiến thức đã học. Bao gồm mô tả sản phẩm, nộp mô hình hoặc mã lập trình, trả lời câu hỏi phân tích và tự đánh giá quá trình học tập.",
+    "Duration": 20,
+    "OrderIndex": 6,
+    "Status": "Published",
+    "LessonId": 14
+  },
+  {
+    "Title": "Quiz ôn tập nhanh",
+    "Description": "Học sinh trả lời các câu hỏi trắc nghiệm ngắn để kiểm tra hiểu biết sau phần lý thuyết. Quiz giúp củng cố kiến thức, phát hiện sai sót và tạo động lực trước khi bước vào hoạt động thực hành.",
+    "Duration": 10,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "LessonId": 4
+  },
+  {
+    "Title": "Quiz ôn tập nhanh",
+    "Description": "Học sinh trả lời các câu hỏi trắc nghiệm ngắn để kiểm tra hiểu biết sau phần lý thuyết. Quiz giúp củng cố kiến thức, phát hiện sai sót và tạo động lực trước khi bước vào hoạt động thực hành.",
+    "Duration": 10,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "LessonId": 5
+  },
+  {
+    "Title": "Quiz ôn tập nhanh",
+    "Description": "Học sinh trả lời các câu hỏi trắc nghiệm ngắn để kiểm tra hiểu biết sau phần lý thuyết. Quiz giúp củng cố kiến thức, phát hiện sai sót và tạo động lực trước khi bước vào hoạt động thực hành.",
+    "Duration": 10,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "LessonId": 6
+  },
+  {
+    "Title": "ASM – Bài đánh giá cuối bài học",
+    "Description": "Học sinh hoàn thành bài đánh giá cuối bài nhằm tổng hợp kiến thức đã học. Bao gồm mô tả sản phẩm, nộp mô hình hoặc mã lập trình, trả lời câu hỏi phân tích và tự đánh giá quá trình học tập.",
+    "Duration": 20,
+    "OrderIndex": 6,
+    "Status": "Published",
+    "LessonId": 3
+  },
+  {
+    "Title": "ASM – Bài đánh giá cuối bài học",
+    "Description": "Học sinh hoàn thành bài đánh giá cuối bài nhằm tổng hợp kiến thức đã học. Bao gồm mô tả sản phẩm, nộp mô hình hoặc mã lập trình, trả lời câu hỏi phân tích và tự đánh giá quá trình học tập.",
+    "Duration": 20,
+    "OrderIndex": 6,
+    "Status": "Published",
+    "LessonId": 4
+  },
+  {
+    "Title": "ASM – Bài đánh giá cuối bài học",
+    "Description": "Học sinh hoàn thành bài đánh giá cuối bài nhằm tổng hợp kiến thức đã học. Bao gồm mô tả sản phẩm, nộp mô hình hoặc mã lập trình, trả lời câu hỏi phân tích và tự đánh giá quá trình học tập.",
+    "Duration": 20,
+    "OrderIndex": 6,
+    "Status": "Published",
+    "LessonId": 5
+  },
+  {
+    "Title": "ASM – Bài đánh giá cuối bài học",
+    "Description": "Học sinh hoàn thành bài đánh giá cuối bài nhằm tổng hợp kiến thức đã học. Bao gồm mô tả sản phẩm, nộp mô hình hoặc mã lập trình, trả lời câu hỏi phân tích và tự đánh giá quá trình học tập.",
+    "Duration": 20,
+    "OrderIndex": 6,
+    "Status": "Published",
+    "LessonId": 6
+  }
+]

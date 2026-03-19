@@ -1,0 +1,42 @@
+[
+  {
+    "LessonId": 1,
+    "StandardId": 1
+  },
+  {
+    "LessonId": 1,
+    "StandardId": 2
+  },
+  {
+    "LessonId": 2,
+    "StandardId": 2
+  },
+  {
+    "LessonId": 2,
+    "StandardId": 5
+  },
+  {
+    "LessonId": 3,
+    "StandardId": 3
+  },
+  {
+    "LessonId": 4,
+    "StandardId": 1
+  },
+  {
+    "LessonId": 5,
+    "StandardId": 4
+  },
+  {
+    "LessonId": 6,
+    "StandardId": 6
+  },
+  {
+    "LessonId": 13,
+    "StandardId": 7
+  },
+  {
+    "LessonId": 14,
+    "StandardId": 8
+  }
+]

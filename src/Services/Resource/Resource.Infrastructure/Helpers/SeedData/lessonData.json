@@ -1,0 +1,250 @@
+[
+  {
+    "Title": "Xây dựng Cầu Nâng",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_act_construct-a-drawbridge-with-microbit_cover.jpg&w=1920&q=75",
+    "Description": "Cầu nâng đảm nhiệm việc cho tàu thuyền đi qua các kênh sông một cách an toàn bằng cách tạm thời dừng dòng xe trên đường. Với micro:bit V2 (phiên bản 2), micro sẽ lắng nghe các tiếng động — chẳng hạn như tiếng vỗ tay. Khi phát hiện âm thanh thành công, động cơ servo sẽ kéo cơ cấu liên kết để nâng cầu lên, tạo lối đi cho tàu thuyền. Bo mạch Robotics cũng đóng vai trò như một đối trọng, giúp cầu ổn định và hạ xuống một cách an toàn sau đó.",
+    "LearningOutcome": "Hiểu cơ chế hoạt động của cầu nâng.\nLập trình micro:bit V2 để kích hoạt servo khi phát hiện tín hiệu.\nLắp ráp và vận hành mô hình cầu nâng ổn định.",
+    "Duration": 60,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 1
+  },
+  {
+    "Title": "Giới Thiệu: Thủy Điện",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-hydroelectricity-energy_cover.jpg&w=1920&q=75",
+    "Description": "Khám phá các dạng năng lượng liên quan đến thủy điện, một nguồn năng lượng tái tạo chủ đạo. Xây dựng một tua-bin nước quay với trục thẳng đứng để mô phỏng cơ chế hoạt động khi dòng nước xoáy qua.",
+    "LearningOutcome": "Học sinh nhận diện các loại năng lượng tái tạo và giải thích cách tua-bin thủy điện hoạt động thông qua việc chế tạo mô hình tua-bin nước.",
+    "Duration": 50,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 1
+  },
+  {
+    "Title": "Phát Minh Từ Năng Lượng Nước",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_hydropower-inventions_cover.jpg&w=1920&q=75",
+    "Description": "Tìm hiểu nguyên nhân tạo ra gió trong phần giới thiệu về năng lượng gió. Khám phá các cách mô tả và đo tốc độ gió, và xây dựng mô hình tua-bin gió.",
+    "LearningOutcome": "Học sinh nhận biết các ứng dụng lịch sử của thủy lực và thiết kế một cối xay chạy bằng nước, áp dụng khái niệm lợi thế cơ học và tái sử dụng nước.",
+    "Duration": 50,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 1
+  },
+  {
+    "Title": "Giới Thiệu: Năng Lượng Gió",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-wind-energy_cover.jpg&w=1920&q=75",
+    "Description": "Khám phá các dạng năng lượng tạo nên thủy điện, một nguồn năng lượng tái tạo quan trọng. Xây dựng mô hình tua-bin nước quay với trục thẳng đứng để mô phỏng cơ chế vận hành khi dòng nước xoáy qua.",
+    "LearningOutcome": "Học sinh khám phá gió như một nguồn năng lượng tái tạo và xây dựng mô hình minh họa cơ chế tua-bin khai thác sức gió.",
+    "Duration": 50,
+    "OrderIndex": 3,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 1
+  },
+  {
+    "Title": "Khai Thác Năng Lượng Gió",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_harnessing-wind-energy_cover.jpg&w=1920&q=75",
+    "Description": "Khuyến khích học sinh tìm hiểu về phát triển bền vững trong lĩnh vực năng lượng gió, khám phá nơi gió mạnh thổi trên Trái Đất và lịch sử – tương lai của năng lượng gió. Học sinh cũng sẽ tạo mô hình tua-bin gió và mở rộng kiến thức qua các hoạt động bổ trợ.",
+    "LearningOutcome": "Học sinh phân tích mô hình gió toàn cầu và khám phá vai trò của năng lượng gió trong phát triển bền vững. Học sinh mô phỏng tua-bin và đánh giá hiệu suất năng lượng.",
+    "Duration": 50,
+    "OrderIndex": 4,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 1
+  },
+  {
+    "Title": "Tự Động Hóa Cẩu Trục (micro:bit)",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_crane-automation_cover.jpg&w=1920&q=75",
+    "Description": "Khám phá lý do cần tự động hóa và cách nó cải thiện chất lượng cuộc sống thông qua các Mục tiêu Phát triển Bền vững về hạ tầng, công nghiệp, đổi mới và sức khỏe. Trong các mô hình robot và tự động hóa, chuyển động của động cơ không phải lúc nào cũng hoàn hảo ngay từ lần đầu. Học sinh khám phá cách thay đổi động cơ, mã điều khiển và cấu trúc cơ khí để đạt được chuyển động mong muốn của cẩu trục.",
+    "LearningOutcome": "Học sinh hiểu tác động của tự động hóa đối với xã hội và áp dụng lập trình micro:bit để điều khiển cẩu trục cơ khí với độ chính xác cao.",
+    "Duration": 50,
+    "OrderIndex": 5,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 1
+  },
+
+  /* ---------- COURSE 2 ---------- */
+
+  {
+    "Title": "Giới Thiệu: Hệ Sinh Thái Nước Ngọt",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-freshwater-biome_cover.jpg&w=1920&q=75",
+    "Description": "Từ những con suối nhỏ chảy nhẹ nhàng đến các hồ lớn, hệ sinh thái nước ngọt bao gồm tất cả các vùng nước có nồng độ muối thấp. Học sinh tạo mô hình cá bơi trong các môi trường sống này.",
+    "LearningOutcome": "Học sinh xác định đặc điểm của hệ sinh thái nước ngọt và mô phỏng hành vi của các loài sinh vật thông qua việc tạo mô hình.",
+    "Duration": 60,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 2
+  },
+  {
+    "Title": "Giới Thiệu: Hệ Sinh Thái Biển",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-marine-aquatic-biome_cover.jpg&w=1920&q=75",
+    "Description": "Làm quen với hệ sinh thái lớn nhất trên Trái Đất – hệ sinh thái biển. Khám phá đặc điểm của đại dương và các sinh vật sống trong đó. Học sinh tìm hiểu những thách thức môi trường và tạo mô hình sinh vật biển – con hàu.",
+    "LearningOutcome": "Học sinh khám phá môi trường biển và các thách thức môi trường bằng cách xây dựng mô hình sinh vật (hàu) sống trong đại dương.",
+    "Duration": 90,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 2
+  },
+
+  {
+    "Title": "Giới Thiệu: Hệ Sinh Thái Sa Mạc",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-desert-biome_cover.jpg&w=1920&q=75",
+    "Description": "Khởi đầu hành trình khám phá hệ sinh thái sa mạc và tìm hiểu những điều kiện khắc nghiệt khiến nơi đây trở nên khó sống đối với hầu hết thực vật và động vật. Học sinh tạo mô hình rắn sidewinder – loài bò sát đã tiến hóa để sinh tồn trong môi trường này.",
+    "LearningOutcome": "Học sinh hiểu tác động của tự động hóa đối với xã hội và áp dụng mã micro:bit để điều khiển cấu trúc cơ khí một cách chính xác.",
+    "Duration": 75,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 2
+  },
+  {
+    "Title": "Giới Thiệu: Hệ Sinh Thái Rừng Mưa Nhiệt Đới",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-tropical-rainforest-biome_cover.jpg&w=1920&q=75",
+    "Description": "Hệ sinh thái rừng mưa nhiệt đới có thảm thực vật phong phú và đa dạng sinh học, thường được tìm thấy gần đường xích đạo. Lượng mưa lớn quanh năm tạo nên môi trường ẩm ướt, thúc đẩy sự phát triển của rất nhiều loài thực vật và động vật.",
+    "LearningOutcome": "Học sinh hiểu tác động của tự động hóa đối với xã hội và ứng dụng micro:bit để điều khiển mô hình cơ khí.",
+    "Duration": 65,
+    "OrderIndex": 3,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 2
+  },
+  {
+    "Title": "Giới Thiệu: Hệ Sinh Thái Savanna",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-savanna-biome_cover.jpg&w=1920&q=75",
+    "Description": "Savanna là loại hệ sinh thái đồng cỏ được tìm thấy ở 6 châu lục, nổi bật với các đồng cỏ cao và cây mọc thưa, cùng lượng mưa thấp. Đây là nơi sinh sống của nhiều loài động vật như ngựa vằn, hươu cao cổ và hà mã.",
+    "LearningOutcome": "Học sinh nghiên cứu sự thích nghi của sinh vật sống ở sa mạc và tái hiện cơ chế sinh tồn bằng mô hình, ví dụ như chuyển động của rắn sidewinder.",
+    "Duration": 55,
+    "OrderIndex": 4,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 2
+  },
+
+  {
+    "Title": "Giới Thiệu: Rừng Ôn Đới",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-temperate-rainforest-biome_cover.jpg&w=1920&q=75",
+    "Description": "Hệ sinh thái rừng ôn đới có khí hậu vừa phải với bốn mùa rõ rệt. Đây là nơi tồn tại hỗn hợp cây lá kim và cây rụng lá, tạo môi trường sống cho nhiều loài động vật như cáo. Sự thay đổi theo mùa ảnh hưởng đến hành vi và sự thích nghi của các loài trong hệ sinh thái.",
+    "LearningOutcome": "Học sinh khám phá đa dạng sinh học và điều kiện môi trường trong rừng mưa nhiệt đới và mô tả cách khí hậu ảnh hưởng đến hệ sinh vật.",
+    "Duration": 45,
+    "OrderIndex": 5,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 2
+  },
+
+  /* ---------- COURSE 3 ---------- */
+
+  {
+    "Title": "Giới Thiệu: Thủy Điện",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-hydroelectricity-energy_cover.jpg&w=1920&q=75",
+    "Description": "Khám phá các dạng năng lượng liên quan đến thủy điện. Xây dựng mô hình tua-bin nước quay với trục thẳng đứng để mô phỏng chuyển động khi nước xoáy qua.",
+    "LearningOutcome": "Học sinh hiểu tác động của tự động hóa đối với xã hội và lập trình micro:bit để điều khiển cơ khí chính xác.",
+    "Duration": 60,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 3
+  },
+  {
+    "Title": "Phát Minh Năng Lượng Nước",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_hydropower-inventions_cover.jpg&w=1920&q=75",
+    "Description": "Tìm hiểu các phát minh cơ học dùng nước chảy để giảm lao động và tạo ra thủy lực tái tạo cho cộng đồng. Học sinh tạo mô hình cối xay, đổ nước lên bánh xe tại vị trí có thể thu gom nước để tái sử dụng, mô phỏng phát minh lịch sử dùng để xay lúa và ngũ cốc.",
+    "LearningOutcome": "Học sinh mô tả đặc điểm vật lý và sinh học của savanna và nhận diện các loài động vật thích nghi với khí hậu khô hạn.",
+    "Duration": 50,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 3
+  },
+
+  /* ---------- COURSE 4 ---------- */
+
+  {
+    "Title": "Giới Thiệu: Hình Bát Diện (Platonic Solid)",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-octahedron-platonic-solid_cover.jpg&w=1920&q=75",
+    "Description": "Khám phá hình bát diện – một trong năm khối đa diện Platonic đã thu hút các nhà toán học, kiến trúc sư và triết gia suốt hàng nghìn năm. Học sinh mô hình hóa và xây dựng hình 3D đối xứng gồm 8 mặt tam giác, đồng thời tìm hiểu các ví dụ thực tế của dạng hình học này.",
+    "LearningOutcome": "Học sinh học cách mùa ảnh hưởng đến sự sống trong rừng ôn đới và hiểu mối quan hệ cộng sinh giữa các loài.",
+    "Duration": 50,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 4
+  },
+  {
+    "Title": "Giới Thiệu: Hình Lập Phương (Hexahedron)",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-hexahedron-platonic-solid_cover.jpg&w=1920&q=75",
+    "Description": "Tìm hiểu về hình lập phương – một trong năm khối đa diện Platonic. Đây là hình 3D gồm 6 mặt vuông. Học sinh học cách xây dựng hình cơ bản này như một khối nền tảng cho nhiều dự án và khám phá các ứng dụng thực tế.",
+    "LearningOutcome": "Học sinh tìm hiểu cách các mùa ảnh hưởng đến đời sống sinh vật và hiểu quan hệ cộng sinh trong rừng ôn đới.",
+    "Duration": 50,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 4
+  },
+  {
+    "Title": "Giới Thiệu: Hình Hai Mươi Mặt (Icosahedron)",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-icosahedron-platonic-solid_cover.jpg&w=1920&q=75",
+    "Description": "Mô hình hóa hình icosahedron – khối đa diện Platonic gồm 20 mặt tam giác. Học sinh xây dựng hình 3D đối xứng này và tìm hiểu cách nó xuất hiện trong tự nhiên cũng như các ứng dụng thực tế.",
+    "LearningOutcome": "Học sinh tìm hiểu tác động của mùa đến hệ sinh vật trong rừng ôn đới và quan hệ cộng sinh của các loài.",
+    "Duration": 50,
+    "OrderIndex": 2,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 4
+  },
+
+  /* ---------- COURSE 5 ---------- */
+
+  {
+    "Title": "Giới Thiệu: Hệ Sinh Thái Sa Mạc",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-desert-biome_cover.jpg&w=1920&q=75",
+    "Description": "Khám phá hệ sinh thái sa mạc và điều kiện khắc nghiệt khiến nơi đây trở thành môi trường khó sống. Học sinh tạo mô hình rắn sidewinder – loài bò sát tiến hóa để sinh tồn trong môi trường cực đoan.",
+    "LearningOutcome": "Học sinh hiểu các nguyên tắc phát triển đô thị bền vững, bao gồm hạ tầng, năng lượng và nhà ở. Học sinh thể hiện tư duy thiết kế qua việc phác họa và mô phỏng thành phố dùng năng lượng mặt trời.",
+    "Duration": 50,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 5
+  },
+  {
+    "Title": "Sinh Lý Thực Vật (micro:bit)",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_plant-physiology_cover.jpg&w=1920&q=75",
+    "Description": "Tìm hiểu vai trò thiết yếu của thực vật đối với sự sống trên Trái Đất. Bài học bao gồm các bộ phận, quá trình và vòng đời của thực vật. Học sinh tạo mô hình hoa có khả năng cảm nhận ánh sáng và phản ứng bằng cách mở – đóng khi có ánh sáng.",
+    "LearningOutcome": "Học sinh nhận diện các loại năng lượng tái tạo và giải thích cách tua-bin thủy điện hoạt động bằng cách xây dựng mô hình tua-bin nước.",
+    "Duration": 50,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 5
+  },
+
+  /* ---------- COURSE 6 ---------- */
+
+  {
+    "Title": "Giới Thiệu: Ba Định Luật Newton",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-newtons-3-laws-of-motion_cover.jpg&w=1920&q=75",
+    "Description": "Khám phá cách sử dụng Strawbees để mô phỏng và kiểm chứng ba định luật Newton. Học sinh xây dựng một đường dốc nhỏ để quan sát chuyển động của quả bóng qua ba thí nghiệm. Hợp tác cùng bạn học để xác định và mô tả cách chuyển động này thể hiện các định luật Newton.",
+    "LearningOutcome": "Học sinh nhận biết lịch sử ứng dụng thủy lực và thiết kế cối xay dùng nước, áp dụng khái niệm lợi thế cơ học và tái sử dụng nước.",
+    "Duration": 50,
+    "OrderIndex": 0,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 6
+  },
+  {
+    "Title": "Giới Thiệu: Mặt Phẳng Nghiêng",
+    "ImageUrl": "https://classroom.strawbees.com/_next/image?url=%2Fmedia%2Fres_les_intro-inclined-planes_cover.jpg&w=1920&q=75",
+    "Description": "Xây dựng các đường dốc với độ nghiêng khác nhau để khám phá khoa học về mặt phẳng nghiêng. Học sinh thay đổi chiều cao bằng cách sử dụng ống hút kích thước khác nhau, sau đó kiểm tra nhiều đường dốc bằng cách cho bóng lăn xuống để hiểu thêm về máy đơn giản này.",
+    "LearningOutcome": "Học sinh hiểu cách mùa ảnh hưởng đến đời sống trong rừng ôn đới và quan hệ cộng sinh giữa các loài.",
+    "Duration": 50,
+    "OrderIndex": 1,
+    "Status": "Published",
+    "CreatedByUserId": "0874973b-6fe5-427f-83e1-703780aa0bd5",
+    "CourseId": 6
+  }
+]

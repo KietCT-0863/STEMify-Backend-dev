@@ -1,0 +1,153 @@
+@using Identity.Web.Controllers
+@model ConsentViewModel
+@{
+    ViewData["Title"] = "Authorization Required";
+}
+
+<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100">
+        <div class="col-md-8 col-lg-6 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Authorization Required
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-key fa-3x text-warning mb-3"></i>
+                        <h5>@Model.ApplicationName</h5>
+                        <p class="text-muted">wants to access your STEMify account</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="text-dark mb-3">
+                            <i class="fas fa-list-check me-2"></i>
+                            This application is requesting access to:
+                        </h6>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var scope in Model.RequestedScopes)
+                            {
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-check-circle text-success me-3"></i>
+                                    <div>
+                                        <strong>@GetScopeDisplayName(scope)</strong>
+                                        <br><small class="text-muted">@GetScopeDescription(scope)</small>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        By clicking "Allow", you agree to share the requested information with this application.
+                    </div>
+
+                    <form asp-action="Consent" method="post">
+                        <input asp-for="ApplicationName" type="hidden" />
+                        <input asp-for="Scope" type="hidden" />
+                        <input asp-for="ReturnUrl" type="hidden" />
+
+                        @* Pass through all original query parameters *@
+                        @foreach (var param in Context.Request.Query)
+                        {
+                            <input type="hidden" name="@param.Key" value="@param.Value" />
+                        }
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" name="Accept" value="false"
+                                class="btn btn-outline-danger btn-lg me-md-2">
+                                <i class="fas fa-times me-2"></i>
+                                Deny
+                            </button>
+                            <button type="submit" name="Accept" value="true" class="btn btn-success btn-lg">
+                                <i class="fas fa-check me-2"></i>
+                                Allow
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetScopeDisplayName(string scope)
+    {
+        return scope switch
+        {
+            "openid" => "Identity Information",
+            "profile" => "Profile Information",
+            "email" => "Email Address",
+            "roles" => "User Roles",
+            "phone" => "Phone Number",
+            _ => scope.ToUpperInvariant()
+        };
+    }
+
+    string GetScopeDescription(string scope)
+    {
+        return scope switch
+        {
+            "openid" => "Access to your unique identity",
+            "profile" => "Access to your name and profile information",
+            "email" => "Access to your email address",
+            "roles" => "Access to your account permissions and roles",
+            "phone" => "Access to your phone number",
+            _ => $"Access to {scope} information"
+        };
+    }
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+    }
+
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+        padding: 1.5rem;
+    }
+
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .btn-success {
+        background: linear-gradient(45deg, #00b894, #00a085);
+        border: none;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(45deg, #00a085, #008f75);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-outline-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .list-group-item {
+        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        margin-bottom: 8px;
+        border-radius: 8px;
+    }
+
+    .alert-info {
+        background: rgba(116, 185, 255, 0.1);
+        border: 1px solid rgba(116, 185, 255, 0.3);
+        border-radius: 10px;
+    }
+</style>

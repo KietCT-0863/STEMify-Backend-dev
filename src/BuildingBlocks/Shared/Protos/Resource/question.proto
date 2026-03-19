@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service QuestionService {
+    rpc CreateQuestion (CreateQuestionRequest) returns (QuestionList) {
+        option (google.api.http) = {
+            post: "/api/quizzes/{quizId}/questions"
+            body: "*"
+        };
+    }
+    rpc UpdateQuestion (UpdateQuestionRequest) returns (QuestionList) {
+        option (google.api.http) = {
+            patch: "/api/quizzes/{quizId}/questions"
+            body: "*"
+        };
+    }
+}
+
+message CreateQuestionRequest {
+    int32 quizId = 1;
+    repeated UpsertQuestionModel questions = 2;
+}
+
+message UpsertQuestionModel {
+    string questionType = 1;
+    string content = 2;
+    int32 orderIndex = 3;
+    google.protobuf.StringValue fileUrl = 4;
+    google.protobuf.StringValue answerExplanation = 5;
+    int32 points = 6;
+    repeated UpsertAnswerModel answers = 7;
+    google.protobuf.Int32Value id = 8;
+}
+
+message UpsertAnswerModel {
+    string content = 1;
+    bool isCorrect = 2;
+    google.protobuf.Int32Value id = 3;
+}
+
+message UpdateQuestionRequest {
+    int32 quizId = 1;
+    repeated UpsertQuestionModel questions = 2;
+}
+
+message QuestionList {
+    repeated QuestionResponse questions = 1;
+}
+
+message QuestionResponse {
+    int32 id = 1;
+    string questionType = 2;
+    string content = 3;
+    int32 orderIndex = 4;
+    repeated AnswerDTO answers = 5;
+    google.protobuf.StringValue fileUrl = 6;
+    google.protobuf.StringValue answerExplanation = 7;
+    int32 points = 8;
+}
+
+message AnswerDTO {
+    int32 id = 1;
+    string content = 2;
+    bool isCorrect = 3;
+}

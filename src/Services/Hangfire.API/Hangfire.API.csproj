@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+    <ContainerImageName>hangfire-api</ContainerImageName>
+    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:8.0</ContainerBaseImage>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="13.0.2" />
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.0.2" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.22" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.22" />
+
+	  <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
+
+	  <PackageReference Include="Hangfire.PostgreSql" Version="1.20.12" />
+	  <PackageReference Include="Hangfire.SqlServer" Version="1.8.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.21" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\EventBus.Messages\EventBus.Messages.csproj" />
+    <ProjectReference Include="..\OrderService\Order.Application\Order.Application.csproj" />
+    <ProjectReference Include="..\OrderService\Order.Infrastructure\Order.Infrastructure.csproj" />
+    <ProjectReference Include="..\Identity\Identity.Application\Identity.Application.csproj" />
+    <ProjectReference Include="..\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\STEMify-Backend\STEMify-Backend.ServiceDefaults\STEMify-Backend.ServiceDefaults.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service SkillService {
+    rpc CreateSkill (CreateSkillRequest) returns (SkillResponse) {
+        option (google.api.http) = {
+            post: "/api/skills"
+            body: "*"
+        };
+    }
+    rpc GetSkill (GetSkillRequest) returns (SkillResponse) {
+        option (google.api.http) = {
+            get: "/api/skills/{id}"
+        };
+    }
+    rpc UpdateSkill (UpdateSkillRequest) returns (SkillResponse) {
+        option (google.api.http) = {
+            patch: "/api/skills/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteSkill (DeleteSkillRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/skills/{id}"
+        };
+    }
+    rpc ListSkills (google.protobuf.Empty) returns (SkillList);
+    rpc QuerySkills (QuerySkillsRequest) returns (PagedSkillList) {
+        option (google.api.http) = {
+            get: "/api/skills"
+        };
+    }
+}
+
+message Skill {
+    int32 id = 1;
+    string skillName = 2;
+}
+
+message CreateSkillRequest {
+    string skillName = 1;
+}
+
+message UpdateSkillRequest {
+    int32 id = 1;
+    string skillName = 2;
+}
+
+message GetSkillRequest {
+    int32 id = 1;
+}
+
+message DeleteSkillRequest {
+    int32 id = 1;
+}
+
+message SkillList {
+    repeated SkillResponse skills = 1;
+}
+
+message PagedSkillList {
+    repeated SkillResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message SkillResponse {
+    int32 id = 1;
+    string skillName = 2;
+    repeated int32 courseIds = 5;
+}
+
+message QuerySkillsRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+}

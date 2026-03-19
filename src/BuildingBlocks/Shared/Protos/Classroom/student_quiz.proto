@@ -1,0 +1,113 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "Protos/Classroom/quiz_attempt.proto";
+import "google/protobuf/timestamp.proto";
+
+package studentQuiz;
+
+service GrpcStudentQuiz {
+	rpc GetStudentQuizById (GetStudentQuizByIdRequest) returns (GrpcStudentQuizResponse) {
+		option (google.api.http) = {
+			get: "/api/student-quizzes/{id}"
+		};
+	}
+	rpc GetPagedStudentQuizByClassroom (GetStudentQuizParams) returns (GrpcPagedStudentQuizzesResponse) {
+		option (google.api.http) = {
+			get: "/api/student-quizzes"
+		};
+	}
+}
+
+
+message GetStudentQuizByIdRequest {
+	int32 id = 1;
+}
+
+message GetStudentQuizParams {
+	google.protobuf.Int32Value pageNumber = 1;
+	google.protobuf.Int32Value pageSize = 2;
+	google.protobuf.StringValue status = 3;
+	int32 classroomId = 4;
+}
+
+message GrpcStudentQuizResponse {
+	int32 id = 1;
+	int32 quizId = 2;
+	string studentId = 3;
+	string status = 4;
+	google.protobuf.Int64Value finalScore= 5;
+	google.protobuf.StringValue assignedAt = 6;
+	google.protobuf.StringValue dueDate = 7;
+	google.protobuf.Int32Value maxAttemptAllowed = 8;
+	google.protobuf.Int32Value attemptCount = 9;
+	google.protobuf.Int32Value timeLimitMinutes = 10;
+	repeated quizAttempt.GrpcQuizAttemptResponse attempts = 11;
+	google.protobuf.Timestamp nextAttemptAvailableAt = 12;
+}
+
+message GrpcPagedStudentQuizzesResponse {
+	repeated GrpcQuizStatisticResponse items = 1;
+	int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}
+
+message GrpcQuizStatisticResponse {
+	int32 quizId = 1;
+	string quizName = 2;
+	google.protobuf.Int32Value timeLimitMinutes = 3;
+	int32 submissions = 4;
+	google.protobuf.Int64Value averageScore = 5;
+	google.protobuf.Int64Value passRate = 6;
+	int32 totalQuestions = 7;
+	repeated GrpcStudentStatisticResponse studentStatistics = 8;
+	repeated GrpcQuestionStatisticResponse questionStatistics = 9;
+}
+
+message GrpcStudentStatisticResponse {
+  string studentId = 1;
+  string studentName = 2;
+  google.protobuf.StringValue imageUrl = 3;
+  google.protobuf.Int64Value totalScore = 4;                 
+  string status = 5;               
+  int32 totalCorrectAnswers = 6;
+  int32 totalIncorrectAnswers = 7;
+  int32 totalSkipAnswers = 8;
+  int32 totalAnswers = 9;
+  string completedAt = 10;
+
+  repeated GrpcQuestionResultResponse questionResults = 11; 
+}
+
+message GrpcQuestionStatisticResponse {
+  int32 questionId = 1;
+  string questionTitle = 2;
+  double correctRate = 3;      
+  int32 totalCorrectAnswers = 4;
+  int32 totalIncorrectAnswers = 5;
+  int32 totalSkipAnswers = 6;
+  string questionType = 7;
+  double point = 8;
+  repeated GrpcAnswerStatisticResponse answerStatistics = 9;
+}
+
+message GrpcAnswerStatisticResponse {
+	int32 answerId = 1;
+	string content = 2;
+	int32 selectionCount = 3;
+	bool isCorrect = 4;
+}
+
+message GrpcQuestionResultResponse {
+  int32 questionId = 1;
+  string questionTitle = 2;
+  string questionType = 3;
+  bool isCorrect = 4;
+  double point = 5;   
+  string correctAnswer = 6;
+}

@@ -1,0 +1,234 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Order";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Protos/User/user.proto";
+
+package license_assignment;
+
+service GrpcLicenseAssignmentService {
+    rpc CreateLicenseAssignment (CreateLicenseAssignmentsRequest) returns (GrpcLicenseAssignmentListModel) {
+        option (google.api.http) = {
+            post: "/api/license-assignments/bulk"
+            body: "licenseAssignments"
+        };
+    }
+
+    rpc UpdateLicenseAssignment (UpdateLicenseAssignmentRequest) returns (GrpcLicenseAssignmentResponse) {
+        option (google.api.http) = {
+            patch: "/api/license-assignments/{id}"
+            body: "*"
+        };
+    }
+
+    rpc DeleteLicenseAssignment (DeleteLicenseAssignmentRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/license-assignments/{id}"
+        };
+    }
+
+    rpc GetLicenseAssignmentById (GetLicenseAssignmentRequest) returns (GrpcLicenseAssignmentDetail) {
+        option (google.api.http) = {
+            get: "/api/license-assignments/{id}"
+        };
+    }
+
+    rpc GetPagedLicenseAssignment (GetLicenseAssignmentParams) returns (GrpcPagedLicenseAssignmentResponse) {
+        option (google.api.http) = {
+            get: "/api/license-assignments"
+        };
+    }
+
+    // Bulk provisioning methods for Identity Service integration
+    rpc CheckLicenseAvailability (CheckLicenseAvailabilityRequest) returns (CheckLicenseAvailabilityResponse) {
+        option (google.api.http) = {
+            post: "/api/license-assignments/check-availability"
+            body: "*"
+        };
+    }
+
+    rpc BulkCheckLicenses (BulkCheckLicensesRequest) returns (BulkCheckLicensesResponse) {
+        option (google.api.http) = {
+            post: "/api/license-assignments/bulk-check"
+            body: "*"
+        };
+    }
+
+    rpc AssignLicenseByEmail (AssignLicenseByEmailRequest) returns (AssignLicenseByEmailResponse) {
+        option (google.api.http) = {
+            post: "/api/license-assignments/assign-by-email"
+            body: "*"
+        };
+    }
+
+    rpc ReserveLicenseByEmail (ReserveLicenseByEmailRequest) returns (ReserveLicenseByEmailResponse) {
+        option (google.api.http) = {
+            post: "/api/license-assignments/reserve-by-email"
+            body: "*"
+        };
+    }
+    
+    rpc ActivateReservedLicense (ActivateReservedLicenseRequest) returns (ActivateReservedLicenseResponse) {
+        option (google.api.http) = {
+            post: "/api/license-assignments/activate-reserved"
+            body: "*"
+        };
+    }
+}
+
+message CreateLicenseAssignmentRequest {
+    int32 organizationSubscriptionOrderId = 1;
+    string userId = 2;
+    google.protobuf.StringValue type = 3;
+}
+
+message CreateLicenseAssignmentsRequest {
+    repeated CreateLicenseAssignmentRequest licenseAssignments = 1;
+}
+
+message UpdateLicenseAssignmentRequest {
+    int32 id = 1;
+    google.protobuf.StringValue status = 2;
+}
+
+message DeleteLicenseAssignmentRequest {
+    int32 id = 1;
+}
+
+message GetLicenseAssignmentRequest {
+    int32 id = 1;
+}
+
+message GetLicenseAssignmentParams {
+    google.protobuf.Int32Value pageNumber = 1;
+    google.protobuf.Int32Value pageSize = 2;
+    google.protobuf.StringValue search = 3;
+    google.protobuf.StringValue orderBy = 4;
+    google.protobuf.StringValue sortDirection = 5;
+    google.protobuf.Int32Value organizationSubscriptionOrderId = 6;
+    google.protobuf.StringValue userId = 7;
+    google.protobuf.StringValue status = 8;
+    google.protobuf.StringValue type = 9;
+}
+
+message GrpcLicenseAssignmentResponse {
+    GrpcLicenseAssignmentModel licenseAssignment = 1;
+}
+
+message GrpcPagedLicenseAssignmentResponse {
+    repeated GrpcLicenseAssignmentDetail items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message GrpcLicenseAssignmentModel {
+    int32 id = 1;
+    int32 organizationSubscriptionOrderId = 2;
+    string userId = 3;
+    google.protobuf.Timestamp assignedAt = 4;
+    google.protobuf.Timestamp revokedAt = 5;
+    string status = 6;
+    string type = 7;
+}
+
+message GrpcLicenseAssignmentListModel {
+    repeated GrpcLicenseAssignmentModel licenseAssignments = 1;
+}
+
+message GrpcLicenseAssignmentDetail {
+    int32 id = 1;
+    int32 organizationSubscriptionOrderId = 2;
+    string planName = 3;
+    int32 organizationId = 4;
+    string organizationName = 5;
+    google.protobuf.StringValue organizationImageUrl = 6;
+    string organization_user_id = 7;
+    google.protobuf.Timestamp assignedAt = 8;
+    google.protobuf.Timestamp revokedAt = 9;
+    string status = 10;
+    string type = 11;
+    user.GrpcUserResponse user = 12;
+}
+
+// Bulk provisioning messages
+message CheckLicenseAvailabilityRequest {
+    int32 organization_id = 1;
+    string license_type = 2; // "Student", "Teacher", "OrganizationAdmin"
+    int32 requested_count = 3;
+}
+
+message CheckLicenseAvailabilityResponse {
+    bool available = 1;
+    int32 available_count = 2;
+    int32 total_licenses = 3;
+    int32 used_licenses = 4;
+    string message = 5;
+}
+
+message LicenseCheckRequest {
+    string license_type = 1;
+    int32 count = 2;
+}
+
+message BulkCheckLicensesRequest {
+    int32 organization_id = 1;
+    repeated LicenseCheckRequest license_requests = 2;
+}
+
+message LicenseCheckResult {
+    string license_type = 1;
+    bool available = 2;
+    int32 available_count = 3;
+    int32 requested_count = 4;
+}
+
+message BulkCheckLicensesResponse {
+    bool all_available = 1;
+    repeated LicenseCheckResult results = 2;
+    string message = 3;
+}
+
+message AssignLicenseByEmailRequest {
+    int32 organization_id = 1;
+    string user_email = 2;
+    string license_type = 3;
+    int32 subscription_order_id = 4;
+}
+
+message AssignLicenseByEmailResponse {
+    bool success = 1;
+    int32 license_assignment_id = 2;
+    string error_message = 3;
+}
+
+message ReserveLicenseByEmailRequest {
+    int32 organization_id = 1;
+    string organization_user_id = 2; 
+    string license_type = 3;
+    int32 subscription_order_id = 4;
+}
+
+message ReserveLicenseByEmailResponse {
+    bool success = 1;
+    int32 license_assignment_id = 2;
+    string error_message = 3;
+}
+
+message ActivateReservedLicenseRequest {
+    int32 organization_id = 1;
+    string organization_user_id = 2;
+    string license_type = 3;
+    int32 subscription_order_id = 4;
+}
+
+message ActivateReservedLicenseResponse {
+    bool success = 1;
+    int32 license_assignment_id = 2;
+    string error_message = 3;
+}

@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Sdk Name="Aspire.AppHost.Sdk" Version="13.0.2" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>e0de6214-e76f-4fdb-8ddf-7bb5d75b3bd9</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="13.0.2" />
+    <PackageReference Include="Aspire.Hosting.Elasticsearch" Version="13.0.0" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.0.2" />
+    <PackageReference Include="Aspire.Hosting.Python" Version="13.0.2" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="13.0.2" />
+    <PackageReference Include="Aspire.Hosting.MongoDB" Version="13.0.2" />
+    <PackageReference Include="OpenTelemetry.Exporter.OneCollector" Version="1.13.0" />
+    <PackageReference Include="Aspire.Hosting.Docker" Version="13.0.2-preview.1.25603.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ApiGateways\ApiGateway\ApiGateway.csproj" />
+    <ProjectReference Include="..\..\..\Saga.Orchestrator\Saga.Orchestrator\Saga.Orchestrator.csproj" />
+    <ProjectReference Include="..\..\CartService\Cart.API\Cart.API.csproj" />
+    <ProjectReference Include="..\..\ClassroomService\Classroom.API\Classroom.API.csproj" />
+    <ProjectReference Include="..\..\EmulatorService\Emulator.API\Emulator.API.csproj" />
+    <ProjectReference Include="..\..\Hangfire.API\Hangfire.API.csproj" />
+    <ProjectReference Include="..\..\Identity\Identity.API\Identity.API.csproj" />
+    <ProjectReference Include="..\..\Identity\Identity.Web\Identity.Web.csproj" />
+    <ProjectReference Include="..\..\Notification\Notification.API\Notification.API.csproj" />
+    <ProjectReference Include="..\..\OrderService\Order.API\Order.API.csproj" />
+    <ProjectReference Include="..\..\PaymentService\Payment.API\Payment.API.csproj" />
+    <ProjectReference Include="..\..\ProductService\Product.API\Product.API.csproj" />
+    <ProjectReference Include="..\..\Resource\Resource.API\Resource.API.csproj" />
+  </ItemGroup>
+</Project>

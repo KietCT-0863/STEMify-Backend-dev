@@ -1,0 +1,65 @@
+﻿
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Product";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package product;
+
+service GrpcKitComponentService {
+    rpc CreateKitComponent (CreateKitComponentRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/api/kit-components"
+            body: "*"
+        };
+    }
+    rpc UpdateKitComponent (UpdateKitComponentRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            patch: "/api/kit-components"
+            body: "*"
+        };
+    }
+    rpc DeleteKitComponent (DeleteKitComponentRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/kit-components"
+            body: "*"
+        };
+    }
+}
+
+message KitComponentResponse {
+    int32 id = 1;
+    int32 kitId = 2;
+    int32 componentId = 3;
+    int32 quantity = 4;
+    bool isMainComponent = 5;
+}
+
+message CreateKitComponentRequest {
+    int32 kitId = 1;
+    repeated CreateKitComponentItem components = 2;
+}
+
+message CreateKitComponentItem {
+    int32 componentId = 1;
+    int32 quantity = 2;
+    bool isMainComponent = 3;
+}
+
+message UpdateKitComponentRequest {
+    repeated UpdateKitComponentItem components = 1;
+}
+
+message UpdateKitComponentItem {
+    int32 id = 1;
+    google.protobuf.Int32Value quantity = 2;
+    google.protobuf.BoolValue isMainComponent = 3;
+
+}
+
+message DeleteKitComponentRequest {
+    repeated int32 ids = 1;
+}

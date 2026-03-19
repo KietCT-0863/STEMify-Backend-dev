@@ -1,0 +1,88 @@
+api-version: 2024-02-02-preview
+location: {{ .Env.AZURE_LOCATION }}
+identity:
+  type: UserAssigned
+  userAssignedIdentities:
+    ? "{{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}"
+    : {}
+properties:
+  environmentId: {{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+  configuration:
+    activeRevisionsMode: single
+    runtime:
+      dotnet:
+        autoConfigureDataProtection: true
+    ingress:
+      external: true
+      targetPort: {{ targetPortOrDefault 8085 }}
+      transport: auto
+      allowInsecure: true
+    registries:
+      - server: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+        identity: {{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+  template:
+    containers:
+      - image: {{ .Image }}
+        name: apigateway
+        env:
+          - name: AZURE_CLIENT_ID
+            value: {{ if .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ else }}{{ end }}
+          - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+            value: "true"
+          # - name: HTTP_PORTS
+          #   value: '{{ targetPortOrDefault 0 }}'
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY
+            value: in_memory
+          - name: IdentityServiceUrl
+            value: https://identity.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: Issuer
+            value: https://identity.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: ClientApp
+            value: {{ if .Env.CLIENT_APP_URL }}{{ .Env.CLIENT_APP_URL }}{{ else }}https://localhost:3000{{ end }}
+          - name: MicrobitApp
+            value: {{ if .Env.MICROBIT_APP }}{{ .Env.MICROBIT_APP }}{{ else }}http://localhost:3001{{ end }}
+          - name: ReverseProxy__Clusters__orderCluster__Destinations__d1__Address
+            value: https://order-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: ReverseProxy__Clusters__productCluster__Destinations__d1__Address
+            value: https://product-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: ReverseProxy__Clusters__identityCluster__Destinations__d1__Address
+            value: https://identity-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: ReverseProxy__Clusters__notificationCluster__Destinations__d1__Address
+            value: https://notification-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: ReverseProxy__Clusters__classroomCluster__Destinations__d1__Address
+            value: https://classroom-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: ReverseProxy__Clusters__resourceCluster__Destinations__d1__Address
+            value: https://resource-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: ReverseProxy__Clusters__aiCluster__Destinations__d1__Address
+            value: https://ai-service.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: ReverseProxy__Clusters__emulatorCluster__Destinations__d1__Address
+            value: https://emulator-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: RedisConfig__Host
+            value: {{ if .Env.REDIS_HOST }}{{ .Env.REDIS_HOST }}{{ else }}localhost{{ end }}
+          - name: RedisConfig__Port
+            value: {{ if .Env.REDIS_PORT }}{{ .Env.REDIS_PORT }}{{ else }}6379{{ end }}
+          - name: RedisConfig__Password
+            value: {{ if .Env.REDIS_PASSWORD }}{{ .Env.REDIS_PASSWORD }}{{ else }}{{ end }}
+          - name: RedisConfig__Ssl
+            value: false
+          - name: RedisConfig__AbortOnConnectFail
+            value: false
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          
+          # - name: ASPNETCORE_URLS
+          #   value: http://+:{{ targetPortOrDefault 8085 }}
+          #  Add environment variables to support dual protocol
+          # - name: ASPNETCORE_HTTP_PORTS
+          #   value: '{{ targetPortOrDefault 8085 }}'
+          - name: ASPNETCORE_HTTPS_PORTS
+            value: ''
+    scale:
+      minReplicas: 1
+tags:
+  azd-service-name: apigateway
+  aspire-resource-name: apigateway

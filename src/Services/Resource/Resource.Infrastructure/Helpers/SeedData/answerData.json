@@ -1,0 +1,834 @@
+[
+  {
+    "Content": "Trang trí cho thành phố",
+    "IsCorrect": false,
+    "QuestionId": 1
+  },
+  {
+    "Content": "Giúp tàu thuyền đi qua bằng cách nâng mặt cầu lên",
+    "IsCorrect": true,
+    "QuestionId": 1
+  },
+  {
+    "Content": "Ngăn nước sông chảy",
+    "IsCorrect": false,
+    "QuestionId": 1
+  },
+  {
+    "Content": "Làm cho xe chạy nhanh hơn",
+    "IsCorrect": false,
+    "QuestionId": 1
+  },
+
+  {
+    "Content": "Lực gió",
+    "IsCorrect": false,
+    "QuestionId": 2
+  },
+  {
+    "Content": "Nguyên lý đòn bẩy và đối trọng",
+    "IsCorrect": true,
+    "QuestionId": 2
+  },
+  {
+    "Content": "Nhiệt độ",
+    "IsCorrect": false,
+    "QuestionId": 2
+  },
+  {
+    "Content": "Áp lực nước",
+    "IsCorrect": false,
+    "QuestionId": 2
+  },
+  {
+    "Content": "Phát âm thanh",
+    "IsCorrect": false,
+    "QuestionId": 3
+  },
+  {
+    "Content": "Điều khiển chuyển động nâng và hạ cầu",
+    "IsCorrect": true,
+    "QuestionId": 3
+  },
+
+  {
+    "Content": "Nhận hình ảnh từ camera",
+    "IsCorrect": false,
+    "QuestionId": 3
+  },
+  {
+    "Content": "Kết nối internet",
+    "IsCorrect": false,
+    "QuestionId": 3
+  },
+  {
+    "Content": "Sport – Technology – Education – Music",
+    "IsCorrect": false,
+    "QuestionId": 4
+  },
+  {
+    "Content": "Science – Technology – Engineering – Mathematics",
+    "IsCorrect": true,
+    "QuestionId": 4
+  },
+
+  {
+    "Content": "Science – Teaching – English – Math",
+    "IsCorrect": false,
+    "QuestionId": 4
+  },
+  {
+    "Content": "Space – Time – Energy – Motion",
+    "IsCorrect": false,
+    "QuestionId": 4
+  },
+  {
+    "Content": "Để làm dự án đẹp hơn",
+    "IsCorrect": false,
+    "QuestionId": 5
+  },
+  {
+    "Content": "Để AI nhận biết chính xác khi nào cần mở hoặc đóng cầu",
+    "IsCorrect": true,
+    "QuestionId": 5
+  },
+
+  {
+    "Content": "Để camera hoạt động liên tục",
+    "IsCorrect": false,
+    "QuestionId": 5
+  },
+  {
+    "Content": "Để sử dụng được nhiều màu sắc hơn",
+    "IsCorrect": false,
+    "QuestionId": 5
+  },
+  {
+    "Content": "Trang trí cho thành phố",
+    "IsCorrect": false,
+    "QuestionId": 6
+  },
+  {
+    "Content": "Giúp tàu thuyền đi qua bằng cách nâng mặt cầu lên",
+    "IsCorrect": true,
+    "QuestionId": 6
+  },
+  {
+    "Content": "Ngăn nước sông chảy",
+    "IsCorrect": false,
+    "QuestionId": 6
+  },
+  {
+    "Content": "Làm cho xe chạy nhanh hơn",
+    "IsCorrect": false,
+    "QuestionId": 6
+  },
+
+  {
+    "Content": "Lực gió",
+    "IsCorrect": false,
+    "QuestionId": 7
+  },
+  {
+    "Content": "Nguyên lý đòn bẩy và đối trọng",
+    "IsCorrect": true,
+    "QuestionId": 7
+  },
+  {
+    "Content": "Nhiệt độ",
+    "IsCorrect": false,
+    "QuestionId": 7
+  },
+  {
+    "Content": "Áp lực nước",
+    "IsCorrect": false,
+    "QuestionId": 7
+  },
+  {
+    "Content": "Phát âm thanh",
+    "IsCorrect": false,
+    "QuestionId": 8
+  },
+  {
+    "Content": "Điều khiển chuyển động nâng và hạ cầu",
+    "IsCorrect": true,
+    "QuestionId": 8
+  },
+
+  {
+    "Content": "Nhận hình ảnh từ camera",
+    "IsCorrect": false,
+    "QuestionId": 8
+  },
+  {
+    "Content": "Kết nối internet",
+    "IsCorrect": false,
+    "QuestionId": 8
+  },
+  {
+    "Content": "Sport – Technology – Education – Music",
+    "IsCorrect": false,
+    "QuestionId": 9
+  },
+  {
+    "Content": "Science – Technology – Engineering – Mathematics",
+    "IsCorrect": true,
+    "QuestionId": 9
+  },
+
+  {
+    "Content": "Science – Teaching – English – Math",
+    "IsCorrect": false,
+    "QuestionId": 9
+  },
+  {
+    "Content": "Space – Time – Energy – Motion",
+    "IsCorrect": false,
+    "QuestionId": 9
+  },
+  {
+    "Content": "Để làm dự án đẹp hơn",
+    "IsCorrect": false,
+    "QuestionId": 10
+  },
+  {
+    "Content": "Để AI nhận biết chính xác khi nào cần mở hoặc đóng cầu",
+    "IsCorrect": true,
+    "QuestionId": 10
+  },
+
+  {
+    "Content": "Để camera hoạt động liên tục",
+    "IsCorrect": false,
+    "QuestionId": 10
+  },
+  {
+    "Content": "Để sử dụng được nhiều màu sắc hơn",
+    "IsCorrect": false,
+    "QuestionId": 10
+  },
+  {
+    "Content": "Trang trí cho thành phố",
+    "IsCorrect": false,
+    "QuestionId": 11
+  },
+  {
+    "Content": "Giúp tàu thuyền đi qua bằng cách nâng mặt cầu lên",
+    "IsCorrect": true,
+    "QuestionId": 11
+  },
+  {
+    "Content": "Ngăn nước sông chảy",
+    "IsCorrect": false,
+    "QuestionId": 11
+  },
+  {
+    "Content": "Làm cho xe chạy nhanh hơn",
+    "IsCorrect": false,
+    "QuestionId": 11
+  },
+
+  {
+    "Content": "Lực gió",
+    "IsCorrect": false,
+    "QuestionId": 12
+  },
+  {
+    "Content": "Nguyên lý đòn bẩy và đối trọng",
+    "IsCorrect": true,
+    "QuestionId": 12
+  },
+  {
+    "Content": "Nhiệt độ",
+    "IsCorrect": false,
+    "QuestionId": 12
+  },
+  {
+    "Content": "Áp lực nước",
+    "IsCorrect": false,
+    "QuestionId": 12
+  },
+  {
+    "Content": "Phát âm thanh",
+    "IsCorrect": false,
+    "QuestionId": 13
+  },
+  {
+    "Content": "Điều khiển chuyển động nâng và hạ cầu",
+    "IsCorrect": true,
+    "QuestionId": 13
+  },
+
+  {
+    "Content": "Nhận hình ảnh từ camera",
+    "IsCorrect": false,
+    "QuestionId": 13
+  },
+  {
+    "Content": "Kết nối internet",
+    "IsCorrect": false,
+    "QuestionId": 13
+  },
+  {
+    "Content": "Sport – Technology – Education – Music",
+    "IsCorrect": false,
+    "QuestionId": 14
+  },
+  {
+    "Content": "Science – Technology – Engineering – Mathematics",
+    "IsCorrect": true,
+    "QuestionId": 14
+  },
+
+  {
+    "Content": "Science – Teaching – English – Math",
+    "IsCorrect": false,
+    "QuestionId": 14
+  },
+  {
+    "Content": "Space – Time – Energy – Motion",
+    "IsCorrect": false,
+    "QuestionId": 14
+  },
+  {
+    "Content": "Để làm dự án đẹp hơn",
+    "IsCorrect": false,
+    "QuestionId": 15
+  },
+  {
+    "Content": "Để AI nhận biết chính xác khi nào cần mở hoặc đóng cầu",
+    "IsCorrect": true,
+    "QuestionId": 15
+  },
+
+  {
+    "Content": "Để camera hoạt động liên tục",
+    "IsCorrect": false,
+    "QuestionId": 15
+  },
+  {
+    "Content": "Để sử dụng được nhiều màu sắc hơn",
+    "IsCorrect": false,
+    "QuestionId": 15
+  },
+  {
+    "Content": "Trang trí cho thành phố",
+    "IsCorrect": false,
+    "QuestionId": 16
+  },
+  {
+    "Content": "Giúp tàu thuyền đi qua bằng cách nâng mặt cầu lên",
+    "IsCorrect": true,
+    "QuestionId": 16
+  },
+  {
+    "Content": "Ngăn nước sông chảy",
+    "IsCorrect": false,
+    "QuestionId": 16
+  },
+  {
+    "Content": "Làm cho xe chạy nhanh hơn",
+    "IsCorrect": false,
+    "QuestionId": 16
+  },
+
+  {
+    "Content": "Lực gió",
+    "IsCorrect": false,
+    "QuestionId": 17
+  },
+  {
+    "Content": "Nguyên lý đòn bẩy và đối trọng",
+    "IsCorrect": true,
+    "QuestionId": 17
+  },
+  {
+    "Content": "Nhiệt độ",
+    "IsCorrect": false,
+    "QuestionId": 17
+  },
+  {
+    "Content": "Áp lực nước",
+    "IsCorrect": false,
+    "QuestionId": 17
+  },
+  {
+    "Content": "Phát âm thanh",
+    "IsCorrect": false,
+    "QuestionId": 18
+  },
+  {
+    "Content": "Điều khiển chuyển động nâng và hạ cầu",
+    "IsCorrect": true,
+    "QuestionId": 18
+  },
+
+  {
+    "Content": "Nhận hình ảnh từ camera",
+    "IsCorrect": false,
+    "QuestionId": 18
+  },
+  {
+    "Content": "Kết nối internet",
+    "IsCorrect": false,
+    "QuestionId": 18
+  },
+  {
+    "Content": "Sport – Technology – Education – Music",
+    "IsCorrect": false,
+    "QuestionId": 19
+  },
+  {
+    "Content": "Science – Technology – Engineering – Mathematics",
+    "IsCorrect": true,
+    "QuestionId": 19
+  },
+
+  {
+    "Content": "Science – Teaching – English – Math",
+    "IsCorrect": false,
+    "QuestionId": 19
+  },
+  {
+    "Content": "Space – Time – Energy – Motion",
+    "IsCorrect": false,
+    "QuestionId": 19
+  },
+  {
+    "Content": "Để làm dự án đẹp hơn",
+    "IsCorrect": false,
+    "QuestionId": 20
+  },
+  {
+    "Content": "Để AI nhận biết chính xác khi nào cần mở hoặc đóng cầu",
+    "IsCorrect": true,
+    "QuestionId": 20
+  },
+
+  {
+    "Content": "Để camera hoạt động liên tục",
+    "IsCorrect": false,
+    "QuestionId": 20
+  },
+  {
+    "Content": "Để sử dụng được nhiều màu sắc hơn",
+    "IsCorrect": false,
+    "QuestionId": 20
+  },
+  {
+    "Content": "Trang trí cho thành phố",
+    "IsCorrect": false,
+    "QuestionId": 21
+  },
+  {
+    "Content": "Giúp tàu thuyền đi qua bằng cách nâng mặt cầu lên",
+    "IsCorrect": true,
+    "QuestionId": 21
+  },
+  {
+    "Content": "Ngăn nước sông chảy",
+    "IsCorrect": false,
+    "QuestionId": 21
+  },
+  {
+    "Content": "Làm cho xe chạy nhanh hơn",
+    "IsCorrect": false,
+    "QuestionId": 21
+  },
+
+  {
+    "Content": "Lực gió",
+    "IsCorrect": false,
+    "QuestionId": 22
+  },
+  {
+    "Content": "Nguyên lý đòn bẩy và đối trọng",
+    "IsCorrect": true,
+    "QuestionId": 22
+  },
+  {
+    "Content": "Nhiệt độ",
+    "IsCorrect": false,
+    "QuestionId": 22
+  },
+  {
+    "Content": "Áp lực nước",
+    "IsCorrect": false,
+    "QuestionId": 22
+  },
+  {
+    "Content": "Phát âm thanh",
+    "IsCorrect": false,
+    "QuestionId": 23
+  },
+  {
+    "Content": "Điều khiển chuyển động nâng và hạ cầu",
+    "IsCorrect": true,
+    "QuestionId": 23
+  },
+
+  {
+    "Content": "Nhận hình ảnh từ camera",
+    "IsCorrect": false,
+    "QuestionId": 23
+  },
+  {
+    "Content": "Kết nối internet",
+    "IsCorrect": false,
+    "QuestionId": 23
+  },
+  {
+    "Content": "Sport – Technology – Education – Music",
+    "IsCorrect": false,
+    "QuestionId": 24
+  },
+  {
+    "Content": "Science – Technology – Engineering – Mathematics",
+    "IsCorrect": true,
+    "QuestionId": 24
+  },
+
+  {
+    "Content": "Science – Teaching – English – Math",
+    "IsCorrect": false,
+    "QuestionId": 24
+  },
+  {
+    "Content": "Space – Time – Energy – Motion",
+    "IsCorrect": false,
+    "QuestionId": 24
+  },
+  {
+    "Content": "Để làm dự án đẹp hơn",
+    "IsCorrect": false,
+    "QuestionId": 25
+  },
+  {
+    "Content": "Để AI nhận biết chính xác khi nào cần mở hoặc đóng cầu",
+    "IsCorrect": true,
+    "QuestionId": 25
+  },
+
+  {
+    "Content": "Để camera hoạt động liên tục",
+    "IsCorrect": false,
+    "QuestionId": 25
+  },
+  {
+    "Content": "Để sử dụng được nhiều màu sắc hơn",
+    "IsCorrect": false,
+    "QuestionId": 25
+  },
+  {
+    "Content": "Trang trí cho thành phố",
+    "IsCorrect": false,
+    "QuestionId": 26
+  },
+  {
+    "Content": "Giúp tàu thuyền đi qua bằng cách nâng mặt cầu lên",
+    "IsCorrect": true,
+    "QuestionId": 26
+  },
+  {
+    "Content": "Ngăn nước sông chảy",
+    "IsCorrect": false,
+    "QuestionId": 26
+  },
+  {
+    "Content": "Làm cho xe chạy nhanh hơn",
+    "IsCorrect": false,
+    "QuestionId": 26
+  },
+
+  {
+    "Content": "Lực gió",
+    "IsCorrect": false,
+    "QuestionId": 27
+  },
+  {
+    "Content": "Nguyên lý đòn bẩy và đối trọng",
+    "IsCorrect": true,
+    "QuestionId": 27
+  },
+  {
+    "Content": "Nhiệt độ",
+    "IsCorrect": false,
+    "QuestionId": 27
+  },
+  {
+    "Content": "Áp lực nước",
+    "IsCorrect": false,
+    "QuestionId": 27
+  },
+  {
+    "Content": "Phát âm thanh",
+    "IsCorrect": false,
+    "QuestionId": 28
+  },
+  {
+    "Content": "Điều khiển chuyển động nâng và hạ cầu",
+    "IsCorrect": true,
+    "QuestionId": 28
+  },
+
+  {
+    "Content": "Nhận hình ảnh từ camera",
+    "IsCorrect": false,
+    "QuestionId": 28
+  },
+  {
+    "Content": "Kết nối internet",
+    "IsCorrect": false,
+    "QuestionId": 28
+  },
+  {
+    "Content": "Sport – Technology – Education – Music",
+    "IsCorrect": false,
+    "QuestionId": 29
+  },
+  {
+    "Content": "Science – Technology – Engineering – Mathematics",
+    "IsCorrect": true,
+    "QuestionId": 29
+  },
+
+  {
+    "Content": "Science – Teaching – English – Math",
+    "IsCorrect": false,
+    "QuestionId": 29
+  },
+  {
+    "Content": "Space – Time – Energy – Motion",
+    "IsCorrect": false,
+    "QuestionId": 29
+  },
+  {
+    "Content": "Để làm dự án đẹp hơn",
+    "IsCorrect": false,
+    "QuestionId": 30
+  },
+  {
+    "Content": "Để AI nhận biết chính xác khi nào cần mở hoặc đóng cầu",
+    "IsCorrect": true,
+    "QuestionId": 30
+  },
+
+  {
+    "Content": "Để camera hoạt động liên tục",
+    "IsCorrect": false,
+    "QuestionId": 30
+  },
+  {
+    "Content": "Để sử dụng được nhiều màu sắc hơn",
+    "IsCorrect": false,
+    "QuestionId": 30
+  },
+  {
+    "Content": "Trang trí cho thành phố",
+    "IsCorrect": false,
+    "QuestionId": 31
+  },
+  {
+    "Content": "Giúp tàu thuyền đi qua bằng cách nâng mặt cầu lên",
+    "IsCorrect": true,
+    "QuestionId": 31
+  },
+  {
+    "Content": "Ngăn nước sông chảy",
+    "IsCorrect": false,
+    "QuestionId": 31
+  },
+  {
+    "Content": "Làm cho xe chạy nhanh hơn",
+    "IsCorrect": false,
+    "QuestionId": 31
+  },
+
+  {
+    "Content": "Lực gió",
+    "IsCorrect": false,
+    "QuestionId": 32
+  },
+  {
+    "Content": "Nguyên lý đòn bẩy và đối trọng",
+    "IsCorrect": true,
+    "QuestionId": 32
+  },
+  {
+    "Content": "Nhiệt độ",
+    "IsCorrect": false,
+    "QuestionId": 32
+  },
+  {
+    "Content": "Áp lực nước",
+    "IsCorrect": false,
+    "QuestionId": 32
+  },
+  {
+    "Content": "Phát âm thanh",
+    "IsCorrect": false,
+    "QuestionId": 33
+  },
+  {
+    "Content": "Điều khiển chuyển động nâng và hạ cầu",
+    "IsCorrect": true,
+    "QuestionId": 33
+  },
+
+  {
+    "Content": "Nhận hình ảnh từ camera",
+    "IsCorrect": false,
+    "QuestionId": 33
+  },
+  {
+    "Content": "Kết nối internet",
+    "IsCorrect": false,
+    "QuestionId": 33
+  },
+  {
+    "Content": "Sport – Technology – Education – Music",
+    "IsCorrect": false,
+    "QuestionId": 34
+  },
+  {
+    "Content": "Science – Technology – Engineering – Mathematics",
+    "IsCorrect": true,
+    "QuestionId": 34
+  },
+
+  {
+    "Content": "Science – Teaching – English – Math",
+    "IsCorrect": false,
+    "QuestionId": 34
+  },
+  {
+    "Content": "Space – Time – Energy – Motion",
+    "IsCorrect": false,
+    "QuestionId": 34
+  },
+  {
+    "Content": "Để làm dự án đẹp hơn",
+    "IsCorrect": false,
+    "QuestionId": 35
+  },
+  {
+    "Content": "Để AI nhận biết chính xác khi nào cần mở hoặc đóng cầu",
+    "IsCorrect": true,
+    "QuestionId": 35
+  },
+
+  {
+    "Content": "Để camera hoạt động liên tục",
+    "IsCorrect": false,
+    "QuestionId": 35
+  },
+  {
+    "Content": "Để sử dụng được nhiều màu sắc hơn",
+    "IsCorrect": false,
+    "QuestionId": 35
+  },
+  {
+    "Content": "Trang trí cho thành phố",
+    "IsCorrect": false,
+    "QuestionId": 36
+  },
+  {
+    "Content": "Giúp tàu thuyền đi qua bằng cách nâng mặt cầu lên",
+    "IsCorrect": true,
+    "QuestionId": 36
+  },
+  {
+    "Content": "Ngăn nước sông chảy",
+    "IsCorrect": false,
+    "QuestionId": 36
+  },
+  {
+    "Content": "Làm cho xe chạy nhanh hơn",
+    "IsCorrect": false,
+    "QuestionId": 36
+  },
+
+  {
+    "Content": "Lực gió",
+    "IsCorrect": false,
+    "QuestionId": 37
+  },
+  {
+    "Content": "Nguyên lý đòn bẩy và đối trọng",
+    "IsCorrect": true,
+    "QuestionId": 37
+  },
+  {
+    "Content": "Nhiệt độ",
+    "IsCorrect": false,
+    "QuestionId": 37
+  },
+  {
+    "Content": "Áp lực nước",
+    "IsCorrect": false,
+    "QuestionId": 37
+  },
+  {
+    "Content": "Phát âm thanh",
+    "IsCorrect": false,
+    "QuestionId": 38
+  },
+  {
+    "Content": "Điều khiển chuyển động nâng và hạ cầu",
+    "IsCorrect": true,
+    "QuestionId": 38
+  },
+
+  {
+    "Content": "Nhận hình ảnh từ camera",
+    "IsCorrect": false,
+    "QuestionId": 38
+  },
+  {
+    "Content": "Kết nối internet",
+    "IsCorrect": false,
+    "QuestionId": 38
+  },
+  {
+    "Content": "Sport – Technology – Education – Music",
+    "IsCorrect": false,
+    "QuestionId": 39
+  },
+  {
+    "Content": "Science – Technology – Engineering – Mathematics",
+    "IsCorrect": true,
+    "QuestionId": 39
+  },
+
+  {
+    "Content": "Science – Teaching – English – Math",
+    "IsCorrect": false,
+    "QuestionId": 39
+  },
+  {
+    "Content": "Space – Time – Energy – Motion",
+    "IsCorrect": false,
+    "QuestionId": 39
+  },
+  {
+    "Content": "Để làm dự án đẹp hơn",
+    "IsCorrect": false,
+    "QuestionId": 40
+  },
+  {
+    "Content": "Để AI nhận biết chính xác khi nào cần mở hoặc đóng cầu",
+    "IsCorrect": true,
+    "QuestionId": 40
+  },
+
+  {
+    "Content": "Để camera hoạt động liên tục",
+    "IsCorrect": false,
+    "QuestionId": 40
+  },
+  {
+    "Content": "Để sử dụng được nhiều màu sắc hơn",
+    "IsCorrect": false,
+    "QuestionId": 40
+  }
+]

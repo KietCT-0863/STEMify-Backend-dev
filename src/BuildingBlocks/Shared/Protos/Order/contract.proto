@@ -1,0 +1,126 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Order";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Protos/Order/organization.proto";
+
+package contract;
+
+service GrpcContractService {
+    rpc CreateContract (CreateContractRequest) returns (GrpcContractDetail) {
+        option (google.api.http) = {
+            post: "/api/contracts"
+            body: "*"
+        };
+    }
+
+    rpc UpdateContract (UpdateContractRequest) returns (GrpcContractDetail) {
+        option (google.api.http) = {
+            patch: "/api/contracts/{id}"
+            body: "*"
+        };
+    }
+
+    rpc DeleteContract (DeleteContractRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/contracts/{id}"
+        };
+    }
+
+    rpc GetContractById (GetContractRequest) returns (GrpcContractDetail) {
+        option (google.api.http) = {
+            get: "/api/contracts/{id}"
+        };
+    }
+
+    rpc GetPagedContract (GetContractParams) returns (GrpcPagedContractResponse) {
+        option (google.api.http) = {
+            get: "/api/contracts"
+        };
+    }
+}
+
+message CreateContractRequest {
+    string name = 1;
+    int32 organizationId = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.BytesValue file = 4;
+}
+
+message UpdateContractRequest {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    //google.protobuf.Int32Value organizationId = 4;
+    google.protobuf.BytesValue file = 5;
+    google.protobuf.StringValue status = 6;
+}
+
+message DeleteContractRequest {
+    int32 id = 1;
+}
+
+message GetContractRequest {
+    int32 id = 1;
+}
+
+message GetContractParams {
+    google.protobuf.Int32Value pageNumber = 1;
+    google.protobuf.Int32Value pageSize = 2;
+    google.protobuf.StringValue search = 3;
+    google.protobuf.StringValue orderBy = 4;
+    google.protobuf.StringValue sortDirection = 5;
+    google.protobuf.Int32Value organizationId = 6;
+    google.protobuf.StringValue status = 7;
+}
+
+message GrpcContractResponse {
+    GrpcContractModel contract = 1;
+}
+
+message GrpcPagedContractResponse {
+    repeated GrpcContractDetail items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message GrpcContractModel {
+    int32 id = 1;
+    int32 organizationId = 2;
+    string name = 3;
+    google.protobuf.StringValue description = 4;
+    google.protobuf.StringValue fileUrl = 5;
+    google.protobuf.Timestamp createdDate = 6;
+    google.protobuf.Timestamp lastModifiedDate = 7;
+    string status = 8;
+}
+
+message GrpcContractDetail {
+    int32 id = 1;
+    organization.GrpcOrganizationInformation organization = 2;
+    string name = 3;
+    google.protobuf.StringValue description = 4;
+    google.protobuf.StringValue fileUrl = 5;
+    google.protobuf.Timestamp createdDate = 6;
+    google.protobuf.Timestamp lastModifiedDate = 7;
+    string status = 8;
+}
+
+message GrpcContractInformation {
+    int32 id = 1;
+    string name = 2;
+    google.protobuf.StringValue fileUrl = 3;
+}
+
+enum ContractStatus {
+    CONTRACT_STATUS_UNSPECIFIED = 0;
+    ACTIVE = 1;
+    EXPIRED = 2;
+    ARCHIVED = 3;
+}

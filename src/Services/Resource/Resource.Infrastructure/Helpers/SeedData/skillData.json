@@ -1,0 +1,42 @@
+[
+  {
+    "SkillName": "Sáng tạo",
+    "Description": "Khuyến khích tư duy độc đáo và khả năng giải quyết vấn đề theo nhiều hướng khác nhau."
+  },
+  {
+    "SkillName": "Làm việc nhóm",
+    "Description": "Thúc đẩy sự hợp tác, giao tiếp và phân chia nhiệm vụ hiệu quả giữa các thành viên."
+  },
+  {
+    "SkillName": "Tư duy phản biện",
+    "Description": "Phân tích tình huống, đánh giá thông tin và đưa ra quyết định dựa trên bằng chứng."
+  },
+  {
+    "SkillName": "Lập trình",
+    "Description": "Xây dựng tư duy logic và tạo ra các chương trình phần mềm thông qua mã lệnh."
+  },
+  {
+    "SkillName": "Thiết kế kỹ thuật",
+    "Description": "Áp dụng quy trình thiết kế kỹ thuật để giải quyết các thử thách thực tế."
+  },
+  {
+    "SkillName": "Giải quyết vấn đề",
+    "Description": "Xác định vấn đề, đề xuất giải pháp và thử nghiệm để tìm ra phương án tối ưu."
+  },
+  {
+    "SkillName": "Tư duy không gian",
+    "Description": "Hình dung, mô phỏng và thao tác với các mô hình hoặc cấu trúc 3D trong quá trình thiết kế."
+  },
+  {
+    "SkillName": "Thuyết trình",
+    "Description": "Trình bày ý tưởng rõ ràng, truyền đạt giải pháp và báo cáo kết quả dự án."
+  },
+  {
+    "SkillName": "Quản lý dự án",
+    "Description": "Lập kế hoạch, phân chia công việc, theo dõi tiến độ và hoàn thành nhiệm vụ đúng thời hạn."
+  },
+  {
+    "SkillName": "Tư duy tính toán",
+    "Description": "Phân tách vấn đề, nhận dạng mẫu và xây dựng thuật toán để tối ưu hóa giải pháp."
+  }
+]

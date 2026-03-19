@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service ContentService {
+    rpc CreateContent (CreateContentRequest) returns (ContentResponse) {
+        option (google.api.http) = {
+            post: "/api/contents"
+            body: "*"
+        };
+    }
+    rpc GetContent (GetContentRequest) returns (ContentResponse) {
+        option (google.api.http) = {
+            get: "/api/contents/{id}"
+        };
+    }
+    rpc UpdateContent (UpdateContentRequest) returns (ContentResponse) {
+        option (google.api.http) = {
+            patch: "/api/contents/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteContent (DeleteContentRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/contents/{id}"
+        };
+    }
+    rpc ListContents (google.protobuf.Empty) returns (ContentList);
+    rpc QueryContents (QueryContentsRequest) returns (PagedContentList) {
+        option (google.api.http) = {
+            get: "/api/contents"
+        };
+    }
+}
+
+message Content {
+    int32 id = 1;
+    string contentType = 2;
+    string contentBody = 3;
+    string fileName = 4;
+    string fileUrl = 5;
+    string status = 6;
+    int32 sectionId = 7;
+    google.protobuf.Timestamp uploadDate = 8;
+}
+
+message CreateContentRequest {
+    string contentType = 1;
+    string contentBody = 2;
+    string fileName = 3;
+    google.protobuf.BytesValue file = 4;
+    int32 sectionId = 5;
+}
+
+message UpdateContentRequest {
+    int32 id = 1;
+    string contentType = 2;
+    google.protobuf.StringValue contentBody = 3;
+    google.protobuf.StringValue fileName = 4;
+    google.protobuf.BytesValue file = 5;
+    string status = 6;
+}
+
+message GetContentRequest {
+    int32 id = 1;
+}
+
+message DeleteContentRequest {
+    int32 id = 1;
+}
+
+message QueryContentsRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    google.protobuf.Int32Value sectionId = 5;
+    string status = 6;
+    string contentType = 7;
+}
+
+message ContentList {
+    repeated ContentResponse contents = 1;
+}
+
+message ContentResponse {
+    int32 id = 1;
+    string contentType = 2;
+    string contentBody = 3;
+    google.protobuf.StringValue fileName = 4;
+    google.protobuf.StringValue fileUrl = 5;
+    string status = 6;
+    int32 sectionId = 7;
+    google.protobuf.Timestamp uploadDate = 8;
+    google.protobuf.StringValue quizTitle = 9;
+    google.protobuf.StringValue quizDescription = 10;
+    google.protobuf.Int64Value totalMarks = 11;
+    google.protobuf.Int64Value passingMarks = 12;
+    google.protobuf.Int32Value timeLimitInMinutes = 13;
+    google.protobuf.Int32Value quizId = 14;
+    google.protobuf.Int32Value durationDays = 15;
+    google.protobuf.Int32Value assignmentId = 16;
+    google.protobuf.StringValue assignmentTitle = 17;
+}
+
+message PagedContentList {
+    repeated ContentResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}

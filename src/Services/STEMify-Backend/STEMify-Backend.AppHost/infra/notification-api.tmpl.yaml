@@ -1,0 +1,81 @@
+api-version: 2024-02-02-preview
+location: {{ .Env.AZURE_LOCATION }}
+identity:
+  type: UserAssigned
+  userAssignedIdentities:
+    ? "{{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}"
+    : {}
+properties:
+  environmentId: {{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+  configuration:
+    activeRevisionsMode: single
+    runtime:
+      dotnet:
+        autoConfigureDataProtection: true
+    ingress:
+      external: true
+      targetPort: {{ targetPortOrDefault 8080 }}
+      transport: auto
+      allowInsecure: true
+    registries:
+      - server: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+        identity: {{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+    secrets:
+      - name: connectionstrings--stemifynotification
+        value: Host=stemify-postgres;Port=5432;Username=postgres;Password={{ .Env.POSTGRES_PASSWORD }};Database=stemifynotification
+  template:
+    containers:
+      - image: {{ .Image }}
+        name: notification-api
+        env:
+          - name: AZURE_CLIENT_ID
+            value: {{ if .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ else }}{{ end }}
+          - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY
+            value: in_memory
+          - name: ConnectionStrings__stemifynotification
+            secretRef: connectionstrings--stemifynotification
+          - name: RabbitMq__Url
+            value: {{ if .Env.RABBITMQ_URL }}{{ .Env.RABBITMQ_URL }}{{ else }}{{ end }}
+          - name: RabbitMq__Host
+            value: {{ if .Env.RABBITMQ_HOST }}{{ .Env.RABBITMQ_HOST }}{{ else }}localhost{{ end }}
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          - name: ASPNETCORE_URLS
+            value: http://+:{{ targetPortOrDefault 8080 }}
+          - name: Kestrel__Endpoints__WebApi__Protocols
+            value: Http1
+          - name: Kestrel__Endpoints__WebApi__Url
+            value: http://+:{{ targetPortOrDefault 8080 }}
+          - name: Kestrel__Endpoints__Grpc__Protocols
+            value: Http2
+          - name: Kestrel__Endpoints__Grpc__Url
+            value: http://+:5004
+          - name: ASPNETCORE_HTTP_PORTS
+            value: '{{ targetPortOrDefault 8080 }}' 
+          - name: ASPNETCORE_HTTPS_PORTS
+            value: ''
+          - name: SendGridSettings__ApiKey
+            value: {{ if .Env.SENDGRID_APIKEY }}{{ .Env.SENDGRID_APIKEY }}{{ else }}{{ end }}
+          - name: SendGridSettings__FromEmail
+            value: {{ if .Env.SENDGRID_FROMEMAIL }}{{ .Env.SENDGRID_FROMEMAIL }}{{ else }}stemify30062025@gmail.com{{ end }}
+          - name: SendGridSettings__FromName
+            value: {{ if .Env.SENDGRID_FROMNAME }}{{ .Env.SENDGRID_FROMNAME }}{{ else }}STEMify{{ end }}
+          - name: ClientApp__BaseUrl
+            value: {{ if .Env.CLIENT_APP_URL }}{{ .Env.CLIENT_APP_URL }}{{ else }}https://localhost:3000{{ end }}
+          - name: ClientApp
+            value: {{ if .Env.CLIENT_APP_URL }}{{ .Env.CLIENT_APP_URL }}{{ else }}https://localhost:3000{{ end }}
+          - name: Issuer
+            value: https://identity.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}/
+          - name: IdentityServiceUrl
+            value: https://identity.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+    scale:
+      minReplicas: 1
+tags:
+  azd-service-name: notification-api
+  aspire-resource-name: notification-api 

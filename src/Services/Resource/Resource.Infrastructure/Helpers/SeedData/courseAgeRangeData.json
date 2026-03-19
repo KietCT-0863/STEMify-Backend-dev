@@ -1,0 +1,34 @@
+[
+  {
+    "CourseId": 1,
+    "AgeRangeId": 1
+  },
+  {
+    "CourseId": 2,
+    "AgeRangeId": 2
+  },
+  {
+    "CourseId": 3,
+    "AgeRangeId": 2
+  },
+  {
+    "CourseId": 4,
+    "AgeRangeId": 2
+  },
+  {
+    "CourseId": 5,
+    "AgeRangeId": 2
+  },
+  {
+    "CourseId": 6,
+    "AgeRangeId": 2
+  },
+  {
+    "CourseId": 7,
+    "AgeRangeId": 1
+  },
+  {
+    "CourseId": 8,
+    "AgeRangeId": 2
+  }
+]

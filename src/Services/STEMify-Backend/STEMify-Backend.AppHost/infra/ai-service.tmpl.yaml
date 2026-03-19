@@ -1,0 +1,220 @@
+api-version: 2024-02-02-preview
+location: {{ .Env.AZURE_LOCATION }}
+identity:
+  type: UserAssigned
+  userAssignedIdentities:
+    ? "{{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}"
+    : {}
+properties:
+  environmentId: {{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+  configuration:
+    activeRevisionsMode: single
+    ingress:
+      external: true
+      targetPort: {{ targetPortOrDefault 8000 }}
+      transport: auto
+      allowInsecure: true
+    registries:
+      - server: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+        identity: {{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+  template:
+    containers:
+      - image: {{ .Image }}
+        name: ai-service
+        env:
+          - name: PYTHONUNBUFFERED
+            value: "1"
+          - name: PYTHONDONTWRITEBYTECODE
+            value: "1"
+{{- if .Env.CLASSROOM_GRPC_USE_TLS }}
+          - name: CLASSROOM_GRPC_USE_TLS
+            value: "{{ .Env.CLASSROOM_GRPC_USE_TLS }}"
+{{- end }}
+{{- if .Env.RESOURCE_GRPC_ENDPOINT }}
+          - name: RESOURCE_GRPC_ENDPOINT
+            value: "{{ .Env.RESOURCE_GRPC_ENDPOINT }}"
+{{- end }}
+{{- if .Env.RESOURCE_GRPC_USE_TLS }}
+          - name: RESOURCE_GRPC_USE_TLS
+            value: "{{ .Env.RESOURCE_GRPC_USE_TLS }}"
+{{- end }}
+{{- if .Env.RESOURCE_GRPC_CERT_PATH }}
+          - name: RESOURCE_GRPC_CERT_PATH
+            value: "{{ .Env.RESOURCE_GRPC_CERT_PATH }}"
+{{- end }}
+{{- if .Env.RESOURCE_GRPC_OVERRIDE_AUTHORITY }}
+          - name: RESOURCE_GRPC_OVERRIDE_AUTHORITY
+            value: "{{ .Env.RESOURCE_GRPC_OVERRIDE_AUTHORITY }}"
+{{- end }}
+{{- if .Env.CLASSROOM_GRPC_ENDPOINT }}
+          - name: CLASSROOM_GRPC_ENDPOINT
+            value: "{{ .Env.CLASSROOM_GRPC_ENDPOINT }}"
+{{- end }}
+          # LLM Configuration
+{{- if .Env.OPENAI_API_KEY }}
+          - name: OPENAI_API_KEY
+            value: "{{ .Env.OPENAI_API_KEY }}"
+{{- end }}
+{{- if .Env.OPENAI_BASE_URL }}
+          - name: OPENAI_BASE_URL
+            value: "{{ .Env.OPENAI_BASE_URL }}"
+{{- end }}
+{{- if .Env.LLM_MODEL }}
+          - name: LLM_MODEL
+            value: "{{ .Env.LLM_MODEL }}"
+{{- end }}
+{{- if .Env.LLM_TEMPERATURE }}
+          - name: LLM_TEMPERATURE
+            value: "{{ .Env.LLM_TEMPERATURE }}"
+{{- end }}
+{{- if .Env.LLM_MAX_TOKENS }}
+          - name: LLM_MAX_TOKENS
+            value: "{{ .Env.LLM_MAX_TOKENS }}"
+{{- end }}
+{{- if .Env.REDIS_HOST }}
+          - name: REDIS_HOST
+            value: "{{ .Env.REDIS_HOST }}"
+{{- end }}
+{{- if .Env.REDIS_PORT }}
+          - name: REDIS_PORT
+            value: "{{ .Env.REDIS_PORT }}"
+{{- end }}
+{{- if .Env.REDIS_PASSWORD }}
+          - name: REDIS_PASSWORD
+            value: "{{ .Env.REDIS_PASSWORD }}"
+{{- end }}
+{{- if .Env.REDIS_SSL }}
+          - name: REDIS_SSL
+            value: "{{ .Env.REDIS_SSL }}"
+{{- end }}
+          # DeepSeek Configuration (optional, alternative to OpenAI)
+{{- if .Env.DEEPSEEK_API_KEY }}
+          - name: DEEPSEEK_API_KEY
+            value: "{{ .Env.DEEPSEEK_API_KEY }}"
+{{- end }}
+{{- if .Env.DEEPSEEK_BASE_URL }}
+          - name: DEEPSEEK_BASE_URL
+            value: "{{ .Env.DEEPSEEK_BASE_URL }}"
+{{- end }}
+{{- if .Env.DEEPSEEK_MODEL }}
+          - name: DEEPSEEK_MODEL
+            value: "{{ .Env.DEEPSEEK_MODEL }}"
+{{- end }}
+          # Content Generation Prompts
+{{- if .Env.CONTENT_GENERATION_SYSTEM_PROMPT }}
+          - name: CONTENT_GENERATION_SYSTEM_PROMPT
+            value: "{{ .Env.CONTENT_GENERATION_SYSTEM_PROMPT }}"
+{{- end }}
+{{- if .Env.CONTENT_GENERATION_SECTION_PROMPT_TEMPLATE }}
+          - name: CONTENT_GENERATION_SECTION_PROMPT_TEMPLATE
+            value: "{{ .Env.CONTENT_GENERATION_SECTION_PROMPT_TEMPLATE }}"
+{{- end }}
+          # Vector Store (Qdrant)
+{{- if .Env.QDRANT_URL }}
+          - name: QDRANT_URL
+            value: "{{ .Env.QDRANT_URL }}"
+{{- end }}
+{{- if .Env.QDRANT_GRPC_URL }}
+          - name: QDRANT_GRPC_URL
+            value: "{{ .Env.QDRANT_GRPC_URL }}"
+{{- end }}
+{{- if .Env.QDRANT_COLLECTION }}
+          - name: QDRANT_COLLECTION
+            value: "{{ .Env.QDRANT_COLLECTION }}"
+{{- end }}
+{{- if .Env.QDRANT_CLOUD_ENDPOINT }}
+          - name: QDRANT_CLOUD_ENDPOINT
+            value: "{{ .Env.QDRANT_CLOUD_ENDPOINT }}"
+{{- end }}
+{{- if .Env.QDRANT_CLOUD_API_KEY }}
+          - name: QDRANT_CLOUD_API_KEY
+            value: "{{ .Env.QDRANT_CLOUD_API_KEY }}"
+{{- end }}
+          # Graph Database (Neo4j)
+{{- if .Env.NEO4J_URI }}
+          - name: NEO4J_URI
+            value: "{{ .Env.NEO4J_URI }}"
+{{- end }}
+{{- if .Env.NEO4J_USER }}
+          - name: NEO4J_USER
+            value: "{{ .Env.NEO4J_USER }}"
+{{- end }}
+{{- if .Env.NEO4J_PASSWORD }}
+          - name: NEO4J_PASSWORD
+            value: "{{ .Env.NEO4J_PASSWORD }}"
+{{- end }}
+{{- if .Env.NEO4J_CLOUD_URI }}
+          - name: NEO4J_CLOUD_URI
+            value: "{{ .Env.NEO4J_CLOUD_URI }}"
+{{- end }}
+{{- if .Env.NEO4J_CLOUD_USERNAME }}
+          - name: NEO4J_CLOUD_USERNAME
+            value: "{{ .Env.NEO4J_CLOUD_USERNAME }}"
+{{- end }}
+{{- if .Env.NEO4J_CLOUD_PASSWORD }}
+          - name: NEO4J_CLOUD_PASSWORD
+            value: "{{ .Env.NEO4J_CLOUD_PASSWORD }}"
+{{- end }}
+{{- if .Env.NEO4J_CLOUD_DATABASE }}
+          - name: NEO4J_CLOUD_DATABASE
+            value: "{{ .Env.NEO4J_CLOUD_DATABASE }}"
+{{- end }}
+{{- if .Env.AURA_INSTANCE_ID }}
+          - name: AURA_INSTANCE_ID
+            value: "{{ .Env.AURA_INSTANCE_ID }}"
+{{- end }}
+{{- if .Env.AURA_INSTANCE_NAME }}
+          - name: AURA_INSTANCE_NAME
+            value: "{{ .Env.AURA_INSTANCE_NAME }}"
+{{- end }}
+          # Embeddings
+{{- if .Env.EMBEDDING_MODEL }}
+          - name: EMBEDDING_MODEL
+            value: "{{ .Env.EMBEDDING_MODEL }}"
+{{- end }}
+{{- if .Env.EMBEDDING_DEVICE }}
+          - name: EMBEDDING_DEVICE
+            value: "{{ .Env.EMBEDDING_DEVICE }}"
+{{- end }}
+{{- if .Env.EMBEDDING_BATCH_SIZE }}
+          - name: EMBEDDING_BATCH_SIZE
+            value: "{{ .Env.EMBEDDING_BATCH_SIZE }}"
+{{- end }}
+          # Environment
+{{- if .Env.ENVIRONMENT }}
+          - name: ENVIRONMENT
+            value: "{{ .Env.ENVIRONMENT }}"
+{{- end }}
+{{- if .Env.LOG_LEVEL }}
+          - name: LOG_LEVEL
+            value: "{{ .Env.LOG_LEVEL }}"
+{{- end }}
+          # RabbitMQ / Event Bus
+{{- if .Env.RABBITMQ_URL }}
+          - name: RABBITMQ_URL
+            value: "{{ .Env.RABBITMQ_URL }}"
+{{- end }}
+        probes:
+          - type: Liveness
+            httpGet:
+              path: /health
+              port: {{ targetPortOrDefault 8000 }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          - type: Readiness
+            httpGet:
+              path: /health
+              port: {{ targetPortOrDefault 8000 }}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+    scale:
+      minReplicas: 1
+      maxReplicas: 3
+tags:
+  azd-service-name: ai-service
+  aspire-resource-name: ai-service
+

@@ -1,0 +1,37 @@
+[
+  {
+    "organizationId": 1,
+    "name": "Hợp đồng cung cấp nền tảng STEM năm 2025",
+    "status": "Active",
+    "fileUrl": "https://cdn.stemify.com/contracts/hop-dong-stem-2025-org1.pdf",
+    "description": "Hợp đồng cung cấp và sử dụng nền tảng giáo dục STEM cho năm học 2025, bao gồm quyền truy cập nội dung, quản lý lớp học và báo cáo học tập."
+  },
+  {
+    "organizationId": 2,
+    "name": "Hợp đồng triển khai hệ thống học tập STEM nâng cao",
+    "status": "Active",
+    "fileUrl": "https://cdn.stemify.com/contracts/hop-dong-stem-nang-cao-org2.pdf",
+    "description": "Hợp đồng triển khai gói STEM nâng cao cho tổ chức giáo dục, bao gồm các mô-đun AI, phân tích dữ liệu học tập và tích hợp phần cứng."
+  },
+  {
+    "organizationId": 3,
+    "name": "Hợp đồng gói Premium – Nền tảng giáo dục STEM",
+    "status": "Active",
+    "fileUrl": "https://cdn.stemify.com/contracts/hop-dong-stem-premium-org3.pdf",
+    "description": "Hợp đồng sử dụng gói Premium cho hệ thống STEM với số lượng lớn người học, giảng viên và toàn bộ thư viện nội dung."
+  },
+  {
+    "organizationId": 4,
+    "name": "Hợp đồng dịch vụ đào tạo và hỗ trợ STEM",
+    "status": "Active",
+    "fileUrl": "https://cdn.stemify.com/contracts/hop-dong-stem-trial-org4.pdf",
+    "description": "Hợp đồng dùng thử nền tảng STEM trong thời gian giới hạn nhằm đánh giá tính phù hợp của hệ thống trước khi ký kết chính thức."
+  },
+  {
+    "organizationId": 5,
+    "name": "Hợp đồng dịch vụ đào tạo và hỗ trợ STEM",
+    "status": "Active",
+    "fileUrl": "https://cdn.stemify.com/contracts/hop-dong-dao-tao-ho-tro-stem-org5.pdf",
+    "description": "Hợp đồng cung cấp dịch vụ đào tạo giáo viên và hỗ trợ kỹ thuật cho nền tảng STEM, hiện đang tạm ngưng do điều chỉnh điều khoản."
+  }
+]

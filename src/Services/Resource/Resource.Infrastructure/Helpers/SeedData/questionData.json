@@ -1,0 +1,321 @@
+[
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Chức năng chính của cầu nâng là gì?",
+    "OrderIndex": 1,
+    "QuizId": 1,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng có chức năng chính là cho phép tàu thuyền đi qua bằng cách nâng nhịp cầu lên, đồng thời tạm dừng giao thông đường bộ để đảm bảo an toàn cho cả đường thủy và đường bộ."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Nguyên lý cơ học nào giúp cầu nâng có thể nâng lên dù rất nặng?",
+    "OrderIndex": 2,
+    "QuizId": 1,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng hoạt động dựa trên nguyên lý đòn bẩy và đối trọng, giúp giảm lực cần thiết để nâng các kết cấu rất nặng bằng cách phân bố lại trọng lượng."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Trong dự án cầu nâng sử dụng micro:bit, servo motor có nhiệm vụ gì?",
+    "OrderIndex": 3,
+    "QuizId": 1,
+    "Points": 1,
+    "AnswerExplanation": "Servo motor có nhiệm vụ tạo chuyển động quay chính xác để nâng hoặc hạ cầu theo tín hiệu điều khiển từ micro:bit."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "STEM là viết tắt của những lĩnh vực nào?",
+    "OrderIndex": 4,
+    "QuizId": 1,
+    "Points": 1,
+    "AnswerExplanation": "STEM là viết tắt của Science (Khoa học), Technology (Công nghệ), Engineering (Kỹ thuật) và Mathematics (Toán học), đại diện cho các lĩnh vực nền tảng trong giáo dục hiện đại."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Vì sao cần thu thập hình ảnh cho cả hai trường hợp “boat” và “no boat” khi huấn luyện mô hình AI cho cầu nâng?",
+    "OrderIndex": 5,
+    "QuizId": 1,
+    "Points": 1,
+    "AnswerExplanation": "Việc thu thập hình ảnh cho cả hai trường hợp giúp mô hình AI học cách phân biệt khi nào có tàu thuyền và khi nào không có, từ đó đưa ra quyết định nâng hoặc hạ cầu chính xác và an toàn."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Chức năng chính của cầu nâng là gì?",
+    "OrderIndex": 1,
+    "QuizId": 2,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng có chức năng chính là cho phép tàu thuyền đi qua bằng cách nâng nhịp cầu lên, đồng thời tạm dừng giao thông đường bộ để đảm bảo an toàn cho cả đường thủy và đường bộ."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Nguyên lý cơ học nào giúp cầu nâng có thể nâng lên dù rất nặng?",
+    "OrderIndex": 2,
+    "QuizId": 2,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng hoạt động dựa trên nguyên lý đòn bẩy và đối trọng, giúp giảm lực cần thiết để nâng các kết cấu rất nặng bằng cách phân bố lại trọng lượng."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Trong dự án cầu nâng sử dụng micro:bit, servo motor có nhiệm vụ gì?",
+    "OrderIndex": 3,
+    "QuizId": 2,
+    "Points": 1,
+    "AnswerExplanation": "Servo motor có nhiệm vụ tạo chuyển động quay chính xác để nâng hoặc hạ cầu theo tín hiệu điều khiển từ micro:bit."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "STEM là viết tắt của những lĩnh vực nào?",
+    "OrderIndex": 4,
+    "QuizId": 2,
+    "Points": 1,
+    "AnswerExplanation": "STEM là viết tắt của Science (Khoa học), Technology (Công nghệ), Engineering (Kỹ thuật) và Mathematics (Toán học), đại diện cho các lĩnh vực nền tảng trong giáo dục hiện đại."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Vì sao cần thu thập hình ảnh cho cả hai trường hợp “boat” và “no boat” khi huấn luyện mô hình AI cho cầu nâng?",
+    "OrderIndex": 5,
+    "QuizId": 2,
+    "Points": 1,
+    "AnswerExplanation": "Việc thu thập hình ảnh cho cả hai trường hợp giúp mô hình AI học cách phân biệt khi nào có tàu thuyền và khi nào không có, từ đó đưa ra quyết định nâng hoặc hạ cầu chính xác và an toàn."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Chức năng chính của cầu nâng là gì?",
+    "OrderIndex": 1,
+    "QuizId": 3,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng có chức năng chính là cho phép tàu thuyền đi qua bằng cách nâng nhịp cầu lên, đồng thời tạm dừng giao thông đường bộ để đảm bảo an toàn cho cả đường thủy và đường bộ."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Nguyên lý cơ học nào giúp cầu nâng có thể nâng lên dù rất nặng?",
+    "OrderIndex": 2,
+    "QuizId": 3,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng hoạt động dựa trên nguyên lý đòn bẩy và đối trọng, giúp giảm lực cần thiết để nâng các kết cấu rất nặng bằng cách phân bố lại trọng lượng."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Trong dự án cầu nâng sử dụng micro:bit, servo motor có nhiệm vụ gì?",
+    "OrderIndex": 3,
+    "QuizId": 3,
+    "Points": 1,
+    "AnswerExplanation": "Servo motor có nhiệm vụ tạo chuyển động quay chính xác để nâng hoặc hạ cầu theo tín hiệu điều khiển từ micro:bit."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "STEM là viết tắt của những lĩnh vực nào?",
+    "OrderIndex": 4,
+    "QuizId": 3,
+    "AnswerExplanation": "STEM là viết tắt của Science (Khoa học), Technology (Công nghệ), Engineering (Kỹ thuật) và Mathematics (Toán học), đại diện cho các lĩnh vực nền tảng trong giáo dục hiện đại."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Vì sao cần thu thập hình ảnh cho cả hai trường hợp “boat” và “no boat” khi huấn luyện mô hình AI cho cầu nâng?",
+    "OrderIndex": 5,
+    "QuizId": 3,
+    "Points": 1,
+    "AnswerExplanation": "Việc thu thập hình ảnh cho cả hai trường hợp giúp mô hình AI học cách phân biệt khi nào có tàu thuyền và khi nào không có, từ đó đưa ra quyết định nâng hoặc hạ cầu chính xác và an toàn."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Chức năng chính của cầu nâng là gì?",
+    "OrderIndex": 1,
+    "QuizId": 4,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng có chức năng chính là cho phép tàu thuyền đi qua bằng cách nâng nhịp cầu lên, đồng thời tạm dừng giao thông đường bộ để đảm bảo an toàn cho cả đường thủy và đường bộ."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Nguyên lý cơ học nào giúp cầu nâng có thể nâng lên dù rất nặng?",
+    "OrderIndex": 2,
+    "QuizId": 4,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng hoạt động dựa trên nguyên lý đòn bẩy và đối trọng, giúp giảm lực cần thiết để nâng các kết cấu rất nặng bằng cách phân bố lại trọng lượng."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Trong dự án cầu nâng sử dụng micro:bit, servo motor có nhiệm vụ gì?",
+    "OrderIndex": 3,
+    "QuizId": 4,
+    "Points": 1,
+    "AnswerExplanation": "Servo motor có nhiệm vụ tạo chuyển động quay chính xác để nâng hoặc hạ cầu theo tín hiệu điều khiển từ micro:bit."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "STEM là viết tắt của những lĩnh vực nào?",
+    "OrderIndex": 4,
+    "QuizId": 4,
+    "Points": 1,
+    "AnswerExplanation": "STEM là viết tắt của Science (Khoa học), Technology (Công nghệ), Engineering (Kỹ thuật) và Mathematics (Toán học), đại diện cho các lĩnh vực nền tảng trong giáo dục hiện đại."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Vì sao cần thu thập hình ảnh cho cả hai trường hợp “boat” và “no boat” khi huấn luyện mô hình AI cho cầu nâng?",
+    "OrderIndex": 5,
+    "QuizId": 4,
+    "Points": 1,
+    "AnswerExplanation": "Việc thu thập hình ảnh cho cả hai trường hợp giúp mô hình AI học cách phân biệt khi nào có tàu thuyền và khi nào không có, từ đó đưa ra quyết định nâng hoặc hạ cầu chính xác và an toàn."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Chức năng chính của cầu nâng là gì?",
+    "OrderIndex": 1,
+    "QuizId": 5,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng có chức năng chính là cho phép tàu thuyền đi qua bằng cách nâng nhịp cầu lên, đồng thời tạm dừng giao thông đường bộ để đảm bảo an toàn cho cả đường thủy và đường bộ."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Nguyên lý cơ học nào giúp cầu nâng có thể nâng lên dù rất nặng?",
+    "OrderIndex": 2,
+    "QuizId": 5,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng hoạt động dựa trên nguyên lý đòn bẩy và đối trọng, giúp giảm lực cần thiết để nâng các kết cấu rất nặng bằng cách phân bố lại trọng lượng."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Trong dự án cầu nâng sử dụng micro:bit, servo motor có nhiệm vụ gì?",
+    "OrderIndex": 3,
+    "QuizId": 5,
+    "Points": 1,
+    "AnswerExplanation": "Servo motor có nhiệm vụ tạo chuyển động quay chính xác để nâng hoặc hạ cầu theo tín hiệu điều khiển từ micro:bit."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "STEM là viết tắt của những lĩnh vực nào?",
+    "OrderIndex": 4,
+    "QuizId": 5,
+    "Points": 1,
+    "AnswerExplanation": "STEM là viết tắt của Science (Khoa học), Technology (Công nghệ), Engineering (Kỹ thuật) và Mathematics (Toán học), đại diện cho các lĩnh vực nền tảng trong giáo dục hiện đại."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Vì sao cần thu thập hình ảnh cho cả hai trường hợp “boat” và “no boat” khi huấn luyện mô hình AI cho cầu nâng?",
+    "OrderIndex": 5,
+    "QuizId": 5,
+    "Points": 1,
+    "AnswerExplanation": "Việc thu thập hình ảnh cho cả hai trường hợp giúp mô hình AI học cách phân biệt khi nào có tàu thuyền và khi nào không có, từ đó đưa ra quyết định nâng hoặc hạ cầu chính xác và an toàn."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Chức năng chính của cầu nâng là gì?",
+    "OrderIndex": 1,
+    "QuizId": 6,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng có chức năng chính là cho phép tàu thuyền đi qua bằng cách nâng nhịp cầu lên, đồng thời tạm dừng giao thông đường bộ để đảm bảo an toàn cho cả đường thủy và đường bộ."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Nguyên lý cơ học nào giúp cầu nâng có thể nâng lên dù rất nặng?",
+    "OrderIndex": 2,
+    "QuizId": 6,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng hoạt động dựa trên nguyên lý đòn bẩy và đối trọng, giúp giảm lực cần thiết để nâng các kết cấu rất nặng bằng cách phân bố lại trọng lượng."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Trong dự án cầu nâng sử dụng micro:bit, servo motor có nhiệm vụ gì?",
+    "OrderIndex": 3,
+    "QuizId": 6,
+    "Points": 1,
+    "AnswerExplanation": "Servo motor có nhiệm vụ tạo chuyển động quay chính xác để nâng hoặc hạ cầu theo tín hiệu điều khiển từ micro:bit."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "STEM là viết tắt của những lĩnh vực nào?",
+    "OrderIndex": 4,
+    "QuizId": 6,
+    "Points": 1,
+    "AnswerExplanation": "STEM là viết tắt của Science (Khoa học), Technology (Công nghệ), Engineering (Kỹ thuật) và Mathematics (Toán học), đại diện cho các lĩnh vực nền tảng trong giáo dục hiện đại."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Vì sao cần thu thập hình ảnh cho cả hai trường hợp “boat” và “no boat” khi huấn luyện mô hình AI cho cầu nâng?",
+    "OrderIndex": 5,
+    "QuizId": 6,
+    "Points": 1,
+    "AnswerExplanation": "Việc thu thập hình ảnh cho cả hai trường hợp giúp mô hình AI học cách phân biệt khi nào có tàu thuyền và khi nào không có, từ đó đưa ra quyết định nâng hoặc hạ cầu chính xác và an toàn."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Chức năng chính của cầu nâng là gì?",
+    "OrderIndex": 1,
+    "QuizId": 7,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng có chức năng chính là cho phép tàu thuyền đi qua bằng cách nâng nhịp cầu lên, đồng thời tạm dừng giao thông đường bộ để đảm bảo an toàn cho cả đường thủy và đường bộ."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Nguyên lý cơ học nào giúp cầu nâng có thể nâng lên dù rất nặng?",
+    "OrderIndex": 2,
+    "QuizId": 7,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng hoạt động dựa trên nguyên lý đòn bẩy và đối trọng, giúp giảm lực cần thiết để nâng các kết cấu rất nặng bằng cách phân bố lại trọng lượng."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Trong dự án cầu nâng sử dụng micro:bit, servo motor có nhiệm vụ gì?",
+    "OrderIndex": 3,
+    "QuizId": 7,
+    "Points": 1,
+    "AnswerExplanation": "Servo motor có nhiệm vụ tạo chuyển động quay chính xác để nâng hoặc hạ cầu theo tín hiệu điều khiển từ micro:bit."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "STEM là viết tắt của những lĩnh vực nào?",
+    "OrderIndex": 4,
+    "QuizId": 7,
+    "Points": 1,
+    "AnswerExplanation": "STEM là viết tắt của Science (Khoa học), Technology (Công nghệ), Engineering (Kỹ thuật) và Mathematics (Toán học), đại diện cho các lĩnh vực nền tảng trong giáo dục hiện đại."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Vì sao cần thu thập hình ảnh cho cả hai trường hợp “boat” và “no boat” khi huấn luyện mô hình AI cho cầu nâng?",
+    "OrderIndex": 5,
+    "QuizId": 7,
+    "Points": 1,
+    "AnswerExplanation": "Việc thu thập hình ảnh cho cả hai trường hợp giúp mô hình AI học cách phân biệt khi nào có tàu thuyền và khi nào không có, từ đó đưa ra quyết định nâng hoặc hạ cầu chính xác và an toàn."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Chức năng chính của cầu nâng là gì?",
+    "OrderIndex": 1,
+    "QuizId": 8,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng có chức năng chính là cho phép tàu thuyền đi qua bằng cách nâng nhịp cầu lên, đồng thời tạm dừng giao thông đường bộ để đảm bảo an toàn cho cả đường thủy và đường bộ."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Nguyên lý cơ học nào giúp cầu nâng có thể nâng lên dù rất nặng?",
+    "OrderIndex": 2,
+    "QuizId": 8,
+    "Points": 1,
+    "AnswerExplanation": "Cầu nâng hoạt động dựa trên nguyên lý đòn bẩy và đối trọng, giúp giảm lực cần thiết để nâng các kết cấu rất nặng bằng cách phân bố lại trọng lượng."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Trong dự án cầu nâng sử dụng micro:bit, servo motor có nhiệm vụ gì?",
+    "OrderIndex": 3,
+    "QuizId": 8,
+    "Points": 1,
+    "AnswerExplanation": "Servo motor có nhiệm vụ tạo chuyển động quay chính xác để nâng hoặc hạ cầu theo tín hiệu điều khiển từ micro:bit."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "STEM là viết tắt của những lĩnh vực nào?",
+    "OrderIndex": 4,
+    "QuizId": 8,
+    "Points": 1,
+    "AnswerExplanation": "STEM là viết tắt của Science (Khoa học), Technology (Công nghệ), Engineering (Kỹ thuật) và Mathematics (Toán học), đại diện cho các lĩnh vực nền tảng trong giáo dục hiện đại."
+  },
+  {
+    "QuestionType": "SingleChoice",
+    "Content": "Vì sao cần thu thập hình ảnh cho cả hai trường hợp “boat” và “no boat” khi huấn luyện mô hình AI cho cầu nâng?",
+    "OrderIndex": 5,
+    "QuizId": 8,
+    "Points": 1,
+    "AnswerExplanation": "Việc thu thập hình ảnh cho cả hai trường hợp giúp mô hình AI học cách phân biệt khi nào có tàu thuyền và khi nào không có, từ đó đưa ra quyết định nâng hoặc hạ cầu chính xác và an toàn."
+  }
+]

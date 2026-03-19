@@ -1,0 +1,43 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Agent";
+
+package agent;
+
+service GrpcAgentService {
+    rpc GenerateCourseRecommendation (SendMessageRequest) returns (stream GenerateMessageResponse);
+    //{
+    //    option (google.api.http) = {
+    //        post: "/api/ai/course-recommendations",
+    //        body: "*"
+    //    };
+    //}
+    rpc AnswerGeneralStemQuestion (SendMessageRequest) returns (stream GenerateMessageResponse);
+    //{
+    //    option (google.api.http) = {
+    //        post: "/api/ai/general-question",
+    //        body: "*"
+    //    };
+    //}
+    rpc SummarizeLesson (SummarizeLessonRequest) returns (stream GenerateMessageResponse);
+    //{
+    //    option (google.api.http) = {
+    //        post: "/api/ai/lesson-summary",
+    //        body: "*"
+    //    };
+    //}
+}
+
+
+message SendMessageRequest {
+    string userPrompt = 1;
+}
+
+message GenerateMessageResponse {
+    string message = 1;
+}
+
+message SummarizeLessonRequest {
+    int32 lessonId = 1;
+}
+

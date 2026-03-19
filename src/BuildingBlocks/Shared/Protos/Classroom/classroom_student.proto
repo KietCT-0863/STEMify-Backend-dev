@@ -1,0 +1,58 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+package classroom;
+
+service GrpcClassroomStudent {
+	rpc CreateClassroomStudent (CreateClassroomStudentRequest) returns (google.protobuf.Empty) {
+		option (google.api.http) = {
+			post: "/api/classrooms/{classroomId}/classroom-students/bulk"
+			body: "*"
+		};
+	}
+	rpc DeleteClassroomStudent (DeleteClassroomStudentRequest) returns (google.protobuf.Empty) {
+		option (google.api.http) = {
+			delete: "/api/classrooms/{classroomId}/classroom-students/bulk"
+			body: "*"
+		};
+	}
+	rpc GetClassroomStudentById (GetClassroomStudentByIdRequest) returns (GrpcClassroomStudentResponse) {
+		option (google.api.http) = {
+			get: "/api/classrooms/{classroomId}/classroom-students/{studentId}"
+		};
+	}
+}
+
+message CreateClassroomStudentRequest {
+	int32 classroomId = 1;
+	repeated string studentIds = 2;
+	repeated string studentEmails = 3;
+}
+
+message DeleteClassroomStudentRequest {
+	int32 classroomId = 1;
+	repeated string studentIds = 2;
+}
+
+message GetClassroomStudentByIdRequest {
+	int32 classroomId = 1;
+	string studentId = 2;
+}
+
+message GrpcClassroomStudentResponse {
+	string studentId = 1;
+	string studentName = 2;
+	google.protobuf.StringValue studentImageUrl = 3;
+	string studentEmail = 4;
+	string courseEnrollmentStatus = 5;
+	double averageQuizScore = 6;
+	double averageAssignmentScore = 7;
+	int32 totalQuizzesTaken = 8;
+	int32 totalAssignmentsSubmitted = 9;
+}
+

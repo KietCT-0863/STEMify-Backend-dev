@@ -1,0 +1,300 @@
+@{
+    ViewData["Title"] = "Test OAuth Flow - STEMify";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px 5px;
+            background: rgba(255, 193, 7, 0.8);
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 193, 7, 1);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .url-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin: 15px 0;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        h1,
+        h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧪 OAuth 2.0 Flow Tester</h1>
+
+        <div class="card">
+            <h2>📝 Configure OAuth Parameters</h2>
+            <form id="oauth-form">
+                <div class="form-group">
+                    <label for="client_id">Client ID</label>
+                    <select id="client_id">
+                        <option value="stemify-web">stemify-web (Recommended)</option>
+                        <option value="stemify-nextjs-client">stemify-nextjs-client</option>
+                        <option value="swagger-ui">swagger-ui</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="redirect_uri">Redirect URI</label>
+                    <input type="url" id="redirect_uri" value="https://localhost:3000/signin-oidc" />
+                </div>
+
+                <div class="form-group">
+                    <label for="scopes">Scopes (space-separated)</label>
+                    <input type="text" id="scopes" value="stemify_api" />
+                </div>
+
+                <div class="form-group">
+                    <label for="state">State (random value)</label>
+                    <input type="text" id="state" value="" />
+                </div>
+
+                <button type="button" onclick="generateAuthUrl()" class="btn">🔗 Generate Authorization URL</button>
+                <button type="button" onclick="generateRandomValues()" class="btn btn-secondary">🎲 Generate Random
+                    Values</button>
+            </form>
+        </div>
+
+        <div class="card" id="result-card" style="display: none;">
+            <h2>OAuth Authorization URL</h2>
+            <div id="generated-url" class="url-display"></div>
+            <button type="button" onclick="startOAuthFlow()" class="btn">Start OAuth Flow</button>
+            <button type="button" onclick="copyUrl()" class="btn btn-secondary">📋 Copy URL</button>
+        </div>
+
+        <div class="card">
+            <h2>📖 How OAuth Flow Works</h2>
+            <div class="step">
+                <strong>Step 1:</strong> Click "Start OAuth Flow" → Redirects to authorization endpoint
+            </div>
+            <div class="step">
+                <strong>Step 2:</strong> If not logged in → Redirects to login page
+            </div>
+            <div class="step">
+                <strong>Step 3:</strong> Enter credentials and login
+            </div>
+            <div class="step">
+                <strong>Step 4:</strong> Authorization code generated → Redirects to your client
+            </div>
+            <div class="step">
+                <strong>Step 5:</strong> Client exchanges code for access token (not shown here)
+            </div>
+        </div>
+
+        <div class="card">
+            <h2> Monitor Authorization Code</h2>
+            <p>Open <strong>F12 → Network tab</strong> to see the authorization code in the redirect URL.</p>
+            <p>Look for requests to your redirect_uri containing <code>?code=...</code></p>
+        </div>
+
+        <a href="/" class="btn btn-secondary">← Back to Home</a>
+    </div>
+
+    <script>
+        function generateRandomValues() {
+            // Generate random state
+            const state = 'state_' + Math.random().toString(36).substring(2, 15);
+            document.getElementById('state').value = state;
+        }
+
+        function generateAuthUrl() {
+            const clientId = document.getElementById('client_id').value;
+            const redirectUri = document.getElementById('redirect_uri').value;
+            const scopes = document.getElementById('scopes').value;
+            const state = document.getElementById('state').value || 'default_state';
+
+            // Generate PKCE parameters
+            const codeVerifier = generateCodeVerifier();
+            const codeChallenge = generateCodeChallenge(codeVerifier);
+
+            // Store for later use
+            sessionStorage.setItem('code_verifier', codeVerifier);
+
+            const params = new URLSearchParams({
+                client_id: clientId,
+                response_type: 'code',
+                redirect_uri: redirectUri,
+                scope: scopes,
+                state: state,
+                code_challenge: codeChallenge,
+                code_challenge_method: 'S256'
+            });
+
+            const baseUrl = window.location.origin + '/connect/authorize';
+            const fullUrl = baseUrl + '?' + params.toString();
+
+            document.getElementById('generated-url').textContent = fullUrl;
+            document.getElementById('result-card').style.display = 'block';
+
+            console.log('OAuth Parameters Generated:');
+            console.log('Code Verifier:', codeVerifier);
+            console.log('Code Challenge:', codeChallenge);
+            console.log('Authorization URL:', fullUrl);
+        }
+
+        function startOAuthFlow() {
+            const url = document.getElementById('generated-url').textContent;
+            console.log('Starting OAuth Flow...');
+            console.log('Redirecting to:', url);
+            window.location.href = url;
+        }
+
+        function copyUrl() {
+            const url = document.getElementById('generated-url').textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URL copied to clipboard!');
+            });
+        }
+
+        function generateCodeVerifier() {
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            return base64URLEncode(array);
+        }
+
+        function generateCodeChallenge(verifier) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(verifier);
+            return crypto.subtle.digest('SHA-256', data).then(hash => {
+                return base64URLEncode(new Uint8Array(hash));
+            });
+        }
+
+        function base64URLEncode(array) {
+            return btoa(String.fromCharCode.apply(null, array))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=/g, '');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            generateRandomValues();
+
+            // Make generateCodeChallenge work with async
+            const originalGenerateAuthUrl = generateAuthUrl;
+            generateAuthUrl = async function () {
+                const clientId = document.getElementById('client_id').value;
+                const redirectUri = document.getElementById('redirect_uri').value;
+                const scopes = document.getElementById('scopes').value;
+                const state = document.getElementById('state').value || 'default_state';
+
+                const codeVerifier = generateCodeVerifier();
+                const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+                sessionStorage.setItem('code_verifier', codeVerifier);
+
+                const params = new URLSearchParams({
+                    client_id: clientId,
+                    response_type: 'code',
+                    redirect_uri: redirectUri,
+                    scope: scopes,
+                    state: state,
+                    code_challenge: codeChallenge,
+                    code_challenge_method: 'S256'
+                });
+
+                const baseUrl = window.location.origin + '/connect/authorize';
+                const fullUrl = baseUrl + '?' + params.toString();
+
+                document.getElementById('generated-url').textContent = fullUrl;
+                document.getElementById('result-card').style.display = 'block';
+
+                console.log('OAuth Parameters Generated:');
+                console.log('Code Verifier:', codeVerifier);
+                console.log('Code Challenge:', codeChallenge);
+                console.log('Authorization URL:', fullUrl);
+            };
+        });
+    </script>
+</body>
+
+</html>

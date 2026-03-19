@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service AnswerService {
+    rpc CreateAnswer (CreateAnswerRequest) returns (AnswerResponse) {
+        option (google.api.http) = {
+            post: "/api/answers"
+            body: "*"
+        };
+    }
+    rpc GetAnswer (GetAnswerRequest) returns (AnswerResponse) {
+        option (google.api.http) = {
+            get: "/api/answers/{id}"
+        };
+    }
+    rpc UpdateAnswer (UpdateAnswerRequest) returns (AnswerResponse) {
+        option (google.api.http) = {
+            patch: "/api/answers/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteAnswer (DeleteAnswerRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/answers/{id}"
+        };
+    }
+    rpc ListAnswers (google.protobuf.Empty) returns (AnswerList);
+    rpc QueryAnswers (QueryAnswersRequest) returns (PagedAnswerList) {
+        option (google.api.http) = {
+            get: "/api/answers"
+        };
+    }
+}
+
+message Answer {
+    int32 id = 1;
+    string content = 2;
+    bool isCorrect = 3;
+    int32 questionId = 4;
+}
+
+message CreateAnswerRequest {
+    string content = 1;
+    bool isCorrect = 2;
+    int32 questionId = 3;
+}
+
+message UpdateAnswerRequest {
+    int32 id = 1;
+    string content = 2;
+    bool isCorrect = 3;
+}
+
+message GetAnswerRequest {
+    int32 id = 1;
+}
+
+message DeleteAnswerRequest {
+    int32 id = 1;
+}
+
+message QueryAnswersRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    google.protobuf.Int32Value questionId = 5;
+}
+
+message AnswerList {
+    repeated AnswerResponse answers = 1;
+}
+
+message AnswerResponse {
+    int32 id = 1;
+    string content = 2;
+    bool isCorrect = 3;
+    int32 questionId = 4;
+}
+
+message PagedAnswerList {
+    repeated AnswerResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}

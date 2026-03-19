@@ -1,0 +1,113 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package certificate;
+
+service GrpcCertificate {
+//  rpc CreateCertificate (CreateCertificateRequest) returns (GrpcCertificateResponse) {
+//    option (google.api.http) = {
+//      post: "/api/certificates"
+//      body: "*"
+//    };
+//  }
+//
+//  rpc DeleteCertificate (DeleteCertificateRequest) returns (DeleteCertificateResponse) {
+//    option (google.api.http) = {
+//      delete: "/api/certificates/{id}"
+//    };
+//  }
+
+  rpc GetCertificateById (GetCertificateRequest) returns (GrpcCertificateDetail) {
+    option (google.api.http) = {
+      get: "/api/certificates/{id}"
+    };
+  }
+
+  rpc GetPagedCertificates (GetCertificatesRequest) returns (GrpcPagedCertificatesResponse) {
+    option (google.api.http) = {
+      get: "/api/certificates"
+    };
+  }
+}
+
+message CreateCertificateRequest {
+  string userId = 1;
+  google.protobuf.Int32Value courseEnrollmentId = 2;
+  google.protobuf.Int32Value curriculumEnrollmentId = 3;
+  CertificateType certificateType = 4;
+}
+
+message DeleteCertificateRequest {
+  int32 id = 1;
+}
+
+message GetCertificateRequest {
+  int32 id = 1;
+}
+
+message GetCertificatesRequest {
+  int32 pageNumber = 1;
+  int32 pageSize = 2;
+  google.protobuf.StringValue search = 3;
+  google.protobuf.StringValue orderBy = 4;
+  google.protobuf.StringValue userId = 5;
+  google.protobuf.StringValue certificateType = 6;
+  google.protobuf.Int32Value courseEnrollmentId = 7;
+  google.protobuf.Int32Value curriculumEnrollmentId = 8;
+}
+
+message GrpcCertificateResponse {
+  GrpcCertificateModel certificate = 1;
+}
+
+message GrpcPagedCertificatesResponse {
+  repeated GrpcCertificateModel items = 1;
+  int32 totalCount = 2;
+  int32 pageNumber = 3;
+  int32 pageSize = 4;
+  int32 totalPages = 5;
+}
+
+message DeleteCertificateResponse {
+  bool success = 1;
+}
+
+message GrpcCertificateModel {
+  int32 id = 1;
+  string userId = 2;
+  google.protobuf.Int32Value courseEnrollmentId = 3;
+  google.protobuf.Int32Value curriculumEnrollmentId = 4;
+  string certificateType = 5;
+  google.protobuf.Timestamp issueDate = 6;
+  string verificationCode = 7;
+  string certificateUrl = 8;
+  google.protobuf.StringValue userName = 9;
+  google.protobuf.StringValue title = 10;
+  google.protobuf.Timestamp completedAt = 11;
+}
+
+message GrpcCertificateDetail {
+  int32 id = 1;
+  string userId = 2;
+  google.protobuf.Int32Value courseEnrollmentId = 3;
+  google.protobuf.Int32Value curriculumEnrollmentId = 4;
+  string certificateType = 5;
+  google.protobuf.Timestamp issueDate = 6;
+  string verificationCode = 7;
+  string certificateUrl = 8;
+  google.protobuf.StringValue userName = 9;
+  google.protobuf.StringValue title = 10;
+  google.protobuf.Timestamp completedAt = 11;
+  repeated string lessons = 12;
+}
+
+enum CertificateType {
+  UNKNOWN = 0;
+  COURSE = 1;
+  CURRICULUM = 2;
+}

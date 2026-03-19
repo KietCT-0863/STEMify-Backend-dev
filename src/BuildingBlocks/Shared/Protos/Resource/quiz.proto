@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+import "Protos/Resource/question.proto";
+
+package resource;
+
+service QuizService {
+    rpc CreateQuiz (CreateQuizRequest) returns (QuizResponse) {
+        option (google.api.http) = {
+            post: "/api/quizzes"
+            body: "*"
+        };
+    }
+    rpc GetQuiz (GetQuizRequest) returns (QuizResponse) {
+        option (google.api.http) = {
+            get: "/api/quizzes/{id}"
+        };
+    }
+    rpc UpdateQuiz (UpdateQuizRequest) returns (QuizResponse) {
+        option (google.api.http) = {
+            patch: "/api/quizzes/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteQuiz (DeleteQuizRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/quizzes/{id}"
+        };
+    }
+    rpc ListQuizzes (google.protobuf.Empty) returns (QuizList);
+    rpc QueryQuizzes (QueryQuizzesRequest) returns (PagedQuizList) {
+        option (google.api.http) = {
+            get: "/api/quizzes"
+        };
+    }
+    rpc GetQuizQuestionsTemplate (google.protobuf.Empty) returns (QuizQuestionsTemplate) {
+        option (google.api.http) = {
+            get: "/api/quizzes/template"
+        };
+    }
+    rpc ImportQuizQuestions (ImportQuizQuestionsRequest) returns (QuizImportResult) {
+        option (google.api.http) = {
+            post: "/api/quizzes/{id}/import"
+            body: "*"
+        };
+    }
+}
+
+enum QuizStatus {
+    DRAFT = 0;
+    PUBLISHED = 1;
+    ARCHIVED = 2;
+    DELETED = 3;
+}
+
+message Quiz {
+    int32 id = 1;
+    string title = 2;
+    double totalMarks = 3;
+    double passingMarks = 4;
+    int32 duration = 5;
+    string createdByUserId = 6;
+    QuizStatus status = 7;
+    int32 sectionId = 8;
+    google.protobuf.Timestamp createdDate = 9;
+    google.protobuf.Timestamp lastModifiedDate = 10;
+}
+
+message CreateQuizRequest {
+    string title = 1;
+    double totalMarks = 2;
+    double passingMarks = 3;
+    int32 durationDays = 4;
+    google.protobuf.Int32Value timeLimitMinutes = 5;
+    string contentType = 6;
+    google.protobuf.StringValue description = 7;
+    int32 sectionId = 8;
+    google.protobuf.Int32Value cooldownHours = 9;
+    google.protobuf.Int32Value maxAttemptAllowed = 10;
+}
+
+message UpdateQuizRequest {
+    int32 id = 1;
+    google.protobuf.StringValue title = 2;
+    google.protobuf.Int64Value totalMarks = 3;
+    google.protobuf.Int64Value passingMarks = 4;
+    google.protobuf.Int32Value durationDays = 5;
+    google.protobuf.Int32Value timeLimitMinutes = 6;
+    google.protobuf.StringValue status = 7;
+    google.protobuf.StringValue description = 8;
+    google.protobuf.Int32Value cooldownHours = 9;
+    google.protobuf.Int32Value maxAttemptAllowed = 10;
+}
+
+message GetQuizRequest {
+    int32 id = 1;
+}
+
+message DeleteQuizRequest {
+    int32 id = 1;
+}
+
+message QueryQuizzesRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    google.protobuf.Int32Value contentId = 5;
+}
+
+message QuizList {
+    repeated QuizResponse quizzes = 1;
+}
+
+message QuizResponse {
+    int32 id = 1;
+    string title = 2;
+    double totalMarks = 3;
+    double passingMarks = 4;
+    int32 durationDays = 5;
+    google.protobuf.StringValue description = 6;
+    string status = 7;
+    int32 contentId = 8;
+    repeated resource.QuestionResponse questions = 9;
+    google.protobuf.Int32Value timeLimitMinutes = 10;
+    google.protobuf.Int32Value totalQuestions = 11;
+    google.protobuf.Int32Value cooldownHours = 12;
+    google.protobuf.Int32Value maxAttemptAllowed = 13;
+}
+
+message PagedQuizList {
+    repeated QuizResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message QuizQuestionsTemplate  {
+    google.protobuf.BytesValue csvFile = 1;
+    string fileName = 2;
+}
+
+message ImportQuizQuestionsRequest  {
+    int32 id = 1;
+    google.protobuf.BytesValue csvFile = 2;
+}
+
+message QuizImportResult {
+    int32 totalRows = 1;
+    int32 successCount = 2;
+    int32 failureCount = 3;
+    repeated QuizImportError errors = 4;
+}
+
+message QuizImportError  {
+    int32 rowNumber = 1;
+    string field = 2;
+    string errorMessage = 3;
+    string rowData = 4;
+}

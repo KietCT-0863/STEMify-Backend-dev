@@ -1,0 +1,131 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+
+package resource;
+
+service LessonAssetService {
+    rpc CreateLessonAssets (CreateLessonAssetsRequets) returns (CreateLessonAssetsResponse) {
+        option (google.api.http) = {
+            post: "/api/lessons/{lessonId}/lesson-assets"
+            body: "*"
+        };
+    }
+    rpc GetLessonAssetById (GetLessonAssetByIdRequest) returns (LessonAssetResponse) {
+        option (google.api.http) = {
+            get: "/api/lessons/{lessonId}/lesson-assets/{id}"
+        };
+    }
+    rpc DeleteLessonAsset (DeleteLessonAssetRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/lessons/{lessonId}/lesson-assets"
+            body: "*"
+        };
+    }
+    rpc GetLessonAssetList (LessonAssetParams) returns (PagedLessonAssetList){
+        option (google.api.http) = {
+            get: "/api/lessons/{lessonId}/lesson-assets"
+        };
+    };
+
+    rpc CreateLessonAssetTags (CreateLessonAssetTagsRequet) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/api/lessons/{lessonId}/lesson-assets/{lessonAssetId}/tags"
+            body: "*"
+        };
+    }
+    rpc DeleteLessonAssetTags (DeleteLessonAssetTagsRequet) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/lessons/{lessonId}/lesson-assets/{lessonAssetId}/tags"
+            body: "*"
+        };
+    }
+    
+}
+
+message CreateLessonAssetModel {
+    string name = 1;
+    google.protobuf.BytesValue assetBytes = 2;
+}
+
+message CreateLessonAssetsRequets {
+    int32 lessonId = 1;
+    repeated CreateLessonAssetModel lessonAssets = 2;
+}
+
+message CreateLessonAssetResponseModel {
+    int32 id = 1;
+    string assetUrl = 2;
+}
+message CreateLessonAssetsResponse {
+    repeated CreateLessonAssetResponseModel assets = 1;
+}
+
+message CreateLessonAssetTagsRequet {
+    int32 lessonId = 1;
+    int32 lessonAssetId = 2;
+    repeated int32 tagIds = 3;
+    repeated string tagNames = 4;
+}
+
+message GetLessonAssetByIdRequest {
+    int32 lessonId = 1;
+    int32 id = 2;
+}
+
+message DeleteLessonAssetRequest {
+    int32 lessonId = 1;
+    repeated int32 ids = 2;
+}
+
+message LessonAssetParams {
+    int32 lessonId = 1;
+    google.protobuf.StringValue type = 2;
+    google.protobuf.StringValue search = 3;
+    int32 pageNumber = 4;
+    int32 pageSize = 5;
+    google.protobuf.Int32Value tagId = 6;
+}
+
+message LessonAssetResponse {
+    int32 id = 1;
+    string name = 2;
+    string type = 3;
+    string format = 4;
+    string assetUrl = 5;
+    int32 lessonId = 6;
+    int64 size = 7;
+    google.protobuf.Int32Value height = 8;
+    google.protobuf.Int32Value width = 9;
+    google.protobuf.Int32Value duration = 10;
+    google.protobuf.Timestamp createdAt = 11;
+    string publicId = 12;
+    repeated string tags = 13;
+}
+
+message PagedLessonAssetList {
+    repeated LessonAssetModel items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message LessonAssetModel {
+    int32 id = 1;
+    string name = 2;
+    string assetUrl = 3;
+    int32 width = 4;
+    int32 height = 5;
+}
+
+message DeleteLessonAssetTagsRequet {
+    int32 lessonId = 1;
+    int32 lessonAssetId = 2;
+    repeated int32 tagIds = 3;
+}

@@ -1,0 +1,375 @@
+groups:
+  # Infrastructure and Service Health Alerts
+  - name: infrastructure-health
+    interval: 30s
+    rules:
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "Service {{ $labels.job }} (instance {{ $labels.instance }}) has been unreachable for more than 1 minute."
+          runbook_url: "https://docs.stemify.com/runbooks/service-down"
+
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_server_request_duration_seconds_count{http_response_status_code=~"5.."}[5m])) by (job)
+            /
+            sum(rate(http_server_request_duration_seconds_count[5m])) by (job)
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "High HTTP 5xx error rate on {{ $labels.job }}"
+          description: "Service {{ $labels.job }} has {{ $value | humanizePercentage }} error rate (threshold: 5%)."
+          runbook_url: "https://docs.stemify.com/runbooks/high-error-rate"
+
+      - alert: HighResponseTime
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_server_request_duration_seconds_bucket[5m])) by (job, le)
+          ) > 2
+        for: 10m
+        labels:
+          severity: warning
+          category: performance
+        annotations:
+          summary: "High response time on {{ $labels.job }}"
+          description: "Service {{ $labels.job }} p95 latency is {{ $value }}s (threshold: 2s)."
+          runbook_url: "https://docs.stemify.com/runbooks/high-latency"
+
+      - alert: SLOViolation
+        expr: |
+          (
+            1 - (
+              sum(rate(http_server_request_duration_seconds_count{http_response_status_code=~"5.."}[30m])) or vector(0)
+              /
+              sum(rate(http_server_request_duration_seconds_count[30m]))
+            )
+          ) < 0.999
+        for: 5m
+        labels:
+          severity: critical
+          category: slo
+        annotations:
+          summary: "SLO violation: Availability below 99.9%"
+          description: "Service availability is {{ $value | humanizePercentage }} over last 30 minutes (SLO: 99.9%)."
+          runbook_url: "https://docs.stemify.com/runbooks/slo-violation"
+
+  # Authentication & Security Alerts
+  - name: security-alerts
+    interval: 1m
+    rules:
+      - alert: HighFailedLoginRate
+        expr: |
+          sum(rate(identity_login_failures_total[5m])) > 10
+        for: 3m
+        labels:
+          severity: warning
+          category: security
+        annotations:
+          summary: "High failed login rate detected"
+          description: "Failed login rate is {{ $value }} attempts/sec over last 5 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/failed-logins"
+
+      - alert: AccountLockoutSpike
+        expr: |
+          sum(increase(identity_accounts_lockouts_total[10m])) > 5
+        for: 1m
+        labels:
+          severity: critical
+          category: security
+        annotations:
+          summary: "Unusual account lockout activity"
+          description: "{{ $value }} accounts locked out in last 10 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/account-lockouts"
+
+      - alert: SecurityEventDetected
+        expr: |
+          sum(increase(identity_security_events_total{event_type=~"suspicious_login|password_breach"}[5m])) > 0
+        for: 1m
+        labels:
+          severity: critical
+          category: security
+        annotations:
+          summary: "Security event detected: {{ $labels.event_type }}"
+          description: "{{ $value }} security events of type {{ $labels.event_type }} detected."
+          runbook_url: "https://docs.stemify.com/runbooks/security-events"
+
+      - alert: SuspiciousPaymentAttempts
+        expr: |
+          sum(increase(payment_suspicious_attempts_total[5m])) > 5
+        for: 2m
+        labels:
+          severity: warning
+          category: security
+        annotations:
+          summary: "Suspicious payment attempts detected"
+          description: "{{ $value }} suspicious payment attempts in last 5 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/suspicious-payments"
+
+      - alert: InvalidTokenValidations
+        expr: |
+          (
+            sum(rate(identity_tokens_validations_total{status="invalid"}[5m]))
+            /
+            sum(rate(identity_tokens_validations_total[5m]))
+          ) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          category: security
+        annotations:
+          summary: "High rate of invalid token validations"
+          description: "{{ $value | humanizePercentage }} of token validations are invalid."
+          runbook_url: "https://docs.stemify.com/runbooks/invalid-tokens"
+
+  # Payment Processing Alerts
+  - name: payment-alerts
+    interval: 1m
+    rules:
+      - alert: PaymentGatewayDown
+        expr: |
+          sum(increase(payment_gateway_errors_total{error_type="timeout"}[5m])) by (gateway) > 10
+        for: 3m
+        labels:
+          severity: critical
+          category: business
+        annotations:
+          summary: "Payment gateway {{ $labels.gateway }} experiencing issues"
+          description: "Gateway {{ $labels.gateway }} has {{ $value }} timeout errors in last 5 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/gateway-down"
+
+      - alert: HighPaymentFailureRate
+        expr: |
+          (
+            sum(rate(payment_transactions_total{status="failed"}[10m]))
+            /
+            sum(rate(payment_transactions_total[10m]))
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          category: business
+        annotations:
+          summary: "High payment failure rate"
+          description: "Payment failure rate is {{ $value | humanizePercentage }} (threshold: 5%)."
+          runbook_url: "https://docs.stemify.com/runbooks/payment-failures"
+
+      - alert: PendingPaymentsBacklog
+        expr: |
+          payment_pending > 100
+        for: 15m
+        labels:
+          severity: warning
+          category: business
+        annotations:
+          summary: "Large number of pending payments"
+          description: "{{ $value }} payments pending for more than 15 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/pending-payments"
+
+  # Order Processing Alerts
+  - name: order-alerts
+    interval: 1m
+    rules:
+      - alert: HighOrderCancellationRate
+        expr: |
+          (
+            sum(rate(order_orders_cancelled_total[30m]))
+            /
+            sum(rate(order_orders_created_total[30m]))
+          ) > 0.1
+        for: 10m
+        labels:
+          severity: warning
+          category: business
+        annotations:
+          summary: "High order cancellation rate"
+          description: "{{ $value | humanizePercentage }} of orders are being cancelled (threshold: 10%)."
+          runbook_url: "https://docs.stemify.com/runbooks/order-cancellations"
+
+      - alert: SagaCompensationSpike
+        expr: |
+          sum(increase(order_saga_compensations_total[10m])) > 10
+        for: 2m
+        labels:
+          severity: warning
+          category: business
+        annotations:
+          summary: "High saga compensation rate"
+          description: "{{ $value }} saga compensations in last 10 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/saga-compensations"
+
+      - alert: PendingOrdersBacklog
+        expr: |
+          order_orders_pending > 500
+        for: 10m
+        labels:
+          severity: warning
+          category: business
+        annotations:
+          summary: "Large pending orders backlog"
+          description: "{{ $value }} orders pending for more than 10 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/pending-orders"
+
+  # RabbitMQ Messaging Alerts
+  - name: rabbitmq-alerts
+    interval: 30s
+    rules:
+      - alert: RabbitMQConnectionDown
+        expr: |
+          rabbitmq_connection_status == 0
+        for: 1m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "RabbitMQ connection lost"
+          description: "RabbitMQ connection has been down for more than 1 minute."
+          runbook_url: "https://docs.stemify.com/runbooks/rabbitmq-down"
+
+      - alert: RabbitMQQueueBacklog
+        expr: |
+          rabbitmq_queue_depth > 1000
+        for: 10m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "RabbitMQ queue {{ $labels.queue }} backlog"
+          description: "Queue {{ $labels.queue }} has {{ $value }} messages backlogged."
+          runbook_url: "https://docs.stemify.com/runbooks/queue-backlog"
+
+      - alert: RabbitMQOldMessages
+        expr: |
+          rabbitmq_message_age > 300
+        for: 5m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "Old messages in queue {{ $labels.queue }}"
+          description: "Oldest message in queue {{ $labels.queue }} is {{ $value }}s old (threshold: 300s)."
+          runbook_url: "https://docs.stemify.com/runbooks/old-messages"
+
+      - alert: HighMessageProcessingFailureRate
+        expr: |
+          (
+            sum(rate(rabbitmq_messages_consumed_total{status="nack"}[5m])) by (queue)
+            /
+            sum(rate(rabbitmq_messages_consumed_total[5m])) by (queue)
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "High message processing failure rate on {{ $labels.queue }}"
+          description: "{{ $value | humanizePercentage }} of messages failing in queue {{ $labels.queue }}."
+          runbook_url: "https://docs.stemify.com/runbooks/message-failures"
+
+      - alert: DeadLetterQueueGrowing
+        expr: |
+          sum(increase(rabbitmq_deadletter_messages_total[10m])) by (queue) > 50
+        for: 5m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Dead letter queue growing for {{ $labels.queue }}"
+          description: "{{ $value }} messages moved to dead letter in last 10 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/dead-letter-queue"
+
+      - alert: NoActiveConsumers
+        expr: |
+          rabbitmq_consumers_count == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "No active consumers for queue {{ $labels.queue }}"
+          description: "Queue {{ $labels.queue }} has no active consumers for 5 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/no-consumers"
+
+  # Notification Service Alerts
+  - name: notification-alerts
+    interval: 1m
+    rules:
+      - alert: HighNotificationFailureRate
+        expr: |
+          (
+            sum(rate(notification_sent_total{status="failed"}[10m])) by (notification_type)
+            /
+            sum(rate(notification_sent_total[10m])) by (notification_type)
+          ) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          category: business
+        annotations:
+          summary: "High notification failure rate for {{ $labels.notification_type }}"
+          description: "{{ $value | humanizePercentage }} of {{ $labels.notification_type }} notifications failing."
+          runbook_url: "https://docs.stemify.com/runbooks/notification-failures"
+
+      - alert: NotificationQueueBacklog
+        expr: |
+          notification_queue_size > 1000
+        for: 10m
+        labels:
+          severity: warning
+          category: business
+        annotations:
+          summary: "Large notification queue backlog"
+          description: "{{ $value }} notifications queued for more than 10 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/notification-backlog"
+
+      - alert: EmailProviderErrors
+        expr: |
+          sum(increase(notification_provider_errors_total{provider=~"sendgrid|mailgun"}[10m])) by (provider) > 20
+        for: 5m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Email provider {{ $labels.provider }} experiencing errors"
+          description: "{{ $value }} errors from provider {{ $labels.provider }} in last 10 minutes."
+          runbook_url: "https://docs.stemify.com/runbooks/email-provider-errors"
+
+  # Classroom Service Alerts
+  - name: classroom-alerts
+    interval: 1m
+    rules:
+      - alert: LowClassroomAttendance
+        expr: |
+          classroom_attendance_rate < 0.5
+        for: 15m
+        labels:
+          severity: warning
+          category: business
+        annotations:
+          summary: "Low classroom attendance rate"
+          description: "Attendance rate is {{ $value | humanizePercentage }} (threshold: 50%)."
+          runbook_url: "https://docs.stemify.com/runbooks/low-attendance"
+
+  # Bulk Provisioning Alerts
+  - name: bulk-provisioning-alerts
+    interval: 1m
+    rules:
+      - alert: BulkJobStuck
+        expr: |
+          identity_bulk_jobs_active > 0
+        for: 2h
+        labels:
+          severity: warning
+          category: business
+        annotations:
+          summary: "Bulk provisioning job stuck"
+          description: "Bulk job has been active for more than 2 hours."
+          runbook_url: "https://docs.stemify.com/runbooks/bulk-job-stuck"

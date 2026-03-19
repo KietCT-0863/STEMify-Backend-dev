@@ -1,0 +1,99 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="8.0.19" />
+    <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.8.19" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Email\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="google\api\*.proto" GrpcServices="None" />
+    <None Remove="Protos\Resource\curriculum_course.proto" />
+    <Protobuf Include="Protos\Cart\cart.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Classroom\certificates.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Classroom\assignment_question_attempt.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Classroom\assignment_attempt.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Classroom\student_assignment.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Classroom\rubric_score.proto">
+      <GrpcServices>Both</GrpcServices>
+    </Protobuf>
+    <Protobuf Include="Protos\Classroom\curriculum_enrollments.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Order\license_assignment.proto">
+      <GrpcServices>Both</GrpcServices>
+    </Protobuf>
+    <Protobuf Include="Protos\Order\admin.proto">
+      <GrpcServices>Both</GrpcServices>
+    </Protobuf>
+    <Protobuf Include="Protos\Order\organization_subscription_order.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Order\contract.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Order\organization_type.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Order\organization.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Product\plan_billing_cycle.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Product\product.proto">
+      <GrpcServices>Both</GrpcServices>
+    </Protobuf>
+    <Protobuf Include="Protos\Product\component.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Product\kit.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Product\kit_image.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\curriculum_emulation.proto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Protobuf>
+    <Protobuf Include="Protos\Resource\rubric_criterion.proto">
+      <GrpcServices>Both</GrpcServices>
+    </Protobuf>
+    <Protobuf Include="Protos\Resource\age_range.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\assignment_question.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\category.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\answer.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\assignment.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\curriculum.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\course_learning_outcome.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\curriculum_course.proto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Protobuf>
+    <Protobuf Include="Protos\Resource\export.proto">
+      <GrpcServices>Both</GrpcServices>
+    </Protobuf>
+    <Protobuf Include="Protos\Resource\question.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\quiz.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\content.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\section.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\lesson.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\course.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\skill.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\lesson_asset.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\tag.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\program_learning_outcome.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Resource\standard.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Classroom\classrooms.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Classroom\course_enrollments.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Notification\notification.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\User\user.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\User\group.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Classroom\student_progress.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Product\educational_product.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\Product\plan.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\Product\kit_component.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\Agent\agent.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\Emulator\emulator.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\Emulator\template.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\Emulator\operation.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\User\job_role.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\User\contact.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\User\bulk_provisioning.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\User\invitation.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\Classroom\student_quiz.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\Classroom\quiz_attempt.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\Classroom\classroom_student.proto" GrpcServices="Both" />
+  </ItemGroup>
+</Project>

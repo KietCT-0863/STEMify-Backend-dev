@@ -1,0 +1,116 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package courseEnrollment;
+
+service GrpcCourseEnrollment {
+	rpc CreateCourseEnrollment (CreateCourseEnrollmentRequest) returns (GrpcCourseEnrollmentResponse) {
+		option (google.api.http) = {
+			post: "/api/course-enrollments"
+			body: "*"
+		};
+	}
+	rpc UpdateCourseEnrollment (UpdateCourseEnrollmentRequest) returns (GrpcCourseEnrollmentResponse) {
+		option (google.api.http) = {
+			patch: "/api/course-enrollments/{id}"
+			body: "*"
+		};
+	}
+	rpc DeleteCourseEnrollment (DeleteCourseEnrollmentRequest) returns (DeleteCourseEnrollmentResponse) {
+		option (google.api.http) = {
+			delete: "/api/course-enrollments/{id}"
+		};
+	}
+	//rpc GetCourseEnrollmentById (GetCourseEnrollmentRequest) returns (GrpcCourseEnrollmentResponse) {
+	//	option (google.api.http) = {
+	//		get: "/api/course-enrollments/{id}"
+	//	};
+	//}
+	rpc GetPagedCourseEnrollments (GetCourseEnrollmentsRequest) returns (GrpcPagedCourseEnrollmentsResponse) {
+		option (google.api.http) = {
+			get: "/api/course-enrollments"
+		};
+	}
+}
+
+message CreateCourseEnrollmentRequest {
+	string studentId = 1;
+	int32 courseId = 2;
+	string status = 3;
+	google.protobuf.Int32Value curriculumEnrollmentId = 4;
+	google.protobuf.Int32Value classroomId = 5;
+}
+
+message UpdateCourseEnrollmentRequest {
+	int32 id = 1;
+	string status = 2;
+}
+
+message DeleteCourseEnrollmentRequest {
+	int32 id = 1;
+}
+
+message GetCourseEnrollmentRequest {
+	int32 id = 1;
+}
+
+message GetCourseEnrollmentsRequest {
+	int32 pageNumber = 1;
+	int32 pageSize = 2;
+	google.protobuf.StringValue search = 3;
+	google.protobuf.StringValue orderBy = 4;
+	google.protobuf.StringValue studentId = 5; 
+	string status = 6;
+	google.protobuf.Int32Value courseId = 7;
+	google.protobuf.StringValue verificationCode = 8;
+	google.protobuf.Int32Value classroomId = 9;
+}
+
+message GrpcCourseEnrollmentResponse {
+	GrpcCourseEnrollmentModel courseEnrollment = 1;
+}
+
+message GrpcPagedCourseEnrollmentsResponse {
+	repeated GrpcCourseEnrollmentModel items = 1;
+	int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}
+
+message DeleteCourseEnrollmentResponse {
+  bool success = 1;
+}
+
+message GrpcCourseEnrollmentModel {
+	int32 id = 1;
+	string studentId = 2;
+	int32 courseId = 3;
+	string courseTitle = 4;
+	google.protobuf.StringValue coverImageUrl = 5;
+	google.protobuf.StringValue description = 6;
+	int32 duration = 7;
+	string ageRangeLabel = 8;
+	google.protobuf.Timestamp enrolledAt = 9;
+	google.protobuf.Timestamp completedAt = 10;
+	google.protobuf.StringValue status = 11;
+	google.protobuf.Int32Value finalScore = 12;
+	google.protobuf.StringValue verificationCode = 13;
+	google.protobuf.StringValue certificateUrl = 14;
+	google.protobuf.Int32Value certificateId = 15;
+	int32 progressPercentage = 16;
+	string studentName = 17;
+	google.protobuf.Int32Value classroomId = 18;
+}
+
+enum CourseEnrollmentStatus {
+	UNKNOWN = 0;
+	INPROGRESS = 1;
+	COMPLETED = 2;
+	DROPPED = 3;
+}

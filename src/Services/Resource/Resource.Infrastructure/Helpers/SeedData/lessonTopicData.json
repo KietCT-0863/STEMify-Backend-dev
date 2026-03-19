@@ -1,0 +1,122 @@
+[
+  {
+    "LessonId": 1,
+    "TopicId": 1
+  },
+  {
+    "LessonId": 1,
+    "TopicId": 2
+  },
+  {
+    "LessonId": 1,
+    "TopicId": 3
+  },
+  {
+    "LessonId": 2,
+    "TopicId": 4
+  },
+  {
+    "LessonId": 2,
+    "TopicId": 5
+  },
+  {
+    "LessonId": 2,
+    "TopicId": 6
+  },
+  {
+    "LessonId": 3,
+    "TopicId": 3
+  },
+  {
+    "LessonId": 3,
+    "TopicId": 4
+  },
+  {
+    "LessonId": 3,
+    "TopicId": 6
+  },
+  {
+    "LessonId": 4,
+    "TopicId": 4
+  },
+  {
+    "LessonId": 4,
+    "TopicId": 8
+  },
+  {
+    "LessonId": 4,
+    "TopicId": 9
+  },
+  {
+    "LessonId": 5,
+    "TopicId": 8
+  },
+  {
+    "LessonId": 5,
+    "TopicId": 9
+  },
+  {
+    "LessonId": 5,
+    "TopicId": 10
+  },
+  {
+    "LessonId": 6,
+    "TopicId": 11
+  },
+  {
+    "LessonId": 6,
+    "TopicId": 12
+  },
+  {
+    "LessonId": 6,
+    "TopicId": 13
+  },
+  {
+    "LessonId": 7,
+    "TopicId": 1
+  },
+  {
+    "LessonId": 7,
+    "TopicId": 11
+  },
+  {
+    "LessonId": 7,
+    "TopicId": 10
+  },
+  {
+    "LessonId": 8,
+    "TopicId": 1
+  },
+  {
+    "LessonId": 8,
+    "TopicId": 4
+  },
+  {
+    "LessonId": 8,
+    "TopicId": 7
+  },
+  {
+    "LessonId": 13,
+    "TopicId": 1
+  },
+  {
+    "LessonId": 13,
+    "TopicId": 4
+  },
+  {
+    "LessonId": 13,
+    "TopicId": 7
+  },
+  {
+    "LessonId": 14,
+    "TopicId": 1
+  },
+  {
+    "LessonId": 14,
+    "TopicId": 4
+  },
+  {
+    "LessonId": 14,
+    "TopicId": 7
+  }
+]

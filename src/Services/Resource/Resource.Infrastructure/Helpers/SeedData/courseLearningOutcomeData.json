@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "Urban Design Principles",
+    "Description": "Students will design urban layouts considering infrastructure and sustainability.",
+    "CourseId": 1
+  },
+  {
+    "Name": "Biome Ecosystem Knowledge",
+    "Description": "Students will explain ecosystem dynamics and create models of biomes.",
+    "CourseId": 2
+  },
+  {
+    "Name": "Renewable Energy Applications",
+    "Description": "Students will build working models to simulate renewable energy generation.",
+    "CourseId": 3
+  }
+]

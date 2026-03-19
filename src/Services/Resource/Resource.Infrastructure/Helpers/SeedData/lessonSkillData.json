@@ -1,0 +1,70 @@
+[
+  {
+    "LessonId": 1,
+    "SkillId": 1
+  },
+  {
+    "LessonId": 1,
+    "SkillId": 2
+  },
+  {
+    "LessonId": 1,
+    "SkillId": 4
+  },
+  {
+    "LessonId": 2,
+    "SkillId": 4
+  },
+  {
+    "LessonId": 2,
+    "SkillId": 5
+  },
+  {
+    "LessonId": 3,
+    "SkillId": 5
+  },
+  {
+    "LessonId": 3,
+    "SkillId": 6
+  },
+  {
+    "LessonId": 3,
+    "SkillId": 7
+  },
+  {
+    "LessonId": 4,
+    "SkillId": 4
+  },
+  {
+    "LessonId": 4,
+    "SkillId": 6
+  },
+  {
+    "LessonId": 4,
+    "SkillId": 8
+  },
+  {
+    "LessonId": 13,
+    "SkillId": 1
+  },
+  {
+    "LessonId": 13,
+    "SkillId": 2
+  },
+  {
+    "LessonId": 13,
+    "SkillId": 4
+  },
+  {
+    "LessonId": 14,
+    "SkillId": 3
+  },
+  {
+    "LessonId": 14,
+    "SkillId": 5
+  },
+  {
+    "LessonId": 14,
+    "SkillId": 7
+  }
+]

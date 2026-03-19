@@ -1,0 +1,81 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Order";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+package organization_type;
+
+service GrpcOrganizationTypeService {
+    rpc CreateOrganizationType (CreateOrganizationTypeRequest) returns (GrpcOrganizationTypeModel) {
+        option (google.api.http) = {
+            post: "/api/organization-types"
+            body: "*"
+        };
+    }
+
+    rpc UpdateOrganizationType (UpdateOrganizationTypeRequest) returns (GrpcOrganizationTypeModel) {
+        option (google.api.http) = {
+            patch: "/api/organization-types/{id}"
+            body: "*"
+        };
+    }
+
+    rpc DeleteOrganizationType (DeleteOrganizationTypeRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/organization-types/{id}"
+        };
+    }
+
+    rpc GetOrganizationTypeById (GetOrganizationTypeRequest) returns (GrpcOrganizationTypeModel) {
+        option (google.api.http) = {
+            get: "/api/organization-types/{id}"
+        };
+    }
+
+    rpc GetPagedOrganizationType (GetOrganizationTypeParams) returns (GrpcPagedOrganizationTypeResponse) {
+        option (google.api.http) = {
+            get: "/api/organization-types"
+        };
+    }
+}
+
+message CreateOrganizationTypeRequest {
+    string name = 1;
+}
+
+message UpdateOrganizationTypeRequest {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+}
+
+message DeleteOrganizationTypeRequest {
+    int32 id = 1;
+}
+
+message GetOrganizationTypeRequest {
+    int32 id = 1;
+}
+
+message GetOrganizationTypeParams {
+    google.protobuf.Int32Value pageNumber = 1;
+    google.protobuf.Int32Value pageSize = 2;
+    google.protobuf.StringValue search = 3;
+    google.protobuf.StringValue orderBy = 4;
+    google.protobuf.StringValue sortDirection = 5;
+}
+
+message GrpcPagedOrganizationTypeResponse {
+    repeated GrpcOrganizationTypeModel items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message GrpcOrganizationTypeModel {
+    int32 id = 1;
+    string name = 2;
+}

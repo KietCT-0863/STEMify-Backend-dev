@@ -1,0 +1,24 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/wrappers.proto";
+import "Protos/Classroom/rubric_score.proto";
+
+package assignmentQuestionAttempt;
+
+message GrpcAssignmentQuestionAttemptResponse {
+    int32 id = 1;
+    int32 assignmentAttemptId = 2;
+    int32 assignmentQuestionId = 3;
+    string answerText = 4;
+    string answerFileUrl = 5;
+    double points = 6;
+    repeated rubricScore.GrpcRubricScoreModel rubricScore = 7;
+}
+
+message CreateAssignmentQuestionAttemptRequest {
+    int32 assignmentQuestionId = 1;
+    google.protobuf.StringValue answerText = 2;
+    google.protobuf.BytesValue answerFile = 3;
+}

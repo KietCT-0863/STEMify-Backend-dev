@@ -1,0 +1,103 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "Protos/Classroom/assignment_question_attempt.proto";
+import "Protos/Classroom/rubric_score.proto";
+import "Protos/Resource/assignment.proto";
+
+package assignmentAttempt;
+
+service GrpcAssignmentAttempt {
+	rpc CreateAssignmentAttempt (CreateAssignmentAttemptRequest) returns (GrpcAssignmentAttemptResponse) {
+		option (google.api.http) = {
+			post: "/api/assignment-attempts"
+			body: "*"
+		};
+	}
+	rpc UpdateAssignmentAttempt (UpdateAssignmentAttemptRequest) returns (GrpcAssignmentAttemptResponse) {
+		option (google.api.http) = {
+			patch: "/api/assignment-attempts/{id}"
+			body: "*"
+		};
+	}
+	rpc GetAssignmentAttemptById (GetAssignmentAttemptByIdRequest) returns (GrpcAssignmentAttemptResponse) {
+		option (google.api.http) = {
+			get: "/api/assignment-attempts/{id}"
+		};
+	}
+	rpc GetPagedAssignmentAttempts (GetAssignmentAttemptParams) returns (GrpcPagedAssignmentAttemptsResponse) {
+		option (google.api.http) = {
+			get: "/api/assignment-attempts"
+		};
+	}
+}
+
+message CreateAssignmentAttemptRequest {
+	 int32 studentAssignmentId = 1;
+	 repeated assignmentQuestionAttempt.CreateAssignmentQuestionAttemptRequest questionAttempts = 2;
+ }
+
+message UpdateAssignmentAttemptRequest {
+	int32 id = 1;
+	google.protobuf.StringValue feedback = 2;
+	repeated CreateQuestionGradeRequest questionGrades = 3;
+ }
+
+message CreateQuestionGradeRequest {
+	int32 assignmentQuestionAttemptId = 1;
+	repeated rubricScore.CreateRubricScoreRequest rubricScores = 2;
+ }
+
+message GetAssignmentAttemptByIdRequest {
+	int32 id = 1;
+}
+
+message GetAssignmentAttemptParams {
+	int32 pageNumber = 1;
+	int32 pageSize = 2;
+	google.protobuf.StringValue search = 3;
+	google.protobuf.StringValue orderBy = 4;
+	google.protobuf.StringValue studentId = 5; 
+	string status = 6;
+	google.protobuf.Int32Value courseId = 7;
+	google.protobuf.Int32Value classroomId = 8;
+	google.protobuf.Int32Value assignmentId = 9;
+	google.protobuf.Timestamp fromDate = 10;
+	google.protobuf.Timestamp toDate = 11;
+}
+
+message GrpcAssignmentAttemptResponse {
+	int32 id = 1;
+	int32 studentAssignmentId = 2;
+	string teacherId = 3;
+	string submittedAt = 4;
+	double totalScore = 5;
+	string status = 6;
+	string feedback = 7;
+	int32 attemptNumber = 8;
+	repeated assignmentQuestionAttempt.GrpcAssignmentQuestionAttemptResponse questionAttempts = 9;
+}
+
+message GrpcAssignmentAttemptModel {
+	int32 id = 1;
+	int32 studentAssignmentId = 2;
+	string teacherId = 3;
+	google.protobuf.Timestamp submittedAt = 4;
+	double totalScore = 5;
+	string status = 6;
+	string feedback = 7;
+	int32 attemptNumber = 8;
+	assignment.GrpcAssignment assignment = 9;
+}
+
+message GrpcPagedAssignmentAttemptsResponse {
+	repeated GrpcAssignmentAttemptModel items = 1;
+	int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}

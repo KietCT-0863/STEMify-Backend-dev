@@ -1,0 +1,50 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Product";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package product;
+
+service GrpcPlanBillingCycleService {
+    rpc GetPlanBillingCycleById (GetPlanBillingCycleRequest) returns (GrpcPlanBillingCycleModel) {
+        option (google.api.http) = {
+            get: "/api/plan-billing-cycles/{id}"
+        };
+    }
+}
+
+message GrpcPlanBillingCycleDetail {
+    int32 id = 1;
+    int32 planId = 2;
+    string billingCycle = 3;
+    double price = 4;
+    google.protobuf.Int32Value maxTeacherSeats = 5;
+    google.protobuf.Int32Value maxStudentSeats = 6;
+    bool isAddOn = 7;
+    google.protobuf.Int32Value parentPlanBillingCycleId = 8;
+}
+
+message GetPlanBillingCycleRequest {
+    int32 id = 1;
+}
+
+message GrpcPlanBillingCycleModel {
+    int32 id = 1;
+    string name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue accessSupportDetail = 4;
+    int32 curriculumCount = 5;
+    BillingCycle billingCycle = 6;
+    double price = 7;
+    google.protobuf.Int32Value maxTeacherSeats = 8;
+    google.protobuf.Int32Value maxStudentSeats = 9;
+    bool isAddOn = 10;
+}
+
+enum BillingCycle {
+    BILLING_CYCLE_UNSPECIFIED = 0;
+    BILLING_CYCLE_SEMIANNUAL = 6;
+    BILLING_CYCLE_ANNUAL = 12;
+}

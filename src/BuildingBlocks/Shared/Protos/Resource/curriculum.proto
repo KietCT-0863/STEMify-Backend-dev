@@ -1,0 +1,215 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "Protos/Resource/course.proto";
+import "Protos/Emulator/emulator.proto";
+
+package resource;
+
+service CurriculumService {
+    rpc CreateCurriculum (CreateCurriculumRequest) returns (CurriculumResponse) {
+        option (google.api.http) = {
+            post: "/api/curriculums"
+            body: "*"
+        };
+    }
+    rpc GetCurriculum (GetCurriculumRequest) returns (CurriculumDetails) {
+        option (google.api.http) = {
+            get: "/api/curriculums/{id}"
+        };
+    }
+
+    rpc GetCurriculumRelations (GetCurriculumRelationsRequest) returns (CurriculumRelationsResponse) {
+        option (google.api.http) = {
+            get: "/api/curriculums/{id}/relations"
+        };
+    }
+
+    rpc UpdateCurriculum (UpdateCurriculumRequest) returns (CurriculumResponse) {
+        option (google.api.http) = {
+            patch: "/api/curriculums/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteCurriculum (DeleteCurriculumRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/curriculums/{id}"
+        };
+    }
+    rpc ListCurriculums (google.protobuf.Empty) returns (CurriculumList);
+    rpc QueryCurriculums (QueryCurriculumsRequest) returns (PagedCurriculumList) {
+        option (google.api.http) = {
+            get: "/api/curriculums"
+        };
+    }
+}
+
+message GetCurriculumRelationsRequest {
+    int32 id = 1;
+}
+
+message CurriculumRelationsResponse {
+  repeated CourseSnapshot courses = 1;
+  repeated EmulatorSnapshot emulators = 2;
+  string title = 3;
+  string code = 4;
+  google.protobuf.StringValue description = 5;
+  google.protobuf.StringValue imageUrl = 6;
+  int32 id = 7;
+}
+
+message CourseSnapshot {
+  int32 courseId = 1;
+  string title = 2;
+  google.protobuf.StringValue description = 3;
+  google.protobuf.StringValue imageUrl = 4;
+  string code = 5;
+  string level = 6;
+  google.protobuf.Int32Value kitId = 7;
+}
+
+message EmulatorSnapshot {
+  string emulationId = 1;
+  string name = 2;
+  google.protobuf.StringValue description = 3;
+  google.protobuf.StringValue thumbnailUrl = 4;
+}
+
+message CreateCurriculumRequest {
+    string title = 1;
+    string code = 2;
+    google.protobuf.BytesValue image = 3;
+    string description = 4;
+    string createdByUserId = 5;
+}
+
+message UpdateCurriculumRequest {
+    int32 id = 1;
+    google.protobuf.StringValue title = 2;
+    google.protobuf.StringValue code = 3;
+    google.protobuf.BytesValue image = 4;
+    google.protobuf.StringValue description = 5;
+    google.protobuf.StringValue status = 6;
+}
+
+message GetCurriculumRequest {
+    int32 id = 1;
+}
+
+message GetCurriculumIdsRequest {
+    int32 id = 1;
+}
+
+message DeleteCurriculumRequest {
+    int32 id = 1;
+}
+
+message QueryCurriculumsRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    string createdByUserId = 5;
+    string status = 6;
+    string sortDirection = 7;
+    string code = 8;
+}
+
+message CurriculumList {
+    repeated CurriculumResponse curriculums = 1;
+}
+
+message CurriculumResponse {
+    int32 id = 1;
+    string title = 2;
+    string code = 3;
+    string imageUrl = 4;
+    string description = 5;
+    string status = 6;
+    string createdByUserId = 7;
+    google.protobuf.StringValue approvedByUserId = 8;
+    google.protobuf.Timestamp approvedAt = 9;
+    google.protobuf.Timestamp createdDate = 10;
+    google.protobuf.Timestamp lastModifiedDate = 11;
+    string createdByUserName = 12;
+    repeated int32 kitIds = 13;
+    int32 courseCount = 14;
+    int32 duration = 15;
+}
+
+message CurriculumIdsResponse {
+    repeated int32 emulationIds = 1;
+    repeated int32 courseIds = 2;
+}
+
+message PagedCurriculumList {
+    repeated CurriculumResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message CurriculumDetails {
+    int32 id = 1;
+    string title = 2;
+    string code = 3;
+    string imageUrl = 4;
+    string description = 5;
+    string status = 6;
+    string createdByUserId = 7;
+    google.protobuf.StringValue approvedByUserId = 8;
+    google.protobuf.Timestamp approvedAt = 9;
+    google.protobuf.Timestamp createdDate = 10;
+    google.protobuf.Timestamp lastModifiedDate = 11;
+    string createdByUserName = 12;
+    int32 courseCount = 13;
+    repeated CourseDetails courses = 14;
+    repeated int32 kitIds = 15;
+    repeated string skills = 16;
+    repeated string topics = 17;
+    int32 duration = 18;
+    repeated emulator.EmulationListItem emulations = 19;
+}
+
+message CourseDetails {
+    int32 id = 1;
+    string title = 2;
+    string code = 3;
+    string imageUrl = 4;
+    string description = 5;
+    int32 duration = 6;
+    string status = 7;
+    string level = 8;
+    string ageRangeLabel = 9;
+    google.protobuf.Timestamp createdDate = 10;
+    int32 courseOrderIndex = 11;
+    repeated resource.GrpcLessonModel lessons = 12;
+}
+
+message KitDetails {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    int32 totalComponents = 4;
+    repeated KitImageDetails kitImages = 5;
+}
+
+message KitImageDetails {
+    int32 id = 1;
+    string imageUrl = 2;
+    string altText = 3;
+}
+
+message GrpcCurriculumInformation {
+    int32 id = 1;
+    string title = 2;
+    string imageUrl = 3;
+    string code = 4;
+    int32 courseCount = 5;
+}

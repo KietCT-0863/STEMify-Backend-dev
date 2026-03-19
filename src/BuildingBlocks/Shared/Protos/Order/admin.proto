@@ -1,0 +1,96 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Order";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package organization;
+
+service GrpcDashboardService {
+    rpc GetSystemAdminDashboard (GetSystemAdminDashboardRequest) returns (GetSystemAdminDashboardResponse) {
+        option (google.api.http) = {
+            get: "/api/admin/dashboard"
+        };
+    }
+}
+
+message GetSystemAdminDashboardRequest {
+    google.protobuf.StringValue period = 1; // "Month", "Quarter", "Year"
+}
+
+message GetSystemAdminDashboardResponse {
+    SystemAdminSummary summary = 1;
+    SystemAdminSubscriptionStats subscriptions = 2;
+    SystemAdminEnrollmentStats enrollments = 3;
+    repeated TopCourseModel topCourses = 4;
+    repeated TopOrganizationModel topOrganizations = 5;
+    PeriodComparisonModel periodComparison = 6;
+}
+
+message SystemAdminSummary {
+    int32 totalOrganizations = 1;
+    int32 totalEnrollments = 2;
+    int32 totalStudents = 3;
+    int32 totalTeachers = 4;
+    int32 totalClassrooms = 5;
+    int32 totalCertificates = 6;
+    double overallPassRate = 7;
+    int32 activeOrganizations = 8;
+}
+
+message SystemAdminSubscriptionStats {
+    int32 totalSubscriptions = 1;
+    int32 activeSubscriptions = 2;
+    int32 expiredSubscriptions = 3;
+    repeated SubscriptionByPlanModel byPlan = 4;
+    double totalRevenue = 5;
+}
+
+message SubscriptionByPlanModel {
+    string planName = 1;
+    int32 count = 2;
+    double revenue = 3;
+    int32 activeCount = 4;
+}
+
+message SystemAdminEnrollmentStats {
+    int32 totalEnrollments = 1;
+    int32 completedEnrollments = 2;
+    int32 inProgressEnrollments = 3;
+    repeated MonthlyEnrollmentModel enrollmentsByMonth = 4;
+    double completionRate = 5;
+}
+
+message MonthlyEnrollmentModel {
+    string month = 1; // "2025-01"
+    int32 count = 2;
+    int32 completed = 3;
+}
+
+message TopCourseModel {
+    int32 courseId = 1;
+    string courseCode = 2;
+    string courseName = 3;
+    int32 totalEnrollments = 4;
+    double completionRate = 5;
+    double averageScore = 6;
+    int32 totalClassrooms = 7;
+}
+
+message TopOrganizationModel {
+    int32 organizationId = 1;
+    string organizationName = 2;
+    int32 totalStudents = 3;
+    int32 totalEnrollments = 4;
+    double passRate = 5;
+    int32 activeSubscriptions = 6;
+    string organizationCode = 7;
+}
+
+message PeriodComparisonModel {
+    double organizationGrowth = 1; // percentage
+    double enrollmentGrowth = 2;
+    double studentGrowth = 3;
+    double revenueGrowth = 4;
+}

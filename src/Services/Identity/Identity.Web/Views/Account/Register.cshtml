@@ -1,0 +1,260 @@
+﻿@using Identity.Web.Controllers
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@section Styles {
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f9f9f9;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 80px;
+            height: 100vh;
+            padding: 40px;
+        }
+
+        .login-form-section {
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .brand-section {
+            margin-bottom: 20px;
+        }
+
+            .brand-section h1 {
+                font-size: 32px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .brand-section p {
+                font-size: 14px;
+                color: #666;
+            }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-check-input {
+            margin-right: 6px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #7DD3FC;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 16px 0;
+            position: relative;
+        }
+
+            .divider::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background: #ddd;
+                z-index: 0;
+            }
+
+            .divider span {
+                position: relative;
+                padding: 0 12px;
+                background: #f9f9f9;
+                z-index: 1;
+                font-size: 12px;
+                color: #999;
+            }
+
+        .social-btn {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .google-btn span {
+            color: #4285f4;
+        }
+
+        .facebook-btn span {
+            color: #1877f2;
+        }
+
+        .signup-link {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+            .signup-link a {
+                color: #FFA500;
+                text-decoration: none;
+                font-weight: 500;
+            }
+
+                .signup-link a:hover {
+                    text-decoration: underline;
+                }
+
+        .illustration-section {
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 24px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+        }
+
+            .illustration-section img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 24px;
+            }
+
+        @@media (max-width: 960px) {
+            .login-container
+
+        {
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .illustration-section {
+            order: -1;
+            max-width: 100%;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        }
+    </style>
+}
+
+<div class="login-container">
+    <div class="login-form-section">
+        <div class="brand-section">
+            <h1>Đăng ký tham gia <span style="color: #FFBA03">STEMify</span></h1>
+        </div>
+
+        <form asp-action="Register" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group" style="display: flex; gap: 16px;">
+                <div style="flex: 1;">
+                    <label asp-for="FirstName">Tên</label>
+                    <input asp-for="FirstName" class="form-input" placeholder="Tên" required />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div style="flex: 1;">
+                    <label asp-for="LastName">Họ</label>
+                    <input asp-for="LastName" class="form-input" placeholder="Họ" required />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-input" placeholder="Email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password">Mật khẩu</label>
+                <input asp-for="Password" class="form-input" type="password" placeholder="Mật khẩu" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ConfirmPassword">Xác nhận mật khẩu</label>
+                <input asp-for="ConfirmPassword" class="form-input" type="password" placeholder="Xác nhận mật khẩu" required />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Bio">Giới thiệu (tuỳ chọn)</label>
+                <textarea asp-for="Bio" class="form-input" style="height:100px" placeholder="Tell us about yourself (optional)"></textarea>
+                <span asp-validation-for="Bio" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="login-btn">Đăng ký tài khoản</button>
+
+            <div class="signup-link">
+                Bạn đã có tài khoản Stemify? <a asp-action="Login">Đăng nhập ngay</a>
+            </div>
+
+            <div class="divider"><span>HOẶC</span></div>
+
+            <button type="button" class="social-btn google-btn">
+                <img src="~/images/google-icon.png" width="18" />
+                <span>Đăng ký bằng Google</span>
+            </button>
+        </form>
+    </div>
+
+    <div class="illustration-section">
+        <img src="~/images/login.jpg" alt="Register Illustration" />
+    </div>
+</div>

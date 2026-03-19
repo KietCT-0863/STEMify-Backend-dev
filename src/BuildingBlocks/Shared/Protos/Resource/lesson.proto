@@ -1,0 +1,150 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service LessonService {
+    rpc CreateLesson (CreateLessonRequest) returns (LessonResponse) {
+        option (google.api.http) = {
+            post: "/api/lessons"
+            body: "*"
+        };
+    }
+    rpc GetLesson (GetLessonRequest) returns (LessonResponse) {
+        option (google.api.http) = {
+            get: "/api/lessons/{id}"
+        };
+    }
+    rpc UpdateLesson (UpdateLessonRequest) returns (LessonResponse) {
+        option (google.api.http) = {
+            patch: "/api/lessons/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteLesson (DeleteLessonRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/lessons/{id}"
+        };
+    }
+    rpc ListLessons (google.protobuf.Empty) returns (LessonList);
+    rpc QueryLessons (QueryLessonsRequest) returns (PagedLessonList) {
+        option (google.api.http) = {
+            get: "/api/lessons"
+        };
+    }
+    rpc UpdateLessonsOrder (UpdateLessonsOrderRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            patch: "/api/courses/{courseId}/lessons-reorder"
+            body: "*"
+        };
+    }
+}
+
+message Lesson {
+    int32 id = 1;
+    string title = 2;
+    string imageUrl = 3;
+    string description = 4;
+    int32 duration = 5;
+    int32 orderIndex = 6;
+    string status = 7;
+    string createdByUserId = 8;
+    int32 courseId = 9;
+    google.protobuf.Timestamp createdDate = 10;
+    google.protobuf.Timestamp lastModifiedDate = 11;
+}
+
+message CreateLessonRequest {
+    string title = 1;
+    google.protobuf.BytesValue image = 2;
+    string description = 3;
+    string learningOutcome = 4;
+    google.protobuf.StringValue requirement = 5;
+    string createdByUserId = 6;
+    int32 courseId = 7;
+    repeated int32 topicIds = 8;
+    repeated int32 skillIds = 9;
+    repeated int32 standardIds = 10;
+}
+
+message UpdateLessonRequest {
+    int32 id = 1;
+    google.protobuf.StringValue title = 2;
+    google.protobuf.BytesValue image = 3;
+    google.protobuf.StringValue description = 4;
+    google.protobuf.StringValue learningOutcome = 5;
+    google.protobuf.StringValue requirement = 6;
+    google.protobuf.Int32Value orderIndex = 7;
+    repeated int32 topicIds = 8;
+    repeated int32 skillIds = 9;
+    repeated int32 standardIds = 10;
+    google.protobuf.StringValue status = 11;
+}
+
+message GetLessonRequest {
+    int32 id = 1;
+}
+
+message DeleteLessonRequest {
+    int32 id = 1;
+}
+
+message QueryLessonsRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    string createdByUserId = 5;
+    google.protobuf.Int32Value courseId = 6;
+    string status = 7;
+    google.protobuf.Int32Value duration = 8;
+    google.protobuf.Int32Value ageRangeId = 9;
+    google.protobuf.Int32Value skillId = 10;
+    google.protobuf.Int32Value topicId = 11;
+    google.protobuf.Int32Value standardId = 12;
+    string sortDirection = 13;
+}
+
+message LessonList {
+    repeated LessonResponse lessons = 1;
+}
+
+message LessonResponse {
+    int32 id = 1;
+    string title = 2;
+    string imageUrl = 3;
+    string description = 4;
+    string learningOutcome = 5;
+    google.protobuf.StringValue requirement = 6;
+    int32 duration = 7;
+    int32 orderIndex = 8;
+    string status = 9;
+    string createdByUserId = 10;
+    int32 courseId = 11;
+    google.protobuf.Timestamp createdDate = 12;
+    google.protobuf.Timestamp lastModifiedDate = 13;
+    repeated int32 sectionIds = 14;
+    repeated string topicNames = 15;
+    repeated string skillNames = 16;
+    repeated string standardNames = 17;
+    string ageRangeLabel = 18;
+    string CreatedByUserName = 19;
+}
+
+message PagedLessonList {
+    repeated LessonResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+message UpdateLessonsOrderRequest {
+    int32 courseId = 1;
+    repeated int32 orderedLessonIds = 2;
+}

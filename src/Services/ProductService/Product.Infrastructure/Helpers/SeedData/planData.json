@@ -1,0 +1,95 @@
+[
+  {
+    "name": "Gói Cơ Bản",
+    "status": "Published",
+    "description": "Gói phù hợp cho các tổ chức nhỏ, cung cấp trải nghiệm học STEM trực tuyến cơ bản với công cụ quản lý lớp học thiết yếu và hỗ trợ học tập bằng AI.",
+    "curriculumCount": 1,
+    "accessSupportDetail": "Học trực tuyến\nQuản lý lớp học cơ bản\nAI hỗ trợ học sinh trong quá trình học",
+    "maxTeacherSeats": 10,
+    "maxStudentSeats": 100,
+    "planBillingCycles": [
+      {
+        "billingCycle": "Semiannual",
+        "IsAddOn": false,
+        "price": 10000000
+      },
+      {
+        "billingCycle": "Annual",
+        "IsAddOn": false,
+        "price": 15000000
+      }
+    ],
+    "planCurriculums": [
+      {
+        "curriculumId": 1
+      },
+      {
+        "curriculumId": 2
+      }
+    ]
+  },
+  {
+    "name": "Gói Nâng Cao",
+    "status": "Published",
+    "description": "Gói nâng cao dành cho các tổ chức có quy mô trung bình, cung cấp dashboard quản lý lớp học tích hợp AI giúp giáo viên theo dõi tiến độ, đánh giá học sinh và có thêm công cụ phân tích thống kê cho tổ chức.",
+    "curriculumCount": 2,
+    "accessSupportDetail": "Học trực tuyến\nQuản lý lớp học nâng cao với dashboard\nAI hỗ trợ giáo viên theo dõi tiến độ và đánh giá học sinh\nDashboard thống kê dành cho tổ chức",
+    "maxTeacherSeats": 20,
+    "maxStudentSeats": 300,
+    "planBillingCycles": [
+      {
+        "billingCycle": "Semiannual",
+        "IsAddOn": false,
+        "price": 25000000
+      },
+      {
+        "billingCycle": "Annual",
+        "IsAddOn": false,
+        "price": 40000000
+      }
+    ],
+    "planCurriculums": [
+      {
+        "curriculumId": 1
+      },
+      {
+        "curriculumId": 2
+      },
+      {
+        "curriculumId": 3
+      }
+    ]
+  },
+  {
+    "name": "Gói Cao Cấp",
+    "status": "Published",
+    "description": "Gói toàn diện cho tổ chức quy mô lớn, bao gồm tất cả tính năng của Pro cùng dashboard thống kê tổng hợp và AI đánh giá chất lượng chương trình giảng dạy theo chu kỳ, đề xuất lộ trình triển khai tiếp theo.",
+    "curriculumCount": 3,
+    "accessSupportDetail": "Học trực tuyến\nQuản lý lớp học nâng cao với dashboard\nAI hỗ trợ giáo viên và học sinh\nDashboard thống kê tổng hợp cho tổ chức\nAI đánh giá chất lượng chương trình định kỳ và đề xuất lộ trình tiếp theo",
+    "maxTeacherSeats": 30,
+    "maxStudentSeats": 400,
+    "planBillingCycles": [
+      {
+        "billingCycle": "Semiannual",
+        "IsAddOn": false,
+        "price": 45000000
+      },
+      {
+        "billingCycle": "Annual",
+        "IsAddOn": false,
+        "price": 70000000
+      }
+    ],
+    "planCurriculums": [
+      {
+        "curriculumId": 1
+      },
+      {
+        "curriculumId": 2
+      },
+      {
+        "curriculumId": 3
+      }
+    ]
+  }
+]

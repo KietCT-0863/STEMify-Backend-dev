@@ -1,0 +1,545 @@
+version: '3.8'
+
+name: stemify
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: stemify-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: stemify-pgadmin-local
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@stemify.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '8081:80'
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  # RabbitMQ is now using CloudAMQP online service
+  # rabbitmq:
+  #   image: rabbitmq:3-management-alpine
+  #   ports:
+  #     - 5672:5672
+  #     - 15672:15672
+  #   restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - redis-data:/data
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+      - HTTP_USER=root
+      - HTTP_PASSWORD=secret
+    ports:
+      - 8082:8082
+    depends_on:
+      - redis
+
+  classroom-service:
+    image: ${DOCKERHUB_USERNAME}/stemify:classroom-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMq__Url=${RABBITMQ_URL}
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5001
+      - RedisConfig__Host=redis
+      - RedisConfig__Port=6379
+      - RedisConfig__Password=secret
+      - RedisConfig__Ssl=false
+      - GrpcResourceUrl=http://resource-service:5003
+      - GrpcIdentityUrl=http://identity-api-service:5002
+      - ConnectionStrings__stemifyclassroom=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_classroom
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=classroom-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=classroom-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 7001:80
+      - 5001:5001
+    depends_on:
+      - postgres
+      - otelcollector
+      #- rabbitmq
+    restart: unless-stopped
+
+  resource-service:
+    image: ${DOCKERHUB_USERNAME}/stemify:resource-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMq__Url=${RABBITMQ_URL}
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5003
+      - ConnectionStrings__stemifyresource=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_resource
+      - Cloudinary__CloudName=${CLOUDINARY_CLOUD_NAME}
+      - Cloudinary__ApiKey=${CLOUDINARY_API_KEY}
+      - Cloudinary__ApiSecret=${CLOUDINARY_API_SECRET}
+      - RedisConfig__Host=redis
+      - RedisConfig__Port=6379
+      - RedisConfig__Password=secret
+      - RedisConfig__Ssl=false
+      - GrpcIdentityUrl=http://identity-api-service:5002
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
+      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn
+      - Gemini__BaseUrl=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+      - Gemini__ApiKey=${GEMINI_API_KEY}
+      - Gemini__Model=gemini-2.5-flash
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=resource-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=resource-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 7003:80
+      - 5003:5003
+    depends_on:
+      - postgres
+      - otelcollector
+      #- rabbitmq
+    restart: unless-stopped
+  product-service:
+    image: rosie91/stemify:product-service
+    build:
+      context: .
+      dockerfile: src/Services/ProductService/Product.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMq__Url=${RABBITMQ_URL}
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5005
+      - ConnectionStrings__stemifyproduct=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_product
+      - Cloudinary__CloudName=${CLOUDINARY_CLOUD_NAME}
+      - Cloudinary__ApiKey=${CLOUDINARY_API_KEY}
+      - Cloudinary__ApiSecret=${CLOUDINARY_API_SECRET}
+      - RedisConfig__Host=redis
+      - RedisConfig__Port=6379
+      - RedisConfig__Password=secret
+      - RedisConfig__Ssl=false
+      - GrpcIdentityUrl=http://identity-api-service:5002
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=product-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=product-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 7005:80
+      - 5005:5005
+    depends_on:
+      - postgres
+      - otelcollector
+      #- rabbitmq
+    restart: unless-stopped
+  order-service:
+    image: rosie91/stemify:order-service
+    build:
+      context: .
+      dockerfile: src/Services/OrderService/Order.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMq__Url=${RABBITMQ_URL}
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5006
+      - ConnectionStrings__stemifyorder=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_order
+      - RedisConfig__Host=redis
+      - RedisConfig__Port=6379
+      - RedisConfig__Password=secret
+      - RedisConfig__Ssl=false
+      - GrpcIdentityUrl=http://identity-api-service:5002
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=order-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=order-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 7006:80
+      - 5006:5006
+    depends_on:
+      - postgres
+      - otelcollector
+      #- rabbitmq
+    restart: unless-stopped
+
+  notification-service:
+    image: ${DOCKERHUB_USERNAME}/stemify:notification-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMq__Url=${RABBITMQ_URL}
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5004
+      - ConnectionStrings__stemifynotification=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_notification
+      - SendGridSettings__ApiKey=${SENDGRID_API_KEY}
+      - SendGridSettings__FromEmail=stemify30062025@gmail.com
+      - SendGridSettings__FromName=STEMify
+      - ClientApp__BaseUrl=https://www.stemifi.com,https://robotsteam.com.vn
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
+      - IdentityServiceUrl=http://identity-service
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=notification-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=notification-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 7004:80
+      - 5004:5004
+    depends_on:
+      - postgres
+      - otelcollector
+      #- rabbitmq
+    restart: unless-stopped
+
+  gateway-service:
+    image: ${DOCKERHUB_USERNAME}/stemify:gateway-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+      - IdentityServiceUrl=http://identity-service
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
+      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=gateway-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=gateway-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 6001:80
+    depends_on:
+      - otelcollector
+    restart: unless-stopped
+
+  identity-api-service:
+    image: ${DOCKERHUB_USERNAME}/stemify:identity-api-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5002
+      - ConnectionStrings__stemifyidentity=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_identity
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
+      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn
+      - BackendUrl=${IDENTITY_BACKEND_URL}
+      # RabbitMQ Configuration (for MassTransit)
+      - RabbitMq__Url=${RABBITMQ_URL}
+      # OpenIddict Configuration
+      - OpenIddict__Authority=http://identity-service:80
+      # Client App Configuration
+      - ClientApp=https://localhost:3000
+      # Google Authentication
+      - Authentication__Google__ClientId=${GOOGLE_CLIENT_ID}
+      - Authentication__Google__ClientSecret=${GOOGLE_CLIENT_SECRET}
+      - Authentication__Google__RedirectUri=${GOOGLE_REDIRECT_URI}
+      # Email Settings
+      - EmailSettings__From=${IDENTITY_EMAIL_FROM}
+      - EmailSettings__DisplayName=${IDENTITY_EMAIL_DISPLAY_NAME}
+      - EmailSettings__SMTPServer=${IDENTITY_EMAIL_SMTP_SERVER}
+      - EmailSettings__Port=${IDENTITY_EMAIL_PORT}
+      - EmailSettings__Username=${IDENTITY_EMAIL_USERNAME}
+      - EmailSettings__Password=${IDENTITY_EMAIL_PASSWORD}
+      - EmailSettings__UseSSL=${IDENTITY_EMAIL_USE_SSL}
+      - EmailSettings__ApplicationName=${IDENTITY_EMAIL_APP_NAME}
+      - EmailSettings__SupportEmail=${IDENTITY_EMAIL_SUPPORT}
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=identity-api-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=identity-api-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 7002:80
+      - 5002:5002
+    depends_on:
+      - postgres
+      - otelcollector
+    restart: unless-stopped
+
+  identity-service:
+    image: ${DOCKERHUB_USERNAME}/stemify:identity-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__stemifyidentity=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_identity
+      - OpenIddict__SigningKey=${OPENIDDICT_SIGNING_KEY}
+      - OpenIddict__EncryptionKey=${OPENIDDICT_ENCRYPTION_KEY}
+      - OpenIddict__ApiClientSecret=${OPENIDDICT_API_CLIENT_SECRET}
+      - OpenIddict__ForceRecreateClients=true
+      - OpenIddict__DisableHttpsRequirement=true
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
+      - OpenIddict__Issuer=https://www.stemifi.com
+      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn
+      # OpenTelemetry Configuration
+      # Google Authentication
+      - Authentication__Google__ClientId=${GOOGLE_CLIENT_ID}
+      - Authentication__Google__ClientSecret=${GOOGLE_CLIENT_SECRET}
+      # Email Settings
+      - EmailSettings__SMTPServer=${IDENTITY_EMAIL_SMTP_SERVER}
+      - EmailSettings__Port=${IDENTITY_EMAIL_PORT}
+      - EmailSettings__UseSSL=${IDENTITY_EMAIL_USE_SSL}
+      - EmailSettings__Username=${IDENTITY_EMAIL_USERNAME}
+      - EmailSettings__Password=${IDENTITY_EMAIL_PASSWORD}
+      - EmailSettings__From=${IDENTITY_EMAIL_FROM}
+      - EmailSettings__DisplayName=${IDENTITY_EMAIL_DISPLAY_NAME}
+      - EmailSettings__ApplicationName=${IDENTITY_EMAIL_APP_NAME}
+      - EmailSettings__SupportEmail=${IDENTITY_EMAIL_SUPPORT}
+      - EmailSettings__Enabled=${IDENTITY_EMAIL_ENABLED}
+      - EmailSettings__EnableVerification=${IDENTITY_EMAIL_ENABLE_VERIFICATION}
+      - EmailSettings__TimeoutMs=${IDENTITY_EMAIL_TIMEOUT_MS}
+      - EmailSettings__MaxRetryAttempts=${IDENTITY_EMAIL_MAX_RETRY}
+      - EmailSettings__LogEmailContent=${IDENTITY_EMAIL_LOG_CONTENT}
+      # gRPC Services
+      - GrpcServices__OrderService__Address=http://order-service:5006
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=identity-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=identity-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 5000:80
+    depends_on:
+      - postgres
+      - otelcollector
+    restart: unless-stopped
+
+  ai-chatbot:
+    image: linhdt71/stem-ai-platform:latest
+    # image: ${DOCKERHUB_USERNAME}/stemify:ai-chatbot
+    container_name: stemify-ai-chatbot
+    init: true
+    ports:
+      - 7010:80
+    restart: unless-stopped
+
+  cart-service:
+    image: ${DOCKERHUB_USERNAME}/stemify:cart-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMq__Url=${RABBITMQ_URL}
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5007
+      - ConnectionStrings__stemifycart=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_cart
+      - RedisConfig__Host=redis
+      - RedisConfig__Port=6379
+      - RedisConfig__Password=secret
+      - RedisConfig__Ssl=false
+      - GrpcIdentityUrl=http://identity-api-service:5002
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=cart-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=cart-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 7007:80
+      - 5007:5007
+    depends_on:
+      - postgres
+      - redis
+      - otelcollector
+      #- rabbitmq
+    restart: unless-stopped
+
+  payment-service:
+    image: ${DOCKERHUB_USERNAME}/stemify:payment-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Logging__LogLevel__Microsoft.EntityFrameworkCore.Database.Command=Warning
+      - RabbitMq__Url=${RABBITMQ_URL}
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5008
+      - ConnectionStrings__stemifypayment=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_payment
+      - RedisConfig__Host=redis
+      - RedisConfig__Port=6379
+      - RedisConfig__Password=secret
+      - RedisConfig__Ssl=false
+      - GrpcIdentityUrl=http://identity-api-service:5002
+      # PayOS configuration
+      - PaymentGateways__PayOS__ClientId=${PAYOS_CLIENT_ID}
+      - PaymentGateways__PayOS__ApiKey=${PAYOS_API_KEY}
+      - PaymentGateways__PayOS__ChecksumKey=${PAYOS_CHECKSUM_KEY}
+      - PaymentGateways__PayOS__BaseUrl=https://api-merchant.payos.vn
+      # Stripe configuration
+      - PaymentGateways__Stripe__SecretKey=${STRIPE_SECRET_KEY}
+      - PaymentGateways__Stripe__PublishableKey=${STRIPE_PUBLISH_KEY}
+      - PaymentGateways__Stripe__WebhookSecret=${STRIPE_WEBHOOK_KEY}
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=payment-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=payment-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 7008:80
+      - 5008:5008
+    depends_on:
+      - postgres
+      - redis
+      - otelcollector
+      #- rabbitmq
+    restart: unless-stopped
+
+  emulator-service:
+    image: ${DOCKERHUB_USERNAME}/stemify:emulator-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMq__Url=${RABBITMQ_URL}
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5009
+      # MongoDB configuration
+      - MongoDb__ConnectionString=${MONGODB_CONNECTION_STRING}
+      - MongoDb__DatabaseName=stemify_emulator
+      # Redis configuration
+      - RedisConfig__Host=redis
+      - RedisConfig__Port=6379
+      - RedisConfig__Password=secret
+      - RedisConfig__Ssl=false
+      # gRPC endpoints
+      - GrpcIdentityUrl=http://identity-api-service:5002
+      - GrpcResourceUrl=http://resource-service:5003
+      # OpenTelemetry Configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=emulator-service
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=emulator-service,service.version=1.0.0
+      # Enable Prometheus metrics scraping endpoint
+      - Observability__ExternalStackEnabled=true
+    ports:
+      - 7009:80
+      - 5009:5009
+    depends_on:
+      - redis
+      - otelcollector
+      #- rabbitmq
+    restart: unless-stopped
+
+  # ========================================
+  # MONITORING STACK
+  # ========================================
+  
+  # Prometheus - Metrics Collection
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    container_name: stemify-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - /home/linh/config/prometheus:/etc/prometheus:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+      - '--storage.tsdb.retention.size=10GB'
+      - '--web.enable-lifecycle'
+      - '--web.enable-otlp-receiver'
+    restart: unless-stopped
+
+  # AlertManager - Alert Management
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: stemify-alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - /home/linh/config/alertmanager:/etc/alertmanager:ro
+      - alertmanager_data:/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.external-url=http://localhost:9093'
+    restart: unless-stopped
+
+  # Grafana - Visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: stemify-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - /home/linh/config/grafana/config:/etc/grafana:ro
+      - /home/linh/config/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin123}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+      - PROMETHEUS_ENDPOINT=http://prometheus:9090
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+  # OpenTelemetry Collector
+  otelcollector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: stemify-otelcollector
+    ports:
+      - "8888:8888"   # Prometheus metrics
+      - "8889:8889"   # Prometheus exporter
+      - "4317:4317"   # OTLP gRPC receiver
+      - "4318:4318"   # OTLP HTTP receiver
+    volumes:
+      - /home/linh/config/otelcollector:/etc/otelcol-contrib:ro
+    environment:
+      - PROMETHEUS_ENDPOINT=http://prometheus:9090/api/v1/write
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+volumes:
+  postgres_data:
+  redis-data:
+  prometheus_data:
+  alertmanager_data:
+  grafana_data:

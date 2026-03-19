@@ -1,0 +1,52 @@
+[
+  {
+    "Code": "NGSS 3-5-ETS1-1",
+    "Name": "Thiết kế Kỹ thuật",
+    "Description": "Xây dựng lập luận dựa trên bằng chứng để giải thích rằng trong một môi trường cụ thể, một số sinh vật có thể sinh tồn tốt, một số kém hơn và một số không thể tồn tại."
+  },
+  {
+    "Code": "ISTE 1.1",
+    "Name": "ISTE 1.1 – Người học chủ động",
+    "Description": "Học sinh đặt mục tiêu học tập, sử dụng công nghệ để theo dõi tiến trình, và thể hiện khả năng tự định hướng trong hành trình học tập của mình."
+  },
+  {
+    "Code": "NGSS 4-PS3-4",
+    "Name": "Năng lượng & Chuyển hóa năng lượng",
+    "Description": "Áp dụng bằng chứng để mô tả cách năng lượng có thể được chuyển đổi từ dạng này sang dạng khác trong các hệ thống tự nhiên và cơ học."
+  },
+  {
+    "Code": "ISTE 1.4",
+    "Name": "Nhà thiết kế sáng tạo",
+    "Description": "Học sinh sử dụng quy trình thiết kế để giải quyết vấn đề, tạo mẫu thử nghiệm và cải tiến sản phẩm dựa trên phản hồi."
+  },
+  {
+    "Code": "NGSS 3-LS4-3",
+    "Name": "Thích nghi & Sinh tồn",
+    "Description": "Xây dựng lập luận rằng những thay đổi trong môi trường sống ảnh hưởng trực tiếp đến khả năng sinh tồn của sinh vật thông qua thích nghi hành vi và cấu trúc."
+  },
+  {
+    "Code": "NGSS 5-PS2-1",
+    "Name": "Lực & Chuyển động",
+    "Description": "Chứng minh rằng lực tác động lên vật thể sẽ tạo ra thay đổi về vận tốc hoặc hướng chuyển động."
+  },
+  {
+    "Code": "ISTE 1.5",
+    "Name": "Người giải quyết vấn đề bằng công nghệ",
+    "Description": "Học sinh sử dụng công cụ kỹ thuật số để thu thập dữ liệu, phân tích và phát triển giải pháp sáng tạo cho các vấn đề phức tạp."
+  },
+  {
+    "Code": "ISTE 1.2",
+    "Name": "Công dân số có trách nhiệm",
+    "Description": "Học sinh hiểu và thực hành các hành vi an toàn, đạo đức và có trách nhiệm trong môi trường số."
+  },
+  {
+    "Code": "NGSS MS-ETS1-2",
+    "Name": "Phân tích & Tối ưu hóa thiết kế",
+    "Description": "Đánh giá nhiều giải pháp thiết kế dựa trên tiêu chí và ràng buộc để chọn phương án tối ưu."
+  },
+  {
+    "Code": "NGSS 4-ESS3-1",
+    "Name": "Tài nguyên & Công nghệ bền vững",
+    "Description": "Sử dụng thông tin để mô tả cách con người phát triển giải pháp nhằm bảo vệ môi trường và sử dụng tài nguyên một cách bền vững."
+  }
+]

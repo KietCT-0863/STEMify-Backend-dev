@@ -1,0 +1,85 @@
+api-version: 2024-02-02-preview
+location: {{ .Env.AZURE_LOCATION }}
+identity:
+  type: UserAssigned
+  userAssignedIdentities:
+    ? "{{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}"
+    : {}
+properties:
+  environmentId: {{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+  configuration:
+    activeRevisionsMode: single
+    runtime:
+      dotnet:
+        autoConfigureDataProtection: true
+    ingress:
+      external: true
+      targetPort: {{ targetPortOrDefault 8085 }}
+      transport: auto
+      allowInsecure: true
+      additionalPortMappings:
+        - targetPort: 5085
+          exposedPort: 5085
+          external: false
+    registries:
+      - server: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+        identity: {{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+    secrets:
+      - name: connectionstrings--stemifyorder
+        value: Host=stemify-postgres;Port=5432;Username=postgres;Password={{ .Env.POSTGRES_PASSWORD }};Database=stemifyorder
+  template:
+    containers:
+      - image: {{ .Image }}
+        name: order-api
+        env:
+          - name: AZURE_CLIENT_ID
+            value: {{ if .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ else }}{{ end }}
+          - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY
+            value: in_memory
+          - name: ConnectionStrings__stemifyorder
+            secretRef: connectionstrings--stemifyorder
+          - name: GrpcIdentityUrl
+            value: http://identity-api:5083
+          - name: GrpcResourceUrl
+            value: http://resource-api:5082
+          - name: GrpcProductUrl
+            value: http://product-api:5084
+          - name: GrpcClassroomUrl
+            value: http://classroom-api:5081
+          - name: RabbitMq__Url
+            value: {{ if .Env.RABBITMQ_URL }}{{ .Env.RABBITMQ_URL }}{{ else }}{{ end }}
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          - name: ASPNETCORE_HTTP_PORTS
+            value: '{{ targetPortOrDefault 8085 }}'
+          - name: GRPC_PORT
+            value: '5085'
+          - name: ASPNETCORE_HTTPS_PORTS
+            value: ''
+          - name: RedisConfig__Host
+            value: {{ if .Env.REDIS_HOST }}{{ .Env.REDIS_HOST }}{{ else }}localhost{{ end }}
+          - name: RedisConfig__Port
+            value: {{ if .Env.REDIS_PORT }}{{ .Env.REDIS_PORT }}{{ else }}6379{{ end }}
+          - name: RedisConfig__Password
+            value: {{ if .Env.REDIS_PASSWORD }}{{ .Env.REDIS_PASSWORD }}{{ else }}{{ end }}
+          - name: RedisConfig__Ssl
+            value: {{ if .Env.REDIS_SSL }}{{ .Env.REDIS_SSL }}{{ else }}false{{ end }}
+          - name: RedisConfig__AbortOnConnectFail
+            value: {{ if .Env.REDIS_ABORT_ON_CONNECT_FAIL }}{{ .Env.REDIS_ABORT_ON_CONNECT_FAIL }}{{ else }}false{{ end }}
+          - name: Cloudinary__CloudName
+            value: {{ if .Env.CLOUDINARY_CLOUDNAME }}{{ .Env.CLOUDINARY_CLOUDNAME }}{{ else }}{{ end }}
+          - name: Cloudinary__ApiKey
+            value: {{ if .Env.CLOUDINARY_APIKEY }}{{ .Env.CLOUDINARY_APIKEY }}{{ else }}{{ end }}
+          - name: Cloudinary__ApiSecret
+            value: {{ if .Env.CLOUDINARY_APISECRET }}{{ .Env.CLOUDINARY_APISECRET }}{{ else }}{{ end }}
+    scale:
+      minReplicas: 1
+tags:
+  azd-service-name: order-api
+  aspire-resource-name: order-api

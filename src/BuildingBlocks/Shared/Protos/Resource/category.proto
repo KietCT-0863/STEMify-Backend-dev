@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package resource;
+
+service CategoryService {
+    rpc CreateCategory (CreateCategoryRequest) returns (CategoryResponse) {
+        option (google.api.http) = {
+            post: "/api/categories"
+            body: "*"
+        };
+    }
+    rpc GetCategory (GetCategoryRequest) returns (CategoryResponse) {
+        option (google.api.http) = {
+            get: "/api/categories/{id}"
+        };
+    }
+    rpc UpdateCategory (UpdateCategoryRequest) returns (CategoryResponse) {
+        option (google.api.http) = {
+            patch: "/api/categories/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteCategory (DeleteCategoryRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/categories/{id}"
+        };
+    }
+    rpc ListCategories (google.protobuf.Empty) returns (CategoryList);
+    rpc QueryCategories (QueryCategoriesRequest) returns (PagedCategoryList) {
+        option (google.api.http) = {
+            get: "/api/categories"
+        };
+    }
+}
+
+message Category {
+    int32 id = 1;
+    string name = 2;
+    string slug = 3;
+}
+
+message CreateCategoryRequest {
+    string name = 1;
+}
+
+message UpdateCategoryRequest {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+}
+
+message GetCategoryRequest {
+    int32 id = 1;
+}
+
+message DeleteCategoryRequest {
+    int32 id = 1;
+}
+
+message CategoryList {
+    repeated CategoryResponse categories = 1;
+}
+
+message QueryCategoriesRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+}
+
+message CategoryResponse {
+    int32 id = 1;
+    string name = 2;
+    repeated int32 courseIds = 3;
+}
+
+message PagedCategoryList {
+    repeated CategoryResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}

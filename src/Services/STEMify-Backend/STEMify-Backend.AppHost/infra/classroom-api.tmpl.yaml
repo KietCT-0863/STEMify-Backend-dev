@@ -1,0 +1,119 @@
+api-version: 2024-02-02-preview
+location: {{ .Env.AZURE_LOCATION }}
+identity:
+  type: UserAssigned
+  userAssignedIdentities:
+    ? "{{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}"
+    : {}
+properties:
+  environmentId: {{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+  configuration:
+    activeRevisionsMode: single
+    runtime:
+      dotnet:
+        autoConfigureDataProtection: true
+    ingress:
+      external: true
+      targetPort: {{ targetPortOrDefault 8081 }}
+      transport: auto
+      allowInsecure: true
+      additionalPortMappings:
+        - targetPort: 5081
+          exposedPort: 5081
+          external: false
+    registries:
+      - server: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+        identity: {{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+    secrets:
+      - name: connectionstrings--stemifyclassroom
+        value: Host=stemify-postgres;Port=5432;Username=postgres;Password={{ .Env.POSTGRES_PASSWORD }};Database=stemifyclassroom
+  template:
+    containers:
+      - image: {{ .Image }}
+        name: classroom-api
+        env:
+          - name: AZURE_CLIENT_ID
+            value: {{ if .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ .Env.MANAGED_IDENTITY_CLIENT_ID }}{{ else }}{{ end }}
+          - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+            value: "true"
+          # - name: HTTP_PORTS
+          #   value: '{{ targetPortOrDefault 0 }}'
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY
+            value: in_memory
+          - name: ConnectionStrings__stemifyclassroom
+            secretRef: connectionstrings--stemifyclassroom
+          - name: GrpcResourceUrl
+            value: http://resource-api:5082
+          - name: IdentityServiceUrl
+            value: https://identity.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: GrpcIdentityUrl
+            value: http://identity-api:5083
+          - name: GrpcOrderUrl
+            value: http://order-api:5085
+          - name: RabbitMq__Url
+            value: {{ if .Env.RABBITMQ_URL }}{{ .Env.RABBITMQ_URL }}{{ else }}{{ end }}
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          - name: GRPC_PORT
+            value: '5081'
+          - name: ASPNETCORE_HTTP_PORTS
+            value: '{{ targetPortOrDefault 8081 }}'
+          - name: ASPNETCORE_HTTPS_PORTS
+            value: ''
+          - name: RedisConfig__Host
+            value: {{ if .Env.REDIS_HOST }}{{ .Env.REDIS_HOST }}{{ else }}localhost{{ end }}
+          - name: RedisConfig__Port
+            value: {{ if .Env.REDIS_PORT }}{{ .Env.REDIS_PORT }}{{ else }}6379{{ end }}
+          - name: RedisConfig__Password
+            value: {{ if .Env.REDIS_PASSWORD }}{{ .Env.REDIS_PASSWORD }}{{ else }}{{ end }}
+          - name: RedisConfig__Ssl
+            value: {{ if .Env.REDIS_SSL }}{{ .Env.REDIS_SSL }}{{ else }}false{{ end }}
+          - name: RedisConfig__AbortOnConnectFail
+            value: {{ if .Env.REDIS_ABORT_ON_CONNECT_FAIL }}{{ .Env.REDIS_ABORT_ON_CONNECT_FAIL }}{{ else }}false{{ end }}
+          - name: Cloudinary__CloudName
+            value: {{ if .Env.CLOUDINARY_CLOUDNAME }}{{ .Env.CLOUDINARY_CLOUDNAME }}{{ else }}{{ end }}
+          - name: Cloudinary__ApiKey
+            value: {{ if .Env.CLOUDINARY_APIKEY }}{{ .Env.CLOUDINARY_APIKEY }}{{ else }}{{ end }}
+          - name: Cloudinary__ApiSecret
+            value: {{ if .Env.CLOUDINARY_APISECRET }}{{ .Env.CLOUDINARY_APISECRET }}{{ else }}{{ end }}
+          - name: PdfLayer__ApiKey
+            value: {{ if .Env.PDFLAYER_API_KEY }}{{ .Env.PDFLAYER_API_KEY }}{{ else }}{{ end }}
+          # - name: Kestrel__Endpoints__Http__Protocols
+          #   value: Http1AndHttp2
+          # - name: Kestrel__Endpoints__Http__Url
+          #   value: http://+:{{ targetPortOrDefault 8081 }}
+        # Add health probes to ensure proper startup order (within Azure limits)
+        # probes:
+        #   - type: Startup
+        #     httpGet:
+        #       path: "/health"
+        #       port: {{ targetPortOrDefault 8080 }}
+        #     initialDelaySeconds: 60
+        #     periodSeconds: 10
+        #     timeoutSeconds: 5
+        #     failureThreshold: 90
+        #   - type: Readiness
+        #     httpGet:
+        #       path: "/health"
+        #       port: {{ targetPortOrDefault 8080 }}
+        #     initialDelaySeconds: 30
+        #     periodSeconds: 5
+        #     timeoutSeconds: 5
+        #     failureThreshold: 24
+        #   - type: Liveness
+        #     httpGet:
+        #       path: "/health"
+        #       port: {{ targetPortOrDefault 8080 }}
+        #     initialDelaySeconds: 60
+        #     periodSeconds: 30
+        #     timeoutSeconds: 5
+        #     failureThreshold: 3
+    scale:
+      minReplicas: 1
+tags:
+  azd-service-name: classroom-api
+  aspire-resource-name: classroom-api

@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service SectionService {
+    rpc CreateSection (CreateSectionRequest) returns (SectionResponse) {
+        option (google.api.http) = {
+            post: "/api/sections"
+            body: "*"
+        };
+    }
+    rpc GetSection (GetSectionRequest) returns (SectionResponse) {
+        option (google.api.http) = {
+            get: "/api/sections/{id}"
+        };
+    }
+    rpc UpdateSection (UpdateSectionRequest) returns (SectionResponse) {
+        option (google.api.http) = {
+            patch: "/api/sections/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteSection (DeleteSectionRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/sections/{id}"
+        };
+    }
+    rpc ListSections (google.protobuf.Empty) returns (SectionList);
+    rpc QuerySections (QuerySectionsRequest) returns (PagedSectionList) {
+        option (google.api.http) = {
+            get: "/api/sections"
+        };
+    }
+    rpc UpdateSectionsOrder (UpdateSectionsOrderRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            patch: "/api/lessons/{lessonId}/sections-reorder"
+            body: "*"
+        };
+    }
+}
+
+message Section {
+    int32 id = 1;
+    string description = 2;
+    int32 duration = 3;
+    int32 orderIndex = 4;
+    string status = 5;
+    int32 lessonId = 6;
+}
+
+message CreateSectionRequest {
+    string description = 1;
+    int32 duration = 2;
+    string status = 3;
+    int32 lessonId = 4;
+    string title = 5;
+    bool isVisibleToStudent = 6;
+}
+
+message UpdateSectionRequest {
+    int32 id = 1;
+    google.protobuf.StringValue description = 2;
+    google.protobuf.Int32Value duration = 3;
+    google.protobuf.StringValue status = 4;
+    google.protobuf.StringValue title = 5;
+    google.protobuf.BoolValue isVisibleToStudent = 6;
+}
+
+message GetSectionRequest {
+    int32 id = 1;
+}
+
+message DeleteSectionRequest {
+    int32 id = 1;
+}
+
+message QuerySectionsRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    google.protobuf.Int32Value lessonId = 5;
+    string status = 6;
+}
+
+message SectionList {
+    repeated SectionResponse sections = 1;
+}
+
+message SectionResponse {
+    int32 id = 1;
+    string description = 2;
+    int32 duration = 3;
+    int32 orderIndex = 4;
+    string status = 5;
+    int32 lessonId = 6;
+    repeated int32 contentIds = 7;
+    repeated int32 quizIds = 8;
+    string title = 9;
+    bool isVisibleToStudent = 10;
+}
+
+message PagedSectionList {
+    repeated SectionResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message UpdateSectionsOrderRequest {
+    int32 lessonId = 1;
+    repeated int32 orderedSectionIds = 2;
+}

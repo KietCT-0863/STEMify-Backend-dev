@@ -1,0 +1,191 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.User";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+package user;
+
+service GrpcInvitation {
+    // Accept an invitation via Google SSO
+    rpc AcceptInvitation (AcceptInvitationRequest) returns (AcceptInvitationResponse) {
+        option (google.api.http) = {
+            post: "/api/invitations/accept"
+            body: "*"
+        };
+    }
+    // Resend an invitation email
+    rpc ResendInvitation (ResendInvitationRequest) returns (ResendInvitationResponse) {
+        option (google.api.http) = {
+            post: "/api/invitations/{invitation_id}/resend"
+        };
+    }
+    // Revoke an invitation
+    rpc RevokeInvitation (RevokeInvitationRequest) returns (RevokeInvitationResponse) {
+        option (google.api.http) = {
+            post: "/api/invitations/{invitation_id}/revoke"
+            body: "*"
+        };
+    }
+    // Validate invitation token (before user logs in)
+    rpc ValidateInvitationToken (ValidateInvitationTokenRequest) returns (InvitationValidationResponse) {
+        option (google.api.http) = {
+            get: "/api/invitations/validate/{token}"
+        };
+    }
+    // List invitations by organization
+    rpc ListInvitations (ListInvitationsRequest) returns (ListInvitationsResponse) {
+        option (google.api.http) = {
+            get: "/api/organizations/{organization_id}/invitations"
+        };
+    }
+    // Initiate invitation acceptance via backend-driven Google OAuth
+    rpc InitiateInvitationAcceptance (InitiateInvitationAcceptanceRequest) returns (InitiateInvitationAcceptanceResponse) {
+        option (google.api.http) = {
+            get: "/api/invitations/accept-oauth"
+        };
+    }
+    // Handle OAuth callback from Google
+    rpc HandleOAuthCallback (HandleOAuthCallbackRequest) returns (HandleOAuthCallbackResponse) {
+        option (google.api.http) = {
+            get: "/api/auth/google/callback"
+        };
+    }
+    // Invite a list of users (batched)
+    rpc InviteUsers (InviteUsersRequest) returns (InviteUsersResponse) {
+        option (google.api.http) = {
+            post: "/api/organizations/{organization_id}/invitations/invite"
+            body: "*"
+        };
+    }
+}
+
+// ----------- REQUESTS -----------
+message AcceptInvitationRequest {
+    string invitation_token = 1;
+    string google_email = 2;
+    string google_id = 3;
+    string first_name = 4;
+    string last_name = 5;
+    string profile_picture_url = 6;
+}
+
+message ResendInvitationRequest {
+    string invitation_id = 1;
+}
+
+message RevokeInvitationRequest {
+    string invitation_id = 1;
+    string reason = 2;
+}
+
+message ValidateInvitationTokenRequest {
+    string token = 1;
+}
+
+message ListInvitationsRequest {
+    int32 organization_id = 1;
+    int32 page_number = 2;
+    int32 page_size = 3;
+    // Add filters if needed
+}
+
+message InitiateInvitationAcceptanceRequest {
+    string token = 1;
+}
+
+message HandleOAuthCallbackRequest {
+    string code = 1;
+    string state = 2;
+    string error = 3;
+}
+
+// A single invitation item used in batch requests
+message InviteUserItem {
+    string email = 1;
+    string role = 2; // "Student", "Teacher", "OrganizationAdmin"
+    string license_type = 3; // Optional
+    string first_name = 4; // Optional
+    string last_name = 5; // Optional
+    string full_name = 6; // Optional
+    string group_name = 7; // Optional
+    string external_id = 8; // Optional
+    string subscription_order_id = 9; // Optional, int as string
+    int32 expiration_days = 10; // Optional, default 30
+}
+
+message InviteUsersRequest {
+    string organization_id = 1; // int as string
+    repeated InviteUserItem users = 2;
+}
+
+// ----------- RESPONSES -----------
+message AcceptInvitationResponse {
+    string id = 1;
+    string email = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string full_name = 5;
+    string role = 6;
+    string profile_picture_url = 7;
+    bool email_confirmed = 8;
+    google.protobuf.Timestamp created_at = 9;
+    int32 organization_id = 10;
+    string organization_name = 11;
+}
+
+message ResendInvitationResponse {
+    bool is_success = 1;
+    string message = 2;
+}
+
+message RevokeInvitationResponse {
+    bool is_success = 1;
+    string message = 2;
+}
+
+message InvitationValidationResponse {
+    bool is_valid = 1;
+    string error_message = 2;
+    string invitation_id = 3;
+}
+
+message ListInvitationsResponse {
+    repeated InvitationSummary items = 1;
+    int32 total_count = 2;
+    int32 page_number = 3;
+    int32 page_size = 4;
+}
+
+message InvitationSummary {
+    string invitation_id = 1;
+    string invitee_email = 2;
+    bool accepted = 3;
+    google.protobuf.Timestamp invited_at = 4;
+}
+
+message InitiateInvitationAcceptanceResponse {
+    string redirect_url = 1;
+}
+
+message HandleOAuthCallbackResponse {
+    string redirect_url = 1;
+    bool is_success = 2;
+    string message = 3;
+}
+
+message InviteSingleUserResponse {
+    string invitation_id = 1;
+    string email = 2;
+    string role = 3;
+    string license_type = 4;
+    google.protobuf.Timestamp invited_at = 5;
+    google.protobuf.Timestamp expires_at = 6;
+    bool email_sent = 7;
+    string invitation_token = 8;
+}
+
+message InviteUsersResponse {
+    repeated InviteSingleUserResponse items = 1;
+}

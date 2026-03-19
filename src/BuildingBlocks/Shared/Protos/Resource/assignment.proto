@@ -1,0 +1,122 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Protos/Resource/assignment_question.proto";
+
+package assignment;
+
+service GrpcAssignmentService {
+    rpc CreateAssignment (CreateAssignmentRequest) returns (GrpcAssignmentModel) {
+        option (google.api.http) = {
+            post: "/api/assignments"
+            body: "*"
+        };
+    }
+
+    rpc UpdateAssignment (UpdateAssignmentRequest) returns (GrpcAssignmentModel) {
+        option (google.api.http) = {
+            patch: "/api/assignments/{id}"
+            body: "*"
+        };
+    }
+
+    rpc GetAssignmentById (GetAssignmentRequest) returns (GrpcAssignmentModel) {
+        option (google.api.http) = {
+            get: "/api/assignments/{id}"
+        };
+    }
+
+    rpc DeleteAssignment (DeleteAssignmentRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/assignments/{id}"
+        };
+    }
+
+    rpc GetAssignmentQuestionsTemplate (google.protobuf.Empty) returns (AssignmentQuestionsTemplate) {
+        option (google.api.http) = {
+            get: "/api/assignments/template"
+        };
+    }
+    rpc ImportAssignmentQuestions (ImportAssignmentQuestionsRequest) returns (AssignmentImportResult) {
+        option (google.api.http) = {
+            post: "/api/assignments/{id}/import"
+            body: "*"
+        };
+    }
+}
+
+message CreateAssignmentRequest {
+    int32 sectionId = 1;
+    double passingScore = 2;
+    google.protobuf.Int32Value durationDays = 3;
+    repeated assignment_question.CreateAssignmentQuestionRequest questions = 4;
+    string title = 5;
+    google.protobuf.Int32Value cooldownHours = 6;
+    google.protobuf.Int32Value maxAttemptAllowed = 7;
+}
+
+message UpdateAssignmentRequest {
+    int32 id = 1;
+    google.protobuf.DoubleValue passingScore = 2;
+    google.protobuf.Int32Value durationDays = 3;
+    repeated assignment_question.UpdateAssignmentQuestionRequest questions = 4;
+    google.protobuf.StringValue title = 5;
+    google.protobuf.Int32Value cooldownHours = 6;
+    google.protobuf.Int32Value maxAttemptAllowed = 7;
+}
+
+message GetAssignmentRequest {
+    int32 id = 1;
+}
+
+message DeleteAssignmentRequest {
+    int32 id = 1;
+}
+
+message GrpcAssignmentModel {
+    int32 id = 1;
+    int32 contentId = 2;
+    string title = 3;
+    double totalScore = 4;
+    double passingScore = 5;
+    google.protobuf.Int32Value durationDays = 6;
+    repeated assignment_question.GrpcAssignmentQuestionModel questions = 7;
+    google.protobuf.Int32Value cooldownHours = 8;
+    google.protobuf.Int32Value maxAttemptAllowed = 9;
+}
+
+message GrpcAssignment {
+    int32 id = 1;
+    int32 contentId = 2;
+    double totalScore = 3;
+    double passingScore = 4;
+    google.protobuf.Int32Value durationDays = 5;
+}
+
+message AssignmentQuestionsTemplate  {
+    google.protobuf.BytesValue csvFile = 1;
+    string fileName = 2;
+}
+
+message ImportAssignmentQuestionsRequest  {
+    int32 id = 1;
+    google.protobuf.BytesValue csvFile = 2;
+}
+
+message AssignmentImportResult {
+    int32 totalRows = 1;
+    int32 successCount = 2;
+    int32 failureCount = 3;
+    repeated AssignmentImportError errors = 4;
+}
+
+message AssignmentImportError  {
+    int32 rowNumber = 1;
+    string field = 2;
+    string errorMessage = 3;
+    string rowData = 4;
+}

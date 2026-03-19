@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.User";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package user;
+
+service GrpcGroup {
+    rpc GetGroupList (GetGroupListRequest) returns (GetGroupListResponse) {
+        option (google.api.http) = {
+            get: "/api/organizations/{organization_id}/groups"
+        };
+    }
+    rpc GetGroupById (GetGroupByIdRequest) returns (GetGroupByIdResponse) {
+        option (google.api.http) = {
+            get: "/api/groups/{group_id}"
+        };
+    }
+    rpc CreateGroup (CreateGroupRequest) returns (GroupResponse) {
+        option (google.api.http) = {
+            post: "/api/organizations/{organization_id}/groups"
+            body: "*"
+        };
+    }
+    rpc UpdateGroup (UpdateGroupRequest) returns (GroupResponse) {
+        option (google.api.http) = {
+            patch: "/api/groups/{group_id}"
+            body: "*"
+        };
+    }
+    rpc DeleteGroup (DeleteGroupRequest) returns (DeleteGroupResponse) {
+        option (google.api.http) = {
+            delete: "/api/groups/{group_id}"
+        };
+    }
+    rpc AddStudentsToGroup (AddStudentsToGroupRequest) returns (AddStudentsToGroupResponse) {
+        option (google.api.http) = {
+            post: "/api/groups/{group_id}/students"
+            body: "*"
+        };
+    }
+    rpc RemoveStudentsFromGroup (RemoveStudentsFromGroupRequest) returns (RemoveStudentsFromGroupResponse) {
+        option (google.api.http) = {
+            delete: "/api/groups/{group_id}/students"
+            body: "*"
+        };
+    }
+    rpc CreateGroupWithStudents (CreateGroupWithStudentsRequest) returns (GroupResponse) {
+        option (google.api.http) = {
+            post: "/api/organizations/{organization_id}/groups/with-students"
+            body: "*"
+        };
+    }
+}
+
+enum GroupStatus {
+    GROUP_STATUS_UNSPECIFIED = 0;
+    ACTIVE = 1;
+    ARCHIVED = 2;
+}
+
+message GetGroupListRequest {
+    int32 organization_id = 1;
+    bool include_archived = 2;
+    int32 page_number = 3;
+    int32 page_size = 4;
+    int32 grade = 5;
+}
+
+message GroupListItem {
+    int32 id = 1;
+    int32 organization_id = 2;
+    string name = 3;
+    google.protobuf.StringValue description = 4;
+    google.protobuf.StringValue code = 5;
+    string status = 6;
+    int32 student_count = 7;
+    string created_at = 8;
+    string updated_at = 9;
+    repeated GroupStudent students = 10;
+}
+
+message GetGroupListResponse {
+    repeated GroupListItem items = 1;
+    int32 total_count = 2;
+    int32 page_number = 3;
+    int32 page_size = 4;
+    int32 total_pages = 5;
+}
+
+message GetGroupByIdRequest {
+    int32 group_id = 1;
+    bool active_only = 2;
+    int32 subscription_order_id = 3; 
+}
+
+message GroupStudent {
+    string organization_user_id = 1;
+    string user_id = 2;
+    string email = 3;
+    string user_name = 4;
+    string full_name = 5;
+    int32 subscription_order_id = 6;
+    string joined_at = 7;
+    bool is_active = 8;
+}
+
+message GetGroupByIdResponse {
+    int32 id = 1;
+    int32 organization_id = 2;
+    string name = 3;
+    google.protobuf.StringValue description = 4;
+    google.protobuf.StringValue code = 5;
+    string status = 6;
+    string created_by_user_id = 7;
+    string created_at = 8;
+    string updated_at = 9;
+    repeated GroupStudent students = 10;
+    int32 student_count = 11; 
+    int32 total_student_count = 12;
+    google.protobuf.Int32Value filtered_subscription_order_id = 13;
+}
+
+message CreateGroupRequest {
+    int32 organization_id = 1;
+    string name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue code = 4;
+    string created_by_user_id = 5;
+}
+
+message UpdateGroupRequest {
+    int32 group_id = 1;
+    string name = 2;
+    google.protobuf.StringValue description = 3;
+}
+
+message GroupResponse {
+    int32 id = 1;
+    int32 organization_id = 2;
+    string name = 3;
+    google.protobuf.StringValue description = 4;
+    google.protobuf.StringValue code = 5;
+    string status = 6;
+    string created_by_user_id = 7;
+    string created_at = 8;
+    string updated_at = 9;
+}
+
+message DeleteGroupRequest {
+    int32 group_id = 1;
+}
+
+message DeleteGroupResponse {
+    bool is_success = 1;
+}
+
+message AddStudentsToGroupRequest {
+    int32 group_id = 1;
+    repeated string student_ids = 2; // List of OrganizationUser.Id
+}
+
+message AddStudentsToGroupResponse {
+    bool is_success = 1;
+}
+
+message RemoveStudentsFromGroupRequest {
+    int32 group_id = 1;
+    repeated string student_ids = 2; // List of OrganizationUser.Id
+}
+
+message RemoveStudentsFromGroupResponse {
+    bool is_success = 1;
+}
+
+message CreateGroupWithStudentsRequest {
+    int32 organization_id = 1;
+    string name = 2;
+    string code = 3;
+    int32 grade = 4;
+    google.protobuf.StringValue description = 5;
+    string created_by_user_id = 6;
+    repeated string student_ids = 7;
+    google.protobuf.Int32Value subscription_order_id = 8; 
+    google.protobuf.StringValue license_type = 9; 
+}
+

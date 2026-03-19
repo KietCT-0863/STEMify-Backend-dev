@@ -1,0 +1,244 @@
+syntax = "proto3";
+
+option csharp_namespace = "Emulator.API.Protos";
+
+package operation;
+
+import "google/protobuf/struct.proto";
+import "google/api/annotations.proto";
+
+// OperationService - Phase 4: CQRS-optimized Delta Sync & Event Sourcing
+// Implements RFC 6902 (JSON Patch) over gRPC with Command/Query separation
+service OperationService {
+  // ==================== COMMAND API (Write Operations) ====================
+
+  // Append single operation to emulation event log
+  // Returns lightweight acknowledgement (CQRS Command pattern)
+  rpc AppendOperation (AppendOperationRequest) returns (AppendOperationResponse) {
+    option (google.api.http) = {
+      post: "/v1/operations/append"
+      body: "*"
+    };
+  }
+
+  // Execute batch of operations atomically
+  // Returns lightweight acknowledgement (CQRS Command pattern)
+  rpc ExecuteBatchOperation (ExecuteBatchRequest) returns (BatchOperationResponse) {
+    option (google.api.http) = {
+      post: "/v1/operations/batch"
+      body: "*"
+    };
+  }
+
+  // ==================== QUERY API (Read Operations) ====================
+
+  // Get operation history for delta sync
+  // Optimized read path with caching (CQRS Query pattern)
+  rpc GetOperationHistory (GetOperationHistoryRequest) returns (OperationHistoryResponse) {
+    option (google.api.http) = {
+      get: "/v1/operations/history/{emulation_id}"
+    };
+  }
+
+  // Get operation statistics for monitoring
+  // Cached read operation
+  rpc GetOperationStatistics (GetStatisticsRequest) returns (StatisticsResponse) {
+    option (google.api.http) = {
+      get: "/v1/operations/statistics/{emulation_id}"
+    };
+  }
+
+  // Get latest sequence number (optimized for conflict detection)
+  // Fast read from cache
+  rpc GetLatestSeq (GetLatestSeqRequest) returns (LatestSeqResponse) {
+    option (google.api.http) = {
+      get: "/v1/operations/latest-seq/{emulation_id}"
+    };
+  }
+
+  // Get operations since a specific sequence (for client sync)
+  // Optimized for delta sync pattern
+  rpc GetOperationsSince (GetOperationsSinceRequest) returns (OperationHistoryResponse) {
+    option (google.api.http) = {
+      get: "/v1/operations/since/{emulation_id}"
+    };
+  }
+
+  // ==================== UTILITY API ====================
+
+  // Detect conflicts before appending (validation query)
+  rpc DetectConflicts (DetectConflictsRequest) returns (ConflictDetectionResponse) {
+    option (google.api.http) = {
+      post: "/v1/operations/detect-conflicts"
+      body: "*"
+    };
+  }
+}
+
+// ============================================================================
+// Request Messages
+// ============================================================================
+
+message AppendOperationRequest {
+  string emulation_id = 1;
+  string op = 2;              // add, remove, replace, move, copy, test
+  string path = 3;            // JSON Pointer (RFC 6901)
+  google.protobuf.Value value = 4;      // Optional: value for add/replace/test
+  string from = 5;            // Optional: source path for move/copy
+  string user_id = 6;
+  OperationMetadata metadata = 7;
+  int64 client_last_seq = 8;  // For conflict detection
+}
+
+message ExecuteBatchRequest {
+  string emulation_id = 1;
+  repeated OperationRequest operations = 2;
+  string user_id = 3;
+  string batch_id = 4;        // Optional: for tracking batch operations
+  int64 client_last_seq = 5;  // For conflict detection
+}
+
+message OperationRequest {
+  string op = 1;
+  string path = 2;
+  google.protobuf.Value value = 3;
+  string from = 4;
+  OperationMetadata metadata = 5;
+}
+
+message GetOperationHistoryRequest {
+  string emulation_id = 1;
+  int64 since_seq = 2;        // Get operations after this seq
+  int32 limit = 3;            // Optional: max operations to return
+  bool include_deleted = 4;   // Optional: include soft-deleted ops
+}
+
+message GetOperationsSinceRequest {
+  string emulation_id = 1;
+  int64 since_seq = 2;        // Get operations with seq > since_seq
+  int32 limit = 3;            // Optional: max operations to return (default 100)
+}
+
+message GetStatisticsRequest {
+  string emulation_id = 1;
+}
+
+message DetectConflictsRequest {
+  string emulation_id = 1;
+  string op = 2;
+  string path = 3;
+  google.protobuf.Value value = 4;
+  int64 client_last_seq = 5;
+}
+
+message GetLatestSeqRequest {
+  string emulation_id = 1;
+}
+
+// ============================================================================
+// Response Messages
+// ============================================================================
+
+message AppendOperationResponse {
+  bool success = 1;
+  string message = 2;
+  OperationData operation = 3;
+  ValidationResult validation = 4;
+  ConflictInfo conflict_info = 5;
+}
+
+message BatchOperationResponse {
+  bool success = 1;
+  string message = 2;
+  repeated OperationData operations = 3;
+  int32 total_operations = 4;
+  int64 start_seq = 5;
+  int64 end_seq = 6;
+}
+
+message OperationHistoryResponse {
+  bool success = 1;
+  string emulation_id = 2;
+  repeated OperationData operations = 3;
+  int64 latest_seq = 4;
+  int32 total_count = 5;
+  bool has_more = 6;
+}
+
+message StatisticsResponse {
+  bool success = 1;
+  OperationStatistics statistics = 2;
+}
+
+message ConflictDetectionResponse {
+  bool has_conflict = 1;
+  string conflict_type = 2;   // None, PathConflict, ClientBehind
+  string resolution_strategy = 3;  // LastWriteWins, RejectAndSync
+  repeated OperationData conflicting_operations = 4;
+  int64 server_seq = 5;
+  int64 client_seq = 6;
+}
+
+message LatestSeqResponse {
+  bool success = 1;
+  int64 latest_seq = 2;
+  string emulation_id = 3;
+}
+
+// ============================================================================
+// Data Models
+// ============================================================================
+
+message OperationData {
+  string operation_id = 1;
+  string emulation_id = 2;
+  int64 seq = 3;
+  string op = 4;
+  string path = 5;
+  google.protobuf.Value value = 6;
+  google.protobuf.Value old_value = 7;
+  string from = 8;
+  string timestamp = 9;       // ISO 8601 format
+  string user_id = 10;
+  OperationMetadata metadata = 11;
+  bool applied_to_snapshot = 12;
+  int64 snapshot_seq = 13;
+  bool is_deleted = 14;
+}
+
+message OperationMetadata {
+  string source = 1;          // web, mobile, api
+  string session_id = 2;
+  string batch_id = 3;
+  string component_id = 4;    // Which 3D component was modified
+  string component_type = 5;  // resistor, led, wire, etc.
+  map<string, string> custom_fields = 6;
+}
+
+message OperationStatistics {
+  int64 total_operations = 1;
+  int64 pending_operations = 2;
+  int64 applied_operations = 3;
+  int64 deleted_operations = 4;
+  int64 last_seq = 5;
+  int64 last_snapshot_seq = 6;
+  int64 operations_since_snapshot = 7;
+  string last_operation_at = 8;
+  string last_snapshot_at = 9;
+  map<string, int64> operations_by_type = 10;
+  map<string, int64> operations_by_user = 11;
+  double average_operations_per_day = 12;
+}
+
+message ValidationResult {
+  bool is_valid = 1;
+  repeated string errors = 2;
+  repeated string warnings = 3;
+}
+
+message ConflictInfo {
+  bool has_conflict = 1;
+  string conflict_type = 2;
+  string suggested_action = 3;
+  int64 missed_operations_count = 4;
+}

@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Product";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package product;
+
+service GrpcKitImageService {
+    rpc CreateKitImage (CreateKitImageRequest) returns (KitImageResponse) {
+        option (google.api.http) = {
+            post: "/api/kit-images"
+            body: "*"
+        };
+    }
+    rpc GetKitImage (GetKitImageRequest) returns (KitImageResponse) {
+        option (google.api.http) = {
+            get: "/api/kit-images/{id}"
+        };
+    }
+    rpc UpdateKitImage (UpdateKitImageRequest) returns (KitImageResponse) {
+        option (google.api.http) = {
+            patch: "/api/kit-images/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteKitImage (DeleteKitImageRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/kit-images/{id}"
+        };
+    }
+    rpc ListKitImages (google.protobuf.Empty) returns (KitImageList);
+    rpc QueryKitImages (QueryKitImagesRequest) returns (PagedKitImageList) {
+        option (google.api.http) = {
+            get: "/api/kit-images"
+        };
+    }
+}
+
+message KitImage {
+    int32 id = 1;
+    int32 kitId = 2;
+    string imageUrl = 3;
+    string altText = 4;
+}
+
+message CreateKitImageRequest {
+    int32 kitId = 1;
+    google.protobuf.BytesValue image = 2;
+    string altText = 3;
+}
+
+message UpdateKitImageRequest {
+    int32 id = 1;
+    google.protobuf.BytesValue image = 2;
+    string altText = 3;
+}
+
+message GetKitImageRequest {
+    int32 id = 1;
+}
+
+message DeleteKitImageRequest {
+    int32 id = 1;
+}
+
+message KitImageList {
+    repeated KitImageResponse kitImages = 1;
+}
+
+message PagedKitImageList {
+    repeated KitImageResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message KitImageResponse {
+    int32 id = 1;
+    int32 kitId = 2;
+    string imageUrl = 3;
+    string altText = 4;
+}
+
+message QueryKitImagesRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    google.protobuf.Int32Value kitId = 5;
+}

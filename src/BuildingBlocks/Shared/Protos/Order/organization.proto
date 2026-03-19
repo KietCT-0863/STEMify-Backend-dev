@@ -1,0 +1,309 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Order";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Protos/Resource/curriculum.proto";
+import "Protos/Emulator/emulator.proto";
+
+package organization;
+
+service GrpcOrganizationService {
+    rpc CreateOrganization (CreateOrganizationRequest) returns (GrpcOrganizationDetail) {
+        option (google.api.http) = {
+            post: "/api/organizations"
+            body: "*"
+        };
+    }
+
+    rpc UpdateOrganization (UpdateOrganizationRequest) returns (GrpcOrganizationDetail) {
+        option (google.api.http) = {
+            patch: "/api/organizations/{id}"
+            body: "*"
+        };
+    }
+
+    rpc DeleteOrganization (DeleteOrganizationRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/organizations/{id}"
+        };
+    }
+
+    rpc GetOrganizationById (GetOrganizationRequest) returns (GrpcOrganizationDetail) {
+        option (google.api.http) = {
+            get: "/api/organizations/{id}"
+        };
+    }
+
+    rpc GetOrganizationDashboard (GetOrganizationDashboardRequest) returns (GetOrganizationDashboardResponse) {
+        option (google.api.http) = {
+            get: "/api/organizations/{id}/dashboard"
+        };
+    }
+
+    rpc GetPagedOrganization (GetOrganizationParams) returns (GrpcPagedOrganizationResponse) {
+        option (google.api.http) = {
+            get: "/api/organizations"
+        };
+    }
+
+    // Method for Identity Service to get organization with email domain and license info
+    rpc GetOrganizationForBulkProvisioning (GetOrganizationRequest) returns (GrpcOrganizationBulkProvisioningInfo) {
+        option (google.api.http) = {
+            get: "/api/organizations/{id}/bulk-provisioning-info"
+        };
+    }
+
+    rpc GetOrganizationCurriculumByOrgId (GetOrganizationRequest) returns (GrpcOrganizationCurriculumList) {
+        option (google.api.http) = {
+            get: "/api/organizations/{id}/curriculums"
+        };
+    }
+
+    rpc GetOrganizationsWithAccessByUserId (GetOrganizationsWithAccessByUserIdRequest) returns (GrpcOrganizationsWithAccessResponse) {
+        option (google.api.http) = {
+            get: "/api/users/{userId}/organizations/access"
+        };
+    }
+    rpc GetOrganizationCurriculumById (GetOrganizationCurriculumByIdRequest) returns (OrganizationCurriculumModel) {
+        option (google.api.http) = {
+            get: "/api/organizations/{organizationId}/curriculums/{curriculumId}"
+        };
+    }
+}
+
+message GetOrganizationCurriculumByIdRequest {
+    int32 organizationId = 1;
+    int32 curriculumId = 2;
+}
+
+message GetOrganizationDashboardRequest {
+    int32 id = 1;
+    google.protobuf.StringValue period = 2;
+}
+
+message GetOrganizationsWithAccessByUserIdRequest {
+    string userId = 1;
+}
+
+message GrpcOrganizationsWithAccessResponse {
+    repeated OrganizationWithAccessModel organizations = 1;
+}
+message OrganizationWithAccessModel {
+    int32 id = 1;
+    string name = 2;
+    google.protobuf.StringValue imageUrl = 3;
+    string code = 4;
+    repeated OrgSubscription subscriptions = 5;
+}
+
+message OrgSubscription {
+    int32 id = 1;
+    string status = 2;
+    string licenseType = 3;
+    repeated int32 curriculumIds = 4;
+    repeated int32 courseIds = 5;
+    repeated string emulatorModelIds = 6;
+}
+
+message GetOrganizationDashboardResponse {
+    PeriodStatisticModel currentPeriod = 1;
+    PeriodStatisticModel previousPeriod = 2;
+    OrganizationChangeModel change = 3;
+    repeated CurriculumStatisticModel curriculumStatistics = 4;
+    repeated ClassroomStatisticModel classroomStatistics = 5;
+}
+
+message PeriodStatisticModel {
+    int32 totalCurriculum = 1;
+    int32 totalClassrooms = 2;
+    int32 totalStudents = 3;
+    int32 totalTeachers = 4;
+    int32 totalUsers = 5;
+    int32 totalCurriculumEnrollments = 6;
+    int32 totalCurriculumCertificates = 7;
+    double passRate = 8;
+}
+
+message OrganizationChangeModel {
+    double totalCurriculum = 1;
+    double totalClassrooms = 2;
+    double totalStudents = 3;
+    double totalTeachers = 4;
+    double totalUsers = 5;
+    double totalCurriculumEnrollments = 6;
+    double totalCurriculumCertificates = 7;
+    double passRate = 8;
+}
+
+message CurriculumStatisticModel {
+    int32 id = 1;
+    string title = 2;
+    string imageUrl = 3;
+    int32 courseCount = 4;
+    double passRate = 5;
+    int32 totalEnrollment = 6;
+}
+
+message ClassroomStatisticModel {
+    int32 id = 1;
+    string name = 2;
+    double passRate = 3;
+    double averageScore = 4;
+    string courseCode = 5;
+    string courseTitle = 6;
+}
+
+message CreateOrganizationRequest {
+    string name = 1;
+    int32 organizationTypeId = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.BytesValue image = 4;
+}
+
+message UpdateOrganizationRequest {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.Int32Value organizationTypeId = 4;
+    google.protobuf.BytesValue image = 5;
+    google.protobuf.StringValue status = 6;
+}
+
+message DeleteOrganizationRequest {
+    int32 id = 1;
+}
+
+message GetOrganizationRequest {
+    int32 id = 1;
+    google.protobuf.StringValue status = 2;
+}
+
+message GetOrganizationParams {
+    google.protobuf.Int32Value pageNumber = 1;
+    google.protobuf.Int32Value pageSize = 2;
+    google.protobuf.StringValue search = 3;
+    google.protobuf.StringValue orderBy = 4;
+    google.protobuf.StringValue sortDirection = 5;
+    google.protobuf.Int32Value organizationTypeId = 6;
+    google.protobuf.StringValue status = 7;
+}
+
+message GrpcOrganizationResponse {
+    GrpcOrganizationModel organization = 1;
+}
+
+message GrpcPagedOrganizationResponse {
+    repeated GrpcOrganizationDetail items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message GrpcOrganizationModel {
+    int32 id = 1;
+    int32 organizationTypeId = 2;
+    string name = 3;
+    google.protobuf.StringValue description = 4;
+    google.protobuf.StringValue imageUrl = 5;
+    string status = 6;
+    google.protobuf.Timestamp createdDate = 7;
+    google.protobuf.Timestamp lastModifiedDate = 8;
+}
+
+message GrpcOrganizationDetail {
+    int32 id = 1;
+    string organizationType = 2;
+    string name = 3;
+    google.protobuf.StringValue description = 4;
+    google.protobuf.StringValue imageUrl = 5;
+    string status = 6;
+    google.protobuf.Timestamp createdDate = 7;
+    google.protobuf.Timestamp lastModifiedDate = 8;
+    repeated GrpcSubscriptionModel subscriptions = 9;
+    string code = 10;
+}
+
+message GrpcOrganizationInformation {
+    int32 id = 1;
+    string organizationType = 2;
+    string name = 3;
+    google.protobuf.StringValue imageUrl = 4;
+    string code = 5;
+}
+
+message GrpcSubscriptionModel {
+    int32 id = 1;
+    string planName = 2;
+    string planBillingCycle = 3;
+    double grossAmount = 4;
+    double netAmount = 5;
+    string status = 6;
+    google.protobuf.Timestamp startDate = 7;
+    google.protobuf.Timestamp endDate = 8;
+    int32 maxStudentSeats = 9;
+    int32 maxTeacherSeats = 10;
+    int32 currentStudentSeats = 11;
+    int32 currentTeacherSeats = 12;
+    string code = 13;
+}
+
+// Message for bulk provisioning (Identity Service integration)
+message GrpcOrganizationBulkProvisioningInfo {
+    int32 id = 1;
+    string name = 2;
+    string emailDomain = 3; // e.g., "school.edu", "company.com"
+    string status = 4;
+    bool isActive = 5;
+    repeated GrpcSubscriptionLicenseInfo subscriptions = 6;
+}
+
+message GrpcSubscriptionLicenseInfo {
+    int32 subscriptionOrderId = 1;
+    string planName = 2;
+    string status = 3;
+    google.protobuf.Timestamp startDate = 13;
+    int32 maxStudentSeats = 4;
+    int32 maxTeacherSeats = 5;
+    int32 maxOrganizationAdminSeats = 6;
+    int32 currentStudentSeats = 7;
+    int32 currentTeacherSeats = 8;
+    int32 currentOrganizationAdminSeats = 9;
+    int32 availableStudentSeats = 10;
+    int32 availableTeacherSeats = 11;
+    int32 availableOrganizationAdminSeats = 12;
+}
+
+message GrpcOrganizationCurriculumList {
+    repeated OrganizationCurriculumModel curriculums = 1;
+}
+
+message OrganizationCurriculumModel {
+  int32 id = 1;
+  string title = 2;
+  google.protobuf.StringValue imageUrl = 3;
+  string code = 4;
+  google.protobuf.StringValue description = 5;
+  int32 courseCount = 6;
+
+  repeated resource.CourseDetails courses = 7;
+  repeated CurriculumSubscriptionGroup subscriptionGroups = 8;
+  repeated emulator.EmulationListItem emulations = 9;
+  repeated int32 kitIds = 10;
+}
+
+message CurriculumSubscriptionGroup {
+  string status = 1; // Active | Upcoming | Expired | Cancelled
+  repeated CurriculumSubscriptionInfo subscriptions = 2;
+}
+
+message CurriculumSubscriptionInfo {
+  int32 subscriptionId = 1;
+  string startDate = 2;
+  string endDate = 3;
+  string planName = 4;
+}

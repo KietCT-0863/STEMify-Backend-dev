@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.User";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+package user;
+
+// ----------- SERVICE DEFINITION -----------
+service GrpcBulkProvisioning {
+    // Upload CSV file for bulk user invitation
+    rpc UploadBulkInvitation (UploadBulkInvitationRequest) returns (UploadBulkInvitationResponse) {
+        option (google.api.http) = {
+            post: "/api/organizations/{organization_id}/bulk-invitations/upload"
+            body: "*"
+        };
+    }
+
+    // Get bulk import job status
+    rpc GetBulkImportJobStatus (GetBulkImportJobStatusRequest) returns (BulkImportJobStatusResponse) {
+        option (google.api.http) = {
+            get: "/api/bulk-invitations/jobs/{job_id}"
+        };
+    }
+
+    // List bulk import jobs for an organization
+    rpc ListBulkImportJobs (ListBulkImportJobsRequest) returns (ListBulkImportJobsResponse) {
+        option (google.api.http) = {
+            get: "/api/organizations/{organization_id}/bulk-invitations/jobs"
+        };
+    }
+
+    rpc GetJobFailures (GetJobFailuresRequest) returns (JobFailuresResponse) {
+        option (google.api.http) = {
+            get: "/api/bulk-invitations/jobs/{job_id}/failures"
+        };
+    }
+}
+
+// ----------- REQUESTS -----------
+message UploadBulkInvitationRequest {
+    string organization_id = 1; // Guid as string
+    bytes csv_data = 2;
+    string file_name = 3;
+    string created_by = 4 [deprecated = true];
+    string subscription_order_id = 5; // Guid as string
+}
+
+message GetBulkImportJobStatusRequest {
+    string job_id = 1;
+}
+
+message ListBulkImportJobsRequest {
+    string organization_id = 1; // Guid as string
+    int32 page_number = 2;
+    int32 page_size = 3;
+}
+
+// ----------- RESPONSES -----------
+message UploadBulkInvitationResponse {
+    string job_id = 1;
+    int32 total_count = 2;
+    int32 valid_count = 3;
+    int32 invalid_count = 4;
+    string message = 5;
+    repeated CsvParseError errors = 6;
+}
+
+message BulkImportJobStatusResponse {
+    string job_id = 1;
+    string organization_id = 2; // Guid as string
+    BulkImportStatus status = 3;
+    int32 total_count = 4;
+    int32 processed_count = 5;
+    int32 success_count = 6;
+    int32 failed_count = 7;
+    double progress_percentage = 8;
+    google.protobuf.Timestamp created_at = 9;
+    google.protobuf.Timestamp started_at = 10;
+    google.protobuf.Timestamp completed_at = 11;
+    string failure_reason = 12;
+    repeated BulkImportFailure failures = 13;
+}
+
+message ListBulkImportJobsResponse {
+    repeated BulkImportJobSummary items = 1;
+    int32 total_count = 2;
+    int32 page_number = 3;
+    int32 page_size = 4;
+}
+message BulkImportJobSummary {
+    string job_id = 1;
+    string organization_id = 2;
+    BulkImportStatus status = 3;
+    int32 total_count = 4;
+    int32 success_count = 5;
+    int32 failed_count = 6;
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp completed_at = 8;
+}
+
+// ----------- EXTRA FOR FAILURES API ------------
+message GetJobFailuresRequest {
+    string job_id = 1; // job id
+}
+message JobFailuresResponse {
+    repeated BulkImportFailure failures = 1;
+}
+message BulkImportFailure {
+    string email = 1;
+    string reason = 2;
+    google.protobuf.Timestamp failed_at = 3;
+}
+
+message CsvParseError {
+    int32 row_number = 1;
+    string field_name = 2;
+    string raw_value = 3;
+    string error_message = 4;
+}
+
+// ----------- ENUM cho trạng thái job ------------
+enum BulkImportStatus {
+    BULK_IMPORT_STATUS_UNSPECIFIED = 0;
+    BULK_IMPORT_STATUS_PENDING = 1;
+    BULK_IMPORT_STATUS_PROCESSING = 2;
+    BULK_IMPORT_STATUS_COMPLETED = 3;
+    BULK_IMPORT_STATUS_FAILED = 4;
+}

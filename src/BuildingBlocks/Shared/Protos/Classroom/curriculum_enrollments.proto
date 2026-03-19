@@ -1,0 +1,133 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+import "Protos/Classroom/course_enrollments.proto";
+
+package curriculumEnrollment;
+
+service GrpcCurriculumEnrollment {
+  rpc CreateCurriculumEnrollment (CreateCurriculumEnrollmentRequest) returns (GrpcCurriculumEnrollmentResponse) {
+    option (google.api.http) = {
+      post: "/api/curriculum-enrollments"
+      body: "*"
+    };
+  }
+
+  rpc UpdateCurriculumEnrollment (UpdateCurriculumEnrollmentRequest) returns (GrpcCurriculumEnrollmentResponse) {
+    option (google.api.http) = {
+      patch: "/api/curriculum-enrollments/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteCurriculumEnrollment (DeleteCurriculumEnrollmentRequest) returns (DeleteCurriculumEnrollmentResponse) {
+    option (google.api.http) = {
+      delete: "/api/curriculum-enrollments/{id}"
+    };
+  }
+
+  //rpc GetCurriculumEnrollmentById (GetCurriculumEnrollmentRequest) returns (GrpcCurriculumEnrollmentResponse) {
+  //  option (google.api.http) = {
+  //    get: "/api/curriculum-enrollments/{id}"
+  //  };
+  //}
+
+  rpc GetPagedCurriculumEnrollments (GetCurriculumEnrollmentsRequest) returns (GrpcPagedCurriculumEnrollmentsResponse) {
+    option (google.api.http) = {
+      get: "/api/curriculum-enrollments"
+    };
+  }
+}
+
+message CreateCurriculumEnrollmentRequest {
+  string studentId = 1;
+  int32 curriculumId = 2;
+  string status = 3;
+  google.protobuf.Int32Value classroomId = 4;
+}
+
+message UpdateCurriculumEnrollmentRequest {
+  int32 id = 1;
+  string status = 2;
+  int32 curriculumId = 3;
+}
+
+message DeleteCurriculumEnrollmentRequest {
+  int32 id = 1;
+}
+
+message GetCurriculumEnrollmentRequest {
+  int32 id = 1;
+}
+
+message GetCurriculumEnrollmentsRequest {
+  int32 pageNumber = 1;
+  int32 pageSize = 2;
+  google.protobuf.StringValue search = 3;
+  google.protobuf.StringValue orderBy = 4;
+  google.protobuf.StringValue studentId = 5;
+  google.protobuf.StringValue status = 6;
+  google.protobuf.Int32Value curriculumId = 7;
+  google.protobuf.Int32Value certificateId = 8;
+  google.protobuf.StringValue verificationCode = 9;
+  google.protobuf.Int32Value organizationSubscriptionOrderId = 11;
+}
+
+message GrpcCurriculumEnrollmentResponse {
+  GrpcCurriculumEnrollmentModel curriculumEnrollment = 1;
+}
+
+message GrpcPagedCurriculumEnrollmentsResponse {
+  repeated GrpcCurriculumEnrollmentDetail items = 1;
+  int32 totalCount = 2;
+  int32 pageNumber = 3;
+  int32 pageSize = 4;
+  int32 totalPages = 5;
+}
+
+message DeleteCurriculumEnrollmentResponse {
+  bool success = 1;
+}
+
+message GrpcCurriculumEnrollmentModel {
+  int32 id = 1;
+  string studentId = 2;
+  int32 curriculumId = 3;
+  string curriculumTitle = 4;
+  google.protobuf.StringValue description = 5;
+  google.protobuf.Timestamp enrolledAt = 6;
+  google.protobuf.Timestamp completedAt = 7;
+  string status = 8;
+  google.protobuf.StringValue coverImageUrl = 9;
+  int32 progressPercentage = 10;
+}
+
+message GrpcCurriculumEnrollmentDetail {
+  int32 id = 1;
+  string studentId = 2;
+  int32 curriculumId = 3;
+  string curriculumTitle = 4;
+  google.protobuf.StringValue description = 5;
+  google.protobuf.Timestamp enrolledAt = 6;
+  google.protobuf.Timestamp completedAt = 7;
+  string status = 8;
+  google.protobuf.StringValue coverImageUrl = 9;
+  google.protobuf.StringValue verificationCode = 10;
+  google.protobuf.StringValue certificateUrl = 11;
+  google.protobuf.Int32Value certificateId = 12;
+  repeated courseEnrollment.GrpcCourseEnrollmentModel courseEnrollments = 13;
+  string studentName = 14;
+  int32 progressPercentage = 15;
+}
+
+enum CurriculumEnrollmentStatus {
+	UNKNOWN = 0;
+	INPROGRESS = 1;
+	COMPLETED = 2;
+	DROPPED = 3;
+}

@@ -1,0 +1,556 @@
+﻿@using Identity.Web.Controllers
+@model LoginViewModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@{
+    ViewData["Title"] = "Sign In";
+    var tokenSet = Antiforgery.GetAndStoreTokens(Context);
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function initializeGoogleOneTap() {
+            const googleClientId = '@ViewData["GoogleClientId"]';
+            
+            if (!googleClientId) {
+                console.warn('Google Client ID not configured');
+                return;
+            }
+
+            if (typeof window.google === 'undefined' || !window.google.accounts) {
+                setTimeout(initializeGoogleOneTap, 1000);
+                return;
+            }
+
+            
+            window.google.accounts.id.initialize({
+                client_id: googleClientId,
+                callback: handleCredentialResponse,
+                auto_select: false,
+                cancel_on_tap_outside: true,
+                itp_support: true,
+                use_fedcm_for_prompt: true 
+            });
+
+            try {
+                window.google.accounts.id.prompt((notification) => {
+                    if (!notification) {
+                        return; 
+                    }
+                    try {
+                        const notDisplayedReason = notification.getNotDisplayedReason?.();
+                        if (notDisplayedReason) {
+                            console.log('Google One Tap not displayed. Reason:', notDisplayedReason);
+                            return;
+                        }
+                    } catch (e) {
+                    }
+
+                    try {
+                        const skippedReason = notification.getSkippedReason?.();
+                        if (skippedReason) {
+                            if (skippedReason !== 'tap_outside') {
+                                console.log('Google One Tap skipped. Reason:', skippedReason);
+                            }
+                            return;
+                        }
+                    } catch (e) {
+                    }
+
+                    try {
+                        const dismissedReason = notification.getDismissedReason?.();
+                        if (dismissedReason) {
+                            console.log('Google One Tap dismissed. Reason:', dismissedReason);
+                            return;
+                        }
+                    } catch (e) {
+                    }
+                });
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    console.log('Google One Tap initialization was aborted (normal behavior)');
+                } else {
+                    console.error('Error initializing Google One Tap:', error);
+                }
+            }
+        }
+
+        function handleCredentialResponse(response) {
+            const credential = response.credential;
+            
+            const token = '@tokenSet.RequestToken';
+            const headerName = '@tokenSet.HeaderName';
+            
+            if (!token) {
+                console.error('Anti-forgery token not found');
+                alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                return;
+            }
+
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            headers[headerName] = token;
+
+            fetch('@Url.Action("GoogleOneTap", "Account")', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    credential: credential
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirectUrl || '@Url.Action("Index", "Home")';
+                } else {
+                    console.error('Google One Tap login failed:', data.error);
+                    alert('Đăng nhập thất bại: ' + (data.error || 'Có lỗi xảy ra'));
+                }
+            })
+            .catch(error => {
+                console.error('Error during Google One Tap login:', error);
+                alert('Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại.');
+            });
+        }
+
+        window.addEventListener('load', function() {
+            setTimeout(initializeGoogleOneTap, 500);
+        });
+
+        if (document.readyState === 'complete') {
+            setTimeout(initializeGoogleOneTap, 500);
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            if (!container) {
+                console.error('toastContainer not found!');
+                return;
+            }
+
+            const toast = document.createElement('div');
+            const isError = type === 'error';
+            const borderColor = isError ? '#ef4444' : '#10b981';
+            const iconColor = isError ? '#ef4444' : '#10b981';
+            const icon = isError 
+                ? '<i class="fas fa-exclamation-circle" style="font-size: 20px; color: ' + iconColor + ';"></i>'
+                : '<i class="fas fa-check-circle" style="font-size: 20px; color: ' + iconColor + ';"></i>';
+            const title = isError ? 'Lỗi' : 'Thành công';
+            
+            toast.style.cssText = `
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 16px 20px;
+                margin-bottom: 12px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                min-width: 300px;
+                border-left: 4px solid ${borderColor};
+                animation: slideInRight 0.3s ease-out;
+            `;
+            
+            toast.innerHTML = `
+                ${icon}
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: #1f2937;">${title}</div>
+                    <div style="font-size: 13px; color: #6b7280;">${message}</div>
+                </div>
+                <button onclick="this.parentElement.remove()" style="background: none; border: none; font-size: 18px; color: #9ca3af; cursor: pointer; padding: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
+            {
+                <text>
+                showToast(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["ErrorMessage"].ToString())), 'error');
+                </text>
+            }
+        });
+    </script>
+}
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f9f9f9;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 80px;
+            height: 100vh;
+            padding: 40px;
+        }
+
+        .login-form-section {
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .brand-section {
+            margin-bottom: 32px;
+        }
+
+            .brand-section h1 {
+                font-size: 32px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .brand-section p {
+                font-size: 14px;
+                color: #666;
+            }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-check-input {
+            margin-right: 6px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #7DD3FC;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 16px 0;
+            position: relative;
+        }
+
+            .divider::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background: #ddd;
+                z-index: 0;
+            }
+
+            .divider span {
+                position: relative;
+                padding: 0 12px;
+                background: #f9f9f9;
+                z-index: 1;
+                font-size: 12px;
+                color: #999;
+            }
+
+        .social-btn {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .google-btn span {
+            color: #4285f4;
+        }
+
+        .facebook-btn span {
+            color: #1877f2;
+        }
+
+        .signup-link {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+            .signup-link a {
+                color: #FFA500;
+                text-decoration: none;
+                font-weight: 500;
+            }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .forgot-password-link {
+            color: #FFA500;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .forgot-password-link:hover {
+            text-decoration: underline;
+        }
+
+        .illustration-section {
+            max-width: 600px;
+            width: 100%;
+            /* aspect-ratio: 3 / 4; */
+            overflow: hidden;
+            border-radius: 24px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+        }
+
+            .illustration-section img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 24px;
+            }
+
+        @@media (max-width: 960px) {
+            .login-container
+
+        {
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .illustration-section {
+            order: -1;
+            max-width: 100%;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        }
+
+        /* Toast Notification Styles */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99999;
+            max-width: 400px;
+            pointer-events: none;
+        }
+        
+        .toast-container .toast {
+            pointer-events: auto;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideInRight 0.3s ease-out;
+            min-width: 300px;
+        }
+
+        .toast-success {
+            border-left: 4px solid #10b981;
+        }
+
+        .toast-error {
+            border-left: 4px solid #ef4444;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .toast-success .toast-icon {
+            color: #10b981;
+        }
+
+        .toast-error .toast-icon {
+            color: #ef4444;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #1f2937;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            color: #374151;
+        }
+
+        @@keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .toast.hiding {
+            animation: slideOutRight 0.3s ease-out forwards;
+        }
+    </style>
+}
+
+<!-- Toast Container -->
+<div id="toastContainer" class="toast-container"></div>
+
+<div class="login-container">
+    <div class="login-form-section">
+        <div class="brand-section">
+            <h1>Đăng Nhập <span style="color: #FFBA03">STEMify</span></h1>
+            <p>Đăng nhập để bắt đầu hành trình khám phá STEM của bạn.<br />Nơi bạn có thể sáng tạo, rèn luyện tư duy và khám phá những dự án thú vị.</p>
+        </div>
+
+        <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" class="form-input" placeholder="Example@email.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password">Mật khẩu</label>
+                <input asp-for="Password" type="password" class="form-input" placeholder="At least 8 characters" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div class="remember-me" style="margin-bottom: 0;">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe">Ghi nhớ đăng nhập ?</label>
+                </div>
+                <div>
+                    <a asp-action="ForgotPassword" class="forgot-password-link">Quên mật khẩu?</a>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn">Đăng nhập</button>
+            <div class="divider">
+                <span>HOẶC</span>
+            </div>
+        </form>
+
+        <!-- External Login Providers -->
+        <form asp-action="ExternalLogin" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <button type="submit" name="provider" value="Google" class="social-btn google-btn">
+                <img src="~/images/google-icon.png" width="18" alt="Google" />
+                <span>Đăng nhập bằng Google</span>
+            </button>
+        </form>
+    </div>
+
+    <div class="illustration-section">
+        <img src="~/images/login.jpg" alt="Login Illustration" />
+    </div>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</div>

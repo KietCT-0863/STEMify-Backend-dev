@@ -1,0 +1,50 @@
+[
+  {
+    "CurriculumId": 1,
+    "CourseId": 1
+  },
+  {
+    "CurriculumId": 1,
+    "CourseId": 2
+  },
+  {
+    "CurriculumId": 1,
+    "CourseId": 3
+  },
+  {
+    "CurriculumId": 1,
+    "CourseId": 4
+  },
+  {
+    "CurriculumId": 2,
+    "CourseId": 5
+  },
+  {
+    "CurriculumId": 2,
+    "CourseId": 6
+  },
+  {
+    "CurriculumId": 2,
+    "CourseId": 7
+  },
+  {
+    "CurriculumId": 2,
+    "CourseId": 8
+  },
+  {
+    "CurriculumId": 3,
+    "CourseId": 9
+  },
+  {
+    "CurriculumId": 3,
+    "CourseId": 10
+  },
+  {
+    "CurriculumId": 3,
+    "CourseId": 11
+  },
+  {
+    "CurriculumId": 3,
+    "CourseId": 12
+  }
+]

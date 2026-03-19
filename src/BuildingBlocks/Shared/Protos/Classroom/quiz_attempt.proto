@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Classroom";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+package quizAttempt;
+
+service GrpcQuizAttempt {
+	rpc CreateQuizAttempt (CreateQuizAttemptRequest) returns (GrpcQuizAttemptResponse) {
+		option (google.api.http) = {
+			post: "/api/quiz-attempts"
+			body: "*"
+		};
+	}
+	rpc UpdateQuizAttempt (UpdateQuizAttemptRequest) returns (GrpcQuizAttemptResponse) {
+		option (google.api.http) = {
+			patch: "/api/quiz-attempts/{id}"
+			body: "*"
+		};
+	}
+	rpc GetQuizAttemptById (GetQuizAttemptByIdRequest) returns (GrpcQuizAttemptResponse) {
+		option (google.api.http) = {
+			get: "/api/quiz-attempts/{id}"
+		};
+	}
+	rpc GetPagedQuizAttempts (GetQuizAttemptParams) returns (GrpcPagedQuizAttemptsResponse) {
+		option (google.api.http) = {
+			get: "/api/quiz-attempts"
+		};
+	}
+}
+
+message CreateQuizAttemptRequest {
+	 int32 studentQuizId = 1;
+ }
+
+message UpdateQuizAttemptRequest {
+	int32 id = 1;
+	repeated QuestionAttempt questionAttempts = 2;
+ }
+
+ message QuestionAttempt {
+	 int32 questionId = 1;
+	 repeated int32 answerIds = 2;
+ }
+
+message GetQuizAttemptByIdRequest {
+	int32 id = 1;
+}
+
+message GetQuizAttemptParams {
+	int32 pageNumber = 1;
+	int32 pageSize = 2;
+	google.protobuf.StringValue search = 3;
+	google.protobuf.StringValue orderBy = 4;
+	google.protobuf.StringValue studentId = 5; 
+	string status = 6;
+	google.protobuf.Int32Value courseId = 7;
+	google.protobuf.Int32Value classroomId = 8;
+	google.protobuf.Int32Value quizId = 9;
+	google.protobuf.Timestamp fromDate = 10;
+	google.protobuf.Timestamp toDate = 11;
+}
+
+message GrpcQuizAttemptResponse {
+	int32 id = 1;
+	int32 studentQuizId = 2;
+	string startedAt = 3;
+	google.protobuf.StringValue completedAt = 4;
+	google.protobuf.Int64Value totalScore = 5;
+	string status = 6;
+	google.protobuf.Int32Value attemptNumber = 7;
+	repeated GrpcQuestionAttemptResponse questionAttempts = 8;
+}
+
+message GrpcQuizAttemptModel {
+	int32 id = 1;
+	int32 studentQuizId = 2;
+	google.protobuf.Timestamp startedAt = 3;
+	google.protobuf.Timestamp completedAt = 4;
+	double totalScore = 5;
+	string status = 6;
+	google.protobuf.Int32Value attemptNumber = 7;
+	GrpcQuizModel quiz = 8;
+}
+
+message GrpcQuizModel {
+	int32 id = 1;
+	string title = 2;
+	double totalMarks = 3;
+	double passingMarks = 4;
+}
+
+message GrpcQuestionAttemptResponse {
+  int32 questionId = 1;
+  bool isCorrect = 2;
+  double score = 3;   
+  repeated GrpcAnswerAttemptResponse answerAttempts = 4;
+}
+
+message GrpcAnswerAttemptResponse {
+  int32 answerId = 1;
+  bool isSelected = 2;
+  bool isCorrect = 3;
+}
+
+message GrpcPagedQuizAttemptsResponse {
+	repeated GrpcQuizAttemptModel items = 1;
+	int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}

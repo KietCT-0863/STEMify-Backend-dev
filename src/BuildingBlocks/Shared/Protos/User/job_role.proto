@@ -1,0 +1,39 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.User";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+package user;
+
+service JobRoleService {
+    rpc CreateJobRole (CreateJobRoleRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/api/job-roles"
+            body: "*"
+        };
+    }
+    rpc GetAllJobRoles (google.protobuf.Empty) returns (PagedJobRoleList) {
+        option (google.api.http) = {
+            get: "/api/job-roles"
+        };
+    }
+}
+
+message CreateJobRoleRequest {
+    repeated string names = 1;
+}
+
+message PagedJobRoleList {
+    repeated JobRoleResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message JobRoleResponse {
+    int32 id = 1;
+    string name = 2;
+}

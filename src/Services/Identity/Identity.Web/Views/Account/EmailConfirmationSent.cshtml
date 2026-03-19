@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 flex flex-col">
+
+    <!-- Main Content -->
+    <main class="flex-1 flex items-center justify-center p-4">
+        <div class="w-full max-w-xl">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100  p-8 md:p-10 text-center animate-fade-in">
+
+                <!-- Icon -->
+                <div class="mb-6">
+                    <div class="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 shadow-inner">
+                        <i class="fas fa-envelope text-3xl text-emerald-600"></i>
+                    </div>
+                </div>
+
+                <!-- Title -->
+                <h1 class="text-2xl font-bold text-gray-800 mb-4">
+                    Vui lòng xác nhận email của bạn
+                </h1>
+
+                <!-- Description -->
+                <p class="text-gray-600 mb-1">Tài khoản đã được tạo thành công! Chúng tôi đã gửi email đến</p>
+
+                @if (!string.IsNullOrEmpty(ViewBag.UserEmail))
+                {
+                    <p class="text-lg font-semibold text-gray-900 mb-6">@ViewBag.UserEmail</p>
+                }
+
+                <!-- Instructions -->
+                <p class="text-gray-600 mb-4">
+                    Nhấn vào liên kết trong email để hoàn tất đăng ký. Nếu không thấy email, hãy kiểm tra
+                    <span class="font-semibold">thư mục spam</span>.
+                </p>
+
+                <!-- Help -->
+                <p class="text-gray-600 mb-2">Vẫn không thấy email? Không sao.</p>
+
+                <!-- Resend Button -->
+                @if (!string.IsNullOrEmpty(ViewBag.UserEmail))
+                {
+                    <form asp-action="ResendEmailConfirmation" method="post" class="mb-6">
+                        <input type="hidden" name="email" value="@ViewBag.UserEmail" />
+                        <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white font-medium px-8 py-3 rounded-lg transition-all shadow-sm hover:shadow">
+                            Gửi lại Email Xác Nhận
+                        </button>
+                    </form>
+                }
+
+                <!-- Back Link -->
+                <a asp-action="Register" class="inline-flex items-center gap-2 text-blue-500 hover:text-blue-600 transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quay lại trang đăng ký</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer - Luôn ở đáy -->
+    <footer>
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center text-sm text-gray-600">
+                <span>Cần trợ giúp?</span>
+                <a href="mailto:support@stemify.com" class="text-blue-500 hover:text-blue-700 font-medium transition-colors">
+                    Liên hệ hỗ trợ
+                </a>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+</html>

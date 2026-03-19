@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Trường Tiểu học Vinschool Grand Park",
+    "code": "TRU3F2A1C",
+    "imageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1765710373/mqjr1oiok6svqt8i4rpj.jpg",
+    "organizationTypeId": 1,
+    "description": "Trường Tiểu học Vinschool Grand Park là một phần của hệ thống giáo dục Vinschool do Tập đoàn Vingroup đầu tư phát triển. Trường áp dụng mô hình giáo dục song ngữ chất lượng cao với chương trình Việt Nam kết hợp chương trình Cambridge quốc tế, được thiết kế phù hợp với học sinh tiểu học tại Việt Nam. Với cơ sở vật chất hiện đại, đội ngũ giáo viên tận tâm và nền tảng công nghệ hỗ trợ học tập tiên tiến, Vinschool Grand Park mang đến môi trường giáo dục toàn diện giúp học sinh phát triển toàn diện cả về tri thức, kỹ năng và phẩm chất."
+  },
+  {
+    "name": "Trường Quốc tế Bắc Mỹ (SNA)",
+    "code": "TRU6AF91D",
+    "imageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1766202611/images_2_tbssyf.jpg",
+    "organizationTypeId": 1,
+    "description": "Trường Quốc tế Bắc Mỹ (SNA) là một trong số ít trường quốc tế tại Việt Nam giảng dạy hoàn toàn bằng tiếng Anh và triển khai chương trình Tú tài Quốc tế (IB) toàn phần. Với cấp Tiểu học, SNA áp dụng chương trình IB PYP giúp học sinh phát triển tư duy phản biện, kỹ năng giao tiếp và năng lực học tập suốt đời trong môi trường quốc tế hiện đại."
+  },
+  {
+    "name": "Trường Quốc tế Anh – BIS HCM",
+    "code": "TRU9C1B7F",
+    "imageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1766202676/bis_yrxwca.jpg",
+    "organizationTypeId": 1,
+    "description": "Trường Quốc tế Anh TP.HCM (BIS HCM) là một trong những trường quốc tế hàng đầu tại Việt Nam, giảng dạy theo Chương trình Giáo dục Quốc gia Anh quốc, kết hợp với chương trình Tú tài Quốc tế (IB) ở bậc cao. Ở cấp Tiểu học, trường chú trọng xây dựng nền tảng kiến thức vững chắc, rèn luyện tư duy phản biện và khuyến khích học sinh phát triển toàn diện qua các hoạt động ngoại khoá đa dạng."
+  },
+  {
+    "name": "Trường Quốc tế Châu Âu HCM (EIS)",
+    "code": "TRU0D4E8A",
+    "imageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1766202785/ssis_whz7qm.png",
+    "organizationTypeId": 1,
+    "description": "Trường Quốc tế Châu Âu TP.HCM (EIS) mang đến một môi trường học tập thân thiện, gắn kết và đa văn hóa. Ở cấp Tiểu học, trường áp dụng chương trình IB PYP với triết lý giáo dục cá nhân hóa, chú trọng phát triển toàn diện năng lực học sinh thông qua học tập dựa trên truy vấn, sáng tạo và hợp tác."
+  },
+  {
+    "name": "Trường Quốc tế Nam Sài Gòn (SSIS)",
+    "code": "TRU4E8C2D",
+    "imageUrl": "https://res.cloudinary.com/dms8gue1c/image/upload/v1766202786/EIS_Logo_footer_xsyytc.png",
+    "organizationTypeId": 1,
+    "description": "Trường Quốc tế Nam Sài Gòn (SSIS) cung cấp chương trình giáo dục theo tiêu chuẩn Mỹ, từ bậc Tiểu học đến Trung học phổ thông. Ở cấp Tiểu học, SSIS tích hợp chương trình học thuật nghiêm ngặt với các hoạt động phát triển kỹ năng, đạo đức và giá trị sống, giúp học sinh trở thành những công dân toàn cầu giàu tri thức và trách nhiệm."
+  }
+]

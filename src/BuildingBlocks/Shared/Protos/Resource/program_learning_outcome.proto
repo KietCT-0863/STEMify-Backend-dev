@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package resource;
+
+service ProgramLearningOutcomeService {
+    rpc CreateProgramLearningOutcome (CreateProgramLearningOutcomeRequest) returns (ProgramLearningOutcomeResponse) {
+        option (google.api.http) = {
+            post: "/api/program-learning-outcomes"
+            body: "*"
+        };
+    }
+    rpc GetProgramLearningOutcome (GetProgramLearningOutcomeRequest) returns (ProgramLearningOutcomeResponse) {
+        option (google.api.http) = {
+            get: "/api/program-learning-outcomes/{id}"
+        };
+    }
+    rpc UpdateProgramLearningOutcome (UpdateProgramLearningOutcomeRequest) returns (ProgramLearningOutcomeResponse) {
+        option (google.api.http) = {
+            patch: "/api/program-learning-outcomes/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteProgramLearningOutcome (DeleteProgramLearningOutcomeRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/program-learning-outcomes/{id}"
+        };
+    }
+    rpc ListProgramLearningOutcomes (google.protobuf.Empty) returns (ProgramLearningOutcomeList);
+    rpc QueryProgramLearningOutcomes (QueryProgramLearningOutcomesRequest) returns (PagedProgramLearningOutcomeList) {
+        option (google.api.http) = {
+            get: "/api/program-learning-outcomes"
+        };
+    }
+}
+
+message ProgramLearningOutcome {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    int32 curriculumId = 4;
+}
+
+message CreateProgramLearningOutcomeRequest {
+    string name = 1;
+    string description = 2;
+    int32 curriculumId = 3;
+}
+
+message UpdateProgramLearningOutcomeRequest {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.Int32Value curriculumId = 4;
+}
+
+message GetProgramLearningOutcomeRequest {
+    int32 id = 1;
+}
+
+message DeleteProgramLearningOutcomeRequest {
+    int32 id = 1;
+}
+
+message ProgramLearningOutcomeList {
+    repeated ProgramLearningOutcomeResponse programLearningOutcomes = 1;
+}
+
+message PagedProgramLearningOutcomeList {
+    repeated ProgramLearningOutcomeResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message ProgramLearningOutcomeResponse {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    int32 curriculumId = 4;
+}
+
+message QueryProgramLearningOutcomesRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    google.protobuf.Int32Value curriculumId = 5;
+}

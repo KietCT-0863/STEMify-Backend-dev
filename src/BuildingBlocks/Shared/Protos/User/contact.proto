@@ -1,0 +1,89 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.User";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package user;
+
+service ContactService {
+    rpc CreateContact (CreateContactRequest) returns (ContactResponse) {
+        option (google.api.http) = {
+            post: "/api/contacts"
+            body: "*"
+        };
+    }
+    
+    rpc UpdateContact (UpdateContactRequest) returns (ContactResponse) {
+        option (google.api.http) = {
+            patch: "/api/contacts/{id}"
+            body: "*"
+        };
+    }
+    rpc GetContacts (GetContactParams) returns (PagedContactList) {
+        option (google.api.http) = {
+            get: "/api/contacts"
+        };
+    }
+    rpc GetContactById (GetContactByIdRequest) returns (ContactResponse) {
+        option (google.api.http) = {
+            get: "/api/contacts/{id}"
+        };
+    }
+}
+
+message CreateContactRequest {
+    string firstName = 1;
+    string lastName = 2;
+    string email = 3;
+    string phoneNumber = 4;
+    int32 jobRoleId = 5;
+    string organizationName = 6;
+}
+message UpdateContactRequest {
+    int32 id = 1;
+    google.protobuf.StringValue status = 2;
+    google.protobuf.StringValue firstName = 3;
+    google.protobuf.StringValue lastName = 4;
+    google.protobuf.StringValue email = 5;
+    google.protobuf.StringValue phoneNumber = 6;
+    google.protobuf.Int32Value jobRoleId = 7;
+    google.protobuf.StringValue organizationName = 8;
+}
+
+message PagedContactList {
+    repeated ContactResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message ContactResponse {
+    int32 id = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string email = 4;
+    string phoneNumber = 5;
+    string jobRole = 6;
+    string organizationName = 7;
+    string status = 8;
+    string createdAt = 9;
+    string updatedAt = 10;
+    string handledByUserId = 11;
+    int32 jobRoleId = 12;
+}
+message GetContactParams {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    google.protobuf.StringValue email = 5;
+    google.protobuf.StringValue phoneNumber = 6;
+    google.protobuf.StringValue status = 7;
+}
+
+message GetContactByIdRequest {
+    int32 id = 1;
+}

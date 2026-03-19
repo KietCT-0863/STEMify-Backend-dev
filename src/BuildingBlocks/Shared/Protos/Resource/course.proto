@@ -1,0 +1,212 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+package resource;
+
+service CourseService {
+    rpc CreateCourse (CreateCourseRequest) returns (CourseResponse) {
+        option (google.api.http) = {
+            post: "/api/courses"
+            body: "*"
+        };
+    }
+    rpc GetCourse (GetCourseRequest) returns (CourseDetail) {
+        option (google.api.http) = {
+            get: "/api/courses/{id}"
+        };
+    }
+    rpc UpdateCourse (UpdateCourseRequest) returns (CourseResponse) {
+        option (google.api.http) = {
+            patch: "/api/courses/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteCourse (DeleteCourseRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/courses/{id}"
+        };
+    }
+    rpc ListCourses (google.protobuf.Empty) returns (CourseList);
+    rpc QueryCourses (QueryCoursesRequest) returns (PagedCourseList) {
+        option (google.api.http) = {
+            get: "/api/courses"
+        };
+    }
+}
+
+message Course {
+    int32 id = 1;
+    string title = 2;
+    string imageUrl = 3;
+    string slug = 4;
+    string description = 5;
+    string StudentTasks = 6;
+    int32 duration = 7;
+    string status = 8;
+    google.protobuf.StringValue prerequisites = 9;
+    string level = 10;
+    string createdByUserId = 11;
+    int32 ageRangeId = 12;
+    google.protobuf.Timestamp createdDate = 13;
+    google.protobuf.Timestamp lastModifiedDate = 14;
+    google.protobuf.Timestamp ReviewedAt = 15;
+    google.protobuf.StringValue reviewedByUserId = 16;
+    int32 kitId = 17;
+}
+
+message CreateCourseRequest {
+    string title = 1;
+    string code = 2;
+    google.protobuf.BytesValue image = 3;
+    string slug = 4;
+    string description = 5;
+    string studentTasks = 6;
+    google.protobuf.StringValue prerequisites = 7;
+    string level = 8;
+    string createdByUserId = 9;
+    int32 ageRangeId = 10;
+    repeated int32 curriculumIds = 11;
+    google.protobuf.Int32Value kitId = 12;
+}
+
+message UpdateCourseRequest {
+    int32 id = 1;
+    google.protobuf.StringValue title = 2;
+    google.protobuf.StringValue code = 3;
+    google.protobuf.BytesValue image = 4;
+    google.protobuf.StringValue slug = 5;
+    google.protobuf.StringValue description = 6;
+    google.protobuf.StringValue studentTasks = 7;
+    google.protobuf.StringValue prerequisites = 8;
+    google.protobuf.StringValue level = 9;
+    google.protobuf.StringValue status = 10;
+    google.protobuf.Int32Value ageRangeId = 11;
+    repeated int32 curriculumIds = 12;
+    google.protobuf.Int32Value kitId = 13;
+}
+
+message GetCourseRequest {
+    int32 id = 1;
+}
+
+message DeleteCourseRequest {
+    int32 id = 1;
+}
+
+message QueryCoursesRequest {
+    string search = 1;
+    int32 pageNumber = 2;
+    int32 pageSize = 3;
+    string orderBy = 4;
+    string createdByUserId = 5;
+    string status = 6;
+    google.protobuf.Int32Value ageRangeId = 7;
+    google.protobuf.Int32Value skillId = 8;
+    google.protobuf.Int32Value topicId = 9;
+    google.protobuf.Int32Value standardId = 10;
+    string sortDirection = 11;
+    google.protobuf.Int32Value kitId = 12;
+}
+
+message CourseList {
+    repeated CourseResponse courses = 1;
+}
+
+message CourseResponse {
+    int32 id = 1;
+    string title = 2;
+    string imageUrl = 3;
+    string slug = 4;
+    string description = 5;
+    string studentTasks = 6;
+    google.protobuf.StringValue prerequisites = 7;
+    int32 duration = 8;
+    string status = 9;
+    string level = 10;
+    int32 ageRangeId = 11;
+    google.protobuf.Timestamp createdDate = 12;
+    google.protobuf.Timestamp lastModifiedDate = 13;
+    string ageRangeLabel = 14;
+    repeated string topicNames = 15;
+    repeated string skillNames = 16;
+    repeated string standardNames = 17;
+    repeated int32 lessonIds = 18;
+    string code = 19;
+    repeated int32 curriculumIds = 20;
+    google.protobuf.Int32Value kitId = 21;
+}
+
+message GrpcLessonModel {
+    int32 id = 1;
+    string title = 2;
+    int32 duration = 3;
+    repeated int32 sectionIds = 4;
+}
+
+message CourseDetail {
+    int32 id = 1;
+    string title = 2;
+    string imageUrl = 3;
+    string slug = 4;
+    string description = 5;
+    string studentTasks = 6;
+    google.protobuf.StringValue prerequisites = 7;
+    int32 duration = 8;
+    string status = 9;
+    string level = 10;
+    string createdByUserId = 11;
+    google.protobuf.StringValue reviewedByUserId = 12;
+    int32 ageRangeId = 13;
+    google.protobuf.Timestamp createdDate = 14;
+    google.protobuf.Timestamp lastModifiedDate = 15;
+    google.protobuf.Timestamp reviewedAt = 16;
+    string ageRangeLabel = 17;
+    repeated string topicNames = 18;
+    repeated string skillNames = 19;
+    repeated string standardNames = 20;
+    repeated GrpcLessonModel lessons = 21;
+    string code = 22;
+    string createdByUserName = 23;
+    repeated int32 curriculumIds = 24;
+    google.protobuf.Int32Value kitId = 25;
+    repeated int32 quizIds = 26;
+
+}
+
+message PagedCourseList {
+    repeated CourseResponse items = 1;
+    int32 totalCount = 2;
+    int32 pageNumber = 3;
+    int32 pageSize = 4;
+    int32 totalPages = 5;
+}
+
+message CourseKitDetail {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    int32 totalComponents = 4;
+    repeated CourseKitImageDetail kitImages = 5;
+    repeated CourseComponentDetail kitComponents = 6;
+}
+
+message CourseKitImageDetail {
+    int32 id = 1;
+    string imageUrl = 2;
+    string altText = 3;
+}
+
+message CourseComponentDetail {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue imageUrl = 3;
+    google.protobuf.StringValue description = 4;
+    int32 quantity = 5;
+    bool isMainComponent = 6;
+}

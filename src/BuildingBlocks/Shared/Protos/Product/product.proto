@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Product";
+
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package product;
+
+service ProductService {
+    rpc GetProduct (GetProductRequest) returns (ProductResponse) {
+        option (google.api.http) = {
+            get: "/api/products/{id}"
+        };
+    }
+}
+
+message Product {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue imageUrl = 4;
+    double price = 5;
+}
+
+message GetProductRequest {
+    int32 id = 1;
+}
+
+message ProductResponse {
+    int32 id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue imageUrl = 4;
+    double price = 5;
+    google.protobuf.StringValue sku = 6;
+}

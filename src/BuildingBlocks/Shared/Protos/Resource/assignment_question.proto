@@ -1,0 +1,33 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/protobuf/wrappers.proto";
+import "Protos/Resource/rubric_criterion.proto";
+
+package assignment_question;
+
+message CreateAssignmentQuestionRequest {
+    string type = 1;
+    int32 orderIndex = 2;
+    double points = 3;
+    string content = 4;
+    repeated resource.CreateRubricCriterionRequest rubricCriterion = 5;
+}
+
+message UpdateAssignmentQuestionRequest {
+    google.protobuf.Int32Value id = 1;
+    string type = 2;
+    int32 orderIndex = 3;
+    double points = 4;
+    string content = 5;
+}
+
+message GrpcAssignmentQuestionModel {
+    int32 id = 1;
+    string type = 2;
+    int32 orderIndex = 3;
+    double points = 4;
+    string content = 5;
+    repeated resource.RubricCriterionResponse rubricCriterion = 6;
+}

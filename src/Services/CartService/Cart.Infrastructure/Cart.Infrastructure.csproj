@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Caching\Caching.csproj" />
+    <ProjectReference Include="..\Cart.Application\Cart.Application.csproj" />
+    <ProjectReference Include="..\Cart.Domain\Cart.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

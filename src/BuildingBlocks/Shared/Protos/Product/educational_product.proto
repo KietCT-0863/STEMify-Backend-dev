@@ -1,0 +1,117 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Product";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+
+package product;
+
+service GrpcEducationalProductService {
+	rpc CreateEducationalProduct (CreateEducationalProductRequest) returns (GrpcEducationalProductResponse) {
+		option (google.api.http) = {
+			post: "/api/educational-products"
+			body: "*"
+		};
+	}
+	rpc UpdateEducationalProduct (UpdateEducationalProductRequest) returns (GrpcEducationalProductResponse) {
+		option (google.api.http) = {
+			patch: "/api/educational-products/{id}"
+			body: "*"
+		};
+	}
+	rpc DeleteEducationalProduct (DeleteEducationalProductRequest) returns (google.protobuf.Empty) {
+		option (google.api.http) = {
+			delete: "/api/educational-products/{id}"
+		};
+	}
+	rpc GetEducationalProductById (GetEducationalProductRequest) returns (GrpcEducationalProductResponse) {
+		option (google.api.http) = {
+			get: "/api/educational-products/{id}"
+		};
+	}
+	rpc GetPagedEducationalProducts (GetEducationalProductParams) returns (GrpcPagedEducationalProductsResponse) {
+		option (google.api.http) = {
+			get: "/api/educational-products"
+		};
+	}
+}
+
+message CreateEducationalProductRequest {
+	int32 resourceId = 1;
+	ResourceType resourceType = 2;
+	string createdByUserId = 3;
+	int64 price = 4;
+}
+
+message UpdateEducationalProductRequest {
+	int32 id = 1;
+	google.protobuf.Int64Value price = 2;
+	EducationalProductStatus status = 3;
+}
+
+message DeleteEducationalProductRequest {
+	int32 id = 1;
+}
+
+message GetEducationalProductRequest {
+	int32 id = 1;
+}
+
+message GetEducationalProductParams {
+	google.protobuf.Int32Value pageNumber = 1;
+	google.protobuf.Int32Value pageSize = 2;
+	google.protobuf.StringValue search = 3;
+	google.protobuf.StringValue orderBy = 4;
+	google.protobuf.StringValue sortDirection = 5;
+	google.protobuf.StringValue status = 6;
+	google.protobuf.Int64Value minPrice = 7;
+	google.protobuf.Int64Value maxPrice = 8;
+	google.protobuf.StringValue resourceType = 9;
+}
+
+message GrpcEducationalProductResponse {
+	int32 id = 1;
+	string name = 2;
+	string description = 3;
+	google.protobuf.StringValue imageUrl = 4;
+	int64 price = 5;
+	string resourceType = 6;
+	int32 resourceId = 7;
+	string sku = 8;
+	string status = 9;
+}
+
+message GrpcPagedEducationalProductsResponse {
+	repeated GrpcEducationalProductModel items = 1;
+	int32 totalCount = 2;
+	int32 pageNumber = 3;
+	int32 pageSize = 4;
+	int32 totalPages = 5;
+}
+
+message GrpcEducationalProductModel {
+	int32 id = 1;
+	string name = 2;
+	string description = 3;
+	google.protobuf.StringValue imageUrl = 4;
+	int64 price = 5;
+	string resourceType = 6;
+	int32 resourceId = 7;
+	string sku = 8;
+	string status = 9;
+}
+
+enum EducationalProductStatus {
+	Unknown = 0;
+	Draft = 1;
+    Published = 2;
+    Archived = 3;
+}
+
+enum ResourceType {
+	Curriculum = 0;
+	Course = 1;
+}

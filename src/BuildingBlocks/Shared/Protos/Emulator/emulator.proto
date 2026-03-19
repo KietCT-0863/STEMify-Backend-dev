@@ -1,0 +1,211 @@
+syntax = "proto3";
+
+option csharp_namespace = "Emulator.API.Protos";
+
+package emulator;
+
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+// EmulatorService - gRPC service for managing 3D assembly emulations
+service EmulatorService {
+  // Create
+  rpc CreateEmulation (CreateEmulationRequest) returns (EmulationResponse) {
+    option (google.api.http) = {
+      post: "/v1/emulations"
+      body: "*"
+    };
+  }
+
+  rpc CreateEmulationDraft (CreateEmulationDraftRequest) returns (EmulationResponse) {
+    option (google.api.http) = {
+      post: "/v1/emulations:draft"
+      body: "*"
+    };
+  }
+
+  // Get by Id
+  rpc GetEmulation (GetEmulationRequest) returns (EmulationDetailResponse) {
+    option (google.api.http) = {
+      get: "/v1/emulations/{emulation_id}"
+    };
+  }
+
+  // List (with query params)
+  rpc ListEmulations (ListEmulationsRequest) returns (PagedEmulationsResponse) {
+    option (google.api.http) = {
+      get: "/v1/emulations"
+    };
+  }
+
+  // Update
+  rpc UpdateEmulation (UpdateEmulationRequest) returns (EmulationResponse) {
+    option (google.api.http) = {
+      patch: "/v1/emulations/{emulation_id}"
+      body: "*"
+    };
+  }
+
+  // Delete
+  rpc DeleteEmulation (DeleteEmulationRequest) returns (DeleteResponse) {
+    option (google.api.http) = {
+      delete: "/v1/emulations/{emulation_id}"
+    };
+  }
+
+  // Publish
+  rpc PublishEmulation (PublishEmulationRequest) returns (PublishResponse) {
+    option (google.api.http) = {
+      post: "/v1/emulations/{emulation_id}:publish"
+    };
+  }
+
+  // Extras (keep gRPC-only unless needed)
+  rpc ValidateEmulation (ValidateEmulationRequest) returns (ValidationResultResponse);
+  rpc DuplicateEmulation (DuplicateEmulationRequest) returns (EmulationResponse);
+}
+
+// Request messages
+message CreateEmulationRequest {
+  string name = 1;
+  string description = 2;
+  string visibility = 3;
+  string definition_json = 4;
+  string thumbnail_image_base64 = 5;
+  string thumbnail_file_name = 6;
+}
+
+// Draft creation: no definition_json required
+message CreateEmulationDraftRequest {
+  string name = 1;
+  string description = 2;
+  string visibility = 3;
+  string thumbnail_image_base64 = 4;
+  string thumbnail_file_name = 5;
+}
+
+message GetEmulationRequest {
+  string emulation_id = 1;
+  bool include_templates = 2;
+  bool include_statistics = 3;
+  string version = 4;
+}
+
+message ListEmulationsRequest {
+  int32 page = 1;
+  int32 limit = 2;
+  string search = 3;
+  string difficulty = 4;
+  string status = 5;
+  string visibility = 6;
+  string sort_by = 7;
+  string sort_order = 8;
+  repeated string tags = 9;
+  google.protobuf.StringValue userId = 10;
+}
+
+message UpdateEmulationRequest {
+  string emulation_id = 1;
+  string name = 2;
+  string description = 3;
+  string definition_json = 4;
+  string status = 5;
+  // Optional thumbnail update
+  string thumbnail_image_base64 = 6;
+  string thumbnail_file_name = 7;
+}
+
+message DeleteEmulationRequest {
+  string emulation_id = 1;
+  bool permanent = 2;
+}
+
+message PublishEmulationRequest {
+  string emulation_id = 1;
+}
+
+message ValidateEmulationRequest {
+  string emulation_id = 1;
+}
+
+message DuplicateEmulationRequest {
+  string emulation_id = 1;
+}
+
+// Response messages
+message EmulationResponse {
+  bool success = 1;
+  string emulation_id = 2;
+  string name = 3;
+  string slug = 4;
+  string version = 5;
+  string status = 6;
+  string message = 7;
+  string thumbnail_url = 8;
+}
+
+message EmulationDetailResponse {
+  bool success = 1;
+  string emulation_id = 2;
+  string name = 3;
+  string slug = 4;
+  string version = 5;
+  string status = 6;
+  string definition_json = 7;
+  string created_at = 8;
+  string updated_at = 9;
+  string thumbnail_url = 10;
+  string description = 11;
+  string user_id = 12;
+}
+
+message PagedEmulationsResponse {
+  bool success = 1;
+  repeated EmulationListItem items = 2;
+  PaginationInfo pagination = 3;
+}
+
+message EmulationListItem {
+  string emulation_id = 1;
+  string name = 2;
+  string slug = 3;
+  string description = 4;
+  string difficulty = 5;
+  string status = 6;
+  string created_at = 7;
+  string thumbnail_url = 8;
+  string user_id = 9;
+}
+
+message PaginationInfo {
+  int32 page = 1;
+  int32 limit = 2;
+  int32 total = 3;
+  int32 pages = 4;
+}
+
+message DeleteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message PublishResponse {
+  bool success = 1;
+  string emulation_id = 2;
+  string status = 3;
+  string published_at = 4;
+}
+
+message ValidationResultResponse {
+  bool success = 1;
+  bool valid = 2;
+  repeated ValidationError errors = 3;
+  repeated ValidationError warnings = 4;
+}
+
+message ValidationError {
+  string type = 1;
+  string message = 2;
+  string location = 3;
+  string component_id = 4;
+}

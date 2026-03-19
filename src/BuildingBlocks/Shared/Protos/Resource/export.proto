@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Resource";
+
+import "google/api/annotations.proto";
+
+package resource;
+
+service ExportService {
+  rpc ExportLesson(ExportLessonRequest) returns (ExportLessonResponse) {
+    option (google.api.http) = {
+      get: "/api/lessons/{lessonId}/export"
+    };
+  }
+  
+  rpc ExportCourse(ExportCourseRequest) returns (ExportCourseResponse) {
+    option (google.api.http) = {
+      get: "/api/courses/{courseId}/export"
+    };
+  }
+}
+
+message ExportLessonRequest {
+  int32 lessonId = 1;
+}
+
+message ExportLessonResponse {
+  bytes zipData = 1;
+  string filename = 2;
+  int32 size = 3;
+}
+
+message ExportCourseRequest {
+  int32 courseId = 1;
+}
+
+message ExportCourseResponse {
+  bytes zipData = 1;
+  string filename = 2;
+  int32 size = 3;
+}

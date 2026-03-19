@@ -1,0 +1,938 @@
+name: Azure Continuous Deployment (Aspire)
+
+on:
+  push:
+    branches:
+      - "main"
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target deployment environment"
+        required: true
+        default: production
+        type: choice
+        options:
+          - staging
+          - production
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: azure-cd-${{ github.event.inputs.environment || 'production' }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  SOLUTION_PATH: STEMify-Backend.sln
+
+jobs:
+  quality_gate:
+    name: Quality Gate (Build & Test)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+
+  deploy:
+    name: Deploy to Azure
+    needs: quality_gate
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    env:
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME || 'stemify-prod' }}
+      AZURE_LOCATION: ${{ secrets.AZURE_LOCATION || 'koreacentral' }}
+      GrpcEmulatorUrl: http://emulator-api:5009
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      DOTNET_ENVIRONMENT: Production
+      ASPNETCORE_ENVIRONMENT: Production
+      ENABLE_OBSERVABILITY_STACK: "false"
+      ENABLE_DOCKER_ENV: "false"
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
+      MICROBIT_APP: ${{ secrets.MICROBIT_APP || 'http://localhost:3001' }}
+      RABBITMQ_URL: ${{ secrets.RABBITMQ_URL }}
+      CLIENT_APP_URL: ${{ secrets.CLIENT_APP_URL }}
+      CLOUDINARY_CLOUDNAME: ${{ secrets.CLOUDINARY_CLOUDNAME }}
+      CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
+      CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      SENDGRID_FROM_EMAIL: ${{ secrets.SENDGRID_FROM_EMAIL }}
+      SENDGRID_FROM_NAME: ${{ secrets.SENDGRID_FROM_NAME }}
+      PDFLAYER_API_KEY: ${{ secrets.PDFLAYER_API_KEY }}
+      REDIS_HOST: ${{ secrets.REDIS_HOST }}
+      REDIS_PORT: ${{ secrets.REDIS_PORT }}
+      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+      REDIS_SSL: ${{ secrets.REDIS_SSL }}
+      REDIS_ABORT_ON_CONNECT_FAIL: ${{ secrets.REDIS_ABORT_ON_CONNECT_FAIL }}
+      # Gemini API
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      # Google Authentication
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+      # OpenIddict Configuration
+      OPENIDDICT_SIGNING_KEY: ${{ secrets.OPENIDDICT_SIGNING_KEY }}
+      OPENIDDICT_ENCRYPTION_KEY: ${{ secrets.OPENIDDICT_ENCRYPTION_KEY }}
+      OPENIDDICT_API_CLIENT_SECRET: ${{ secrets.OPENIDDICT_API_CLIENT_SECRET }}
+      OPENIDDICT_FORCE_RECREATE_CLIENTS: ${{ secrets.OPENIDDICT_FORCE_RECREATE_CLIENTS }}
+      OPENIDDICT_DISABLE_HTTPS: ${{ secrets.OPENIDDICT_DISABLE_HTTPS }}
+      KEYVAULT_URL: ${{ secrets.KEYVAULT_URL }}
+      KEYVAULT_CERT_NAME: ${{ secrets.KEYVAULT_CERT_NAME }}
+      IDENTITY_CLIENT_ID: ${{ secrets.IDENTITY_CLIENT_ID }}
+      # Identity Email Settings
+      IDENTITY_EMAIL_SMTP_SERVER: ${{ secrets.IDENTITY_EMAIL_SMTP_SERVER }}
+      IDENTITY_EMAIL_PORT: ${{ secrets.IDENTITY_EMAIL_PORT }}
+      IDENTITY_EMAIL_USERNAME: ${{ secrets.IDENTITY_EMAIL_USERNAME }}
+      IDENTITY_EMAIL_PASSWORD: ${{ secrets.IDENTITY_EMAIL_PASSWORD }}
+      IDENTITY_EMAIL_FROM: ${{ secrets.IDENTITY_EMAIL_FROM }}
+      IDENTITY_EMAIL_DISPLAY_NAME: ${{ secrets.IDENTITY_EMAIL_DISPLAY_NAME }}
+      IDENTITY_EMAIL_APP_NAME: ${{ secrets.IDENTITY_EMAIL_APP_NAME }}
+      IDENTITY_EMAIL_SUPPORT: ${{ secrets.IDENTITY_EMAIL_SUPPORT }}
+      IDENTITY_EMAIL_USE_SSL: ${{ secrets.IDENTITY_EMAIL_USE_SSL }}
+      IDENTITY_EMAIL_ENABLED: ${{ secrets.IDENTITY_EMAIL_ENABLED }}
+      IDENTITY_EMAIL_ENABLE_VERIFICATION: ${{ secrets.IDENTITY_EMAIL_ENABLE_VERIFICATION }}
+      IDENTITY_EMAIL_TIMEOUT_MS: ${{ secrets.IDENTITY_EMAIL_TIMEOUT_MS }}
+      IDENTITY_EMAIL_MAX_RETRY: ${{ secrets.IDENTITY_EMAIL_MAX_RETRY }}
+      IDENTITY_EMAIL_LOG_CONTENT: ${{ secrets.IDENTITY_EMAIL_LOG_CONTENT }}
+      # Identity Configuration
+      IDENTITY_CORS_ORIGINS: ${{ secrets.IDENTITY_CORS_ORIGINS }}
+      IDENTITY_BACKEND_URL: ${{ secrets.IDENTITY_BACKEND_URL }}
+      # Database Options
+      DB_ENABLE_SENSITIVE_LOGGING: ${{ secrets.DB_ENABLE_SENSITIVE_LOGGING }}
+      DB_ENABLE_DETAILED_ERRORS: ${{ secrets.DB_ENABLE_DETAILED_ERRORS }}
+      # RabbitMQ Configuration
+      RABBITMQ_HOST: ${{ secrets.RABBITMQ_HOST }}
+      # AI Service Configuration
+      RESOURCE_GRPC_ENDPOINT: ${{ secrets.RESOURCE_GRPC_ENDPOINT }}
+      RESOURCE_GRPC_USE_TLS: ${{ secrets.RESOURCE_GRPC_USE_TLS }}
+      RESOURCE_GRPC_CERT_PATH: ${{ secrets.RESOURCE_GRPC_CERT_PATH }}
+      RESOURCE_GRPC_OVERRIDE_AUTHORITY: ${{ secrets.RESOURCE_GRPC_OVERRIDE_AUTHORITY }}
+      CLASSROOM_GRPC_ENDPOINT: ${{ secrets.CLASSROOM_GRPC_ENDPOINT }}
+      CLASSROOM_GRPC_USE_TLS: ${{ secrets.CLASSROOM_GRPC_USE_TLS }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+      LLM_MODEL: ${{ secrets.LLM_MODEL }}
+      LLM_TEMPERATURE: ${{ secrets.LLM_TEMPERATURE }}
+      LLM_MAX_TOKENS: ${{ secrets.LLM_MAX_TOKENS }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      DEEPSEEK_BASE_URL: ${{ secrets.DEEPSEEK_BASE_URL }}
+      DEEPSEEK_MODEL: ${{ secrets.DEEPSEEK_MODEL }}
+      QDRANT_URL: ${{ secrets.QDRANT_URL }}
+      QDRANT_GRPC_URL: ${{ secrets.QDRANT_GRPC_URL }}
+      QDRANT_COLLECTION: ${{ secrets.QDRANT_COLLECTION }}
+      QDRANT_CLOUD_ENDPOINT: ${{ secrets.QDRANT_CLOUD_ENDPOINT }}
+      QDRANT_CLOUD_API_KEY: ${{ secrets.QDRANT_CLOUD_API_KEY }}
+      NEO4J_URI: ${{ secrets.NEO4J_URI }}
+      NEO4J_USER: ${{ secrets.NEO4J_USER }}
+      NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+      NEO4J_CLOUD_URI: ${{ secrets.NEO4J_CLOUD_URI }}
+      NEO4J_CLOUD_USERNAME: ${{ secrets.NEO4J_CLOUD_USERNAME }}
+      NEO4J_CLOUD_PASSWORD: ${{ secrets.NEO4J_CLOUD_PASSWORD }}
+      NEO4J_CLOUD_DATABASE: ${{ secrets.NEO4J_CLOUD_DATABASE }}
+      AURA_INSTANCE_ID: ${{ secrets.AURA_INSTANCE_ID }}
+      AURA_INSTANCE_NAME: ${{ secrets.AURA_INSTANCE_NAME }}
+      EMBEDDING_MODEL: ${{ secrets.EMBEDDING_MODEL }}
+      EMBEDDING_DEVICE: ${{ secrets.EMBEDDING_DEVICE }}
+      EMBEDDING_BATCH_SIZE: ${{ secrets.EMBEDDING_BATCH_SIZE }}
+      CONTENT_GENERATION_SYSTEM_PROMPT: ${{ secrets.CONTENT_GENERATION_SYSTEM_PROMPT }}
+      CONTENT_GENERATION_SECTION_PROMPT_TEMPLATE: ${{ secrets.CONTENT_GENERATION_SECTION_PROMPT_TEMPLATE }}
+      ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+      LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
+      MONGODB_CONNECTION_STRING: ${{ secrets.MONGODB_CONNECTION_STRING }}
+      EMULATOR_MONGODB_DATABASE: ${{ secrets.EMULATOR_MONGODB_DATABASE }}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install .NET Aspire workload
+        run: dotnet workload install aspire
+
+      - name: Setup Azure Developer CLI
+        uses: Azure/setup-azd@v2.1.0
+
+      - name: Install jq
+        shell: bash
+        run: |
+          echo "=== Installing jq ==="
+          sudo apt-get update
+          sudo apt-get install -y jq
+          jq --version
+
+      - name: Azure Login (service principal)
+        uses: azure/login@v2
+        with:
+          creds: ${{ env.AZURE_CREDENTIALS }}
+
+      - name: Azure Developer CLI Login
+        shell: pwsh
+        run: |
+          $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable
+          azd auth login `
+            --client-id "$($info.clientId)" `
+            --client-secret "$($info.clientSecret)" `
+            --tenant-id "$($info.tenantId)"
+
+      - name: Ensure azd environment exists
+        shell: bash
+        run: |
+          if ! azd env get-values --environment "${AZURE_ENV_NAME}" > /dev/null 2>&1; then
+            echo "Creating azd environment ${AZURE_ENV_NAME}..."
+            azd env new "${AZURE_ENV_NAME}" \
+              --subscription "${AZURE_SUBSCRIPTION_ID}" \
+              --location "${AZURE_LOCATION}" \
+              --no-prompt
+          else
+            echo "Environment ${AZURE_ENV_NAME} already exists."
+          fi
+          
+          # Verify environment exists
+          if ! azd env get-values --environment "${AZURE_ENV_NAME}" > /dev/null 2>&1; then
+            echo "❌ Failed to create/verify environment ${AZURE_ENV_NAME}"
+            exit 1
+          fi
+          echo "✅ Environment ${AZURE_ENV_NAME} verified"
+
+      - name: Clean azd deployment state and remove observability stack env vars
+        shell: bash
+        run: |
+          echo "=== Cleaning azd deployment state and removing observability stack references ==="
+          
+          # Only remove deployment state files, not the entire directory
+          # This preserves environment config but removes old deployment manifests
+          if [ -d ".azure/${AZURE_ENV_NAME}/.state" ]; then
+            echo "Removing .azure/${AZURE_ENV_NAME}/.state directory (contains old deployment state)..."
+            rm -rf ".azure/${AZURE_ENV_NAME}/.state" || true
+          fi
+          
+          # Remove old manifest files that might reference alertmanager
+          if [ -d ".azure/${AZURE_ENV_NAME}" ]; then
+            echo "Removing old manifest files..."
+            find ".azure/${AZURE_ENV_NAME}" -name "*.json" -type f -delete 2>/dev/null || true
+          fi
+          
+          # Remove known observability stack env vars (these cause template errors)
+          echo "Removing observability stack environment variables..."
+          OBSERVABILITY_VARS=(
+            "SERVICE_ALERTMANAGER_VOLUME_BM0_NAME"
+            "SERVICE_PROMETHEUS_VOLUME_BM0_NAME"
+            "SERVICE_GRAFANA_VOLUME_BM0_NAME"
+            "SERVICE_OTELCOLLECTOR_VOLUME_BM0_NAME"
+            "SERVICE_ALERTMANAGER_IMAGE_NAME"
+            "SERVICE_PROMETHEUS_IMAGE_NAME"
+            "SERVICE_GRAFANA_IMAGE_NAME"
+            "SERVICE_OTELCOLLECTOR_IMAGE_NAME"
+          )
+          
+          for var in "${OBSERVABILITY_VARS[@]}"; do
+            echo "Removing: $var"
+            azd env unset "$var" --environment "${AZURE_ENV_NAME}" 2>/dev/null || true
+          done
+          
+          echo "✅ Cleanup complete"
+
+      - name: Configure azd environment secrets
+        shell: bash
+        run: |
+          # Verify environment exists before setting secrets
+          if ! azd env get-values --environment "${AZURE_ENV_NAME}" > /dev/null 2>&1; then
+            echo "❌ Environment ${AZURE_ENV_NAME} does not exist. Creating it now..."
+            azd env new "${AZURE_ENV_NAME}" \
+              --subscription "${AZURE_SUBSCRIPTION_ID}" \
+              --location "${AZURE_LOCATION}" \
+              --no-prompt || {
+              echo "❌ Failed to create environment ${AZURE_ENV_NAME}"
+              exit 1
+            }
+          fi
+          
+          echo "=== Setting environment variables ==="
+          
+          # Function to safely set env var with validation
+          set_secret() {
+            local key="$1"
+            local value="$2"
+            local required="${3:-false}"
+            local always_set="${4:-false}"  # New parameter: always set even if empty
+            
+            if [ "$required" = "true" ] && [ -z "${value}" ]; then
+              echo "❌ Required variable $key is not set"
+              return 1
+            fi
+            
+            # Always set if always_set=true (for optional vars with defaults)
+            if [ "$always_set" = "true" ] || [ -n "${value}" ]; then
+              if azd env set "${key}" "${value}" --environment "${AZURE_ENV_NAME}" 2>/dev/null; then
+                # Mask sensitive values in logs
+                if [[ "$key" == *"PASSWORD"* ]] || [[ "$key" == *"SECRET"* ]] || [[ "$key" == *"KEY"* ]]; then
+                  if [ -n "${value}" ]; then
+                    echo "✅ Set $key (***)"
+                  else
+                    echo "✅ Set $key (empty, using default)"
+                  fi
+                else
+                  if [ -n "${value}" ]; then
+                    echo "✅ Set $key = ${value}"
+                  else
+                    echo "✅ Set $key (empty, using default)"
+                  fi
+                fi
+                return 0
+              else
+                echo "⚠️  Failed to set $key"
+                return 1
+              fi
+            else
+              if [ "$required" = "true" ]; then
+                echo "❌ Required variable $key is empty"
+                return 1
+              else
+                echo "⏭️  Skipping $key (not set, optional)"
+                return 0
+              fi
+            fi
+          }
+          
+          # Track failures
+          FAILED_VARS=()
+          
+          # Required variables (must be set)
+          echo ""
+          echo "Setting required environment variables..."
+          set_secret "POSTGRES_PASSWORD" "${POSTGRES_PASSWORD:-admin}" true || FAILED_VARS+=("POSTGRES_PASSWORD")
+          set_secret "PGADMIN_PASSWORD" "${PGADMIN_PASSWORD:-admin}" true || FAILED_VARS+=("PGADMIN_PASSWORD")
+          set_secret "RABBITMQ_URL" "${RABBITMQ_URL:-}" true || FAILED_VARS+=("RABBITMQ_URL")
+          set_secret "CLOUDINARY_CLOUDNAME" "${CLOUDINARY_CLOUDNAME:-}" true || FAILED_VARS+=("CLOUDINARY_CLOUDNAME")
+          set_secret "CLOUDINARY_APIKEY" "${CLOUDINARY_APIKEY:-}" true || FAILED_VARS+=("CLOUDINARY_APIKEY")
+          set_secret "CLOUDINARY_APISECRET" "${CLOUDINARY_APISECRET:-}" true || FAILED_VARS+=("CLOUDINARY_APISECRET")
+          
+          # Optional variables - Always set with default values to prevent template errors
+          echo ""
+          echo "Setting optional environment variables (with defaults)..."
+          set_secret "CLIENT_APP_URL" "${CLIENT_APP_URL:-https://localhost:3000}" false true
+          set_secret "MICROBIT_APP" "${MICROBIT_APP:-http://localhost:3001}" false true
+          set_secret "RABBITMQ_HOST" "${RABBITMQ_HOST:-localhost}" false true
+          set_secret "SENDGRID_APIKEY" "${SENDGRID_API_KEY:-}" false false
+          set_secret "SENDGRID_FROMEMAIL" "${SENDGRID_FROM_EMAIL:-}" false false
+          set_secret "SENDGRID_FROMNAME" "${SENDGRID_FROM_NAME:-}" false false
+          set_secret "PDFLAYER_API_KEY" "${PDFLAYER_API_KEY:-}" false false
+          set_secret "REDIS_HOST" "${REDIS_HOST:-localhost}" false true
+          set_secret "REDIS_PORT" "${REDIS_PORT:-6379}" false true
+          set_secret "REDIS_PASSWORD" "${REDIS_PASSWORD:-}" false false
+          set_secret "REDIS_SSL" "${REDIS_SSL:-false}" false true
+          set_secret "REDIS_ABORT_ON_CONNECT_FAIL" "${REDIS_ABORT_ON_CONNECT_FAIL:-false}" false true
+          set_secret "OTEL_EXPORTER_OTLP_ENDPOINT" "${OTEL_EXPORTER_OTLP_ENDPOINT:-http://otelcollector:4317}" false true
+          
+          # Gemini API (optional, for resource-api)
+          set_secret "GEMINI_API_KEY" "${GEMINI_API_KEY:-}" false
+          
+          # Google Authentication (optional, for identity services)
+          set_secret "GOOGLE_CLIENT_ID" "${GOOGLE_CLIENT_ID:-}" false
+          set_secret "GOOGLE_CLIENT_SECRET" "${GOOGLE_CLIENT_SECRET:-}" false
+          set_secret "GOOGLE_REDIRECT_URI" "${GOOGLE_REDIRECT_URI:-}" false
+          
+          # OpenIddict Configuration (optional, for identity)
+          set_secret "OPENIDDICT_SIGNING_KEY" "${OPENIDDICT_SIGNING_KEY:-}" false false
+          set_secret "OPENIDDICT_ENCRYPTION_KEY" "${OPENIDDICT_ENCRYPTION_KEY:-}" false false
+          set_secret "OPENIDDICT_API_CLIENT_SECRET" "${OPENIDDICT_API_CLIENT_SECRET:-}" false false
+          set_secret "OPENIDDICT_FORCE_RECREATE_CLIENTS" "${OPENIDDICT_FORCE_RECREATE_CLIENTS:-true}" false true
+          set_secret "OPENIDDICT_DISABLE_HTTPS" "${OPENIDDICT_DISABLE_HTTPS:-true}" false true
+          
+          # Key Vault & Identity Client
+          set_secret "KEYVAULT_URL" "${KEYVAULT_URL:-}" false false
+          set_secret "KEYVAULT_CERT_NAME" "${KEYVAULT_CERT_NAME:-}" false false
+          set_secret "IDENTITY_CLIENT_ID" "${IDENTITY_CLIENT_ID:-}" false false
+          
+          # Identity Email Settings (optional, for identity services)
+          set_secret "IDENTITY_EMAIL_SMTP_SERVER" "${IDENTITY_EMAIL_SMTP_SERVER:-}" false false
+          set_secret "IDENTITY_EMAIL_PORT" "${IDENTITY_EMAIL_PORT:-}" false false
+          set_secret "IDENTITY_EMAIL_USERNAME" "${IDENTITY_EMAIL_USERNAME:-}" false false
+          set_secret "IDENTITY_EMAIL_PASSWORD" "${IDENTITY_EMAIL_PASSWORD:-}" false false
+          set_secret "IDENTITY_EMAIL_FROM" "${IDENTITY_EMAIL_FROM:-}" false false
+          set_secret "IDENTITY_EMAIL_DISPLAY_NAME" "${IDENTITY_EMAIL_DISPLAY_NAME:-}" false false
+          set_secret "IDENTITY_EMAIL_APP_NAME" "${IDENTITY_EMAIL_APP_NAME:-}" false false
+          set_secret "IDENTITY_EMAIL_SUPPORT" "${IDENTITY_EMAIL_SUPPORT:-}" false false
+          set_secret "IDENTITY_EMAIL_USE_SSL" "${IDENTITY_EMAIL_USE_SSL:-true}" false true
+          set_secret "IDENTITY_EMAIL_ENABLED" "${IDENTITY_EMAIL_ENABLED:-false}" false true
+          set_secret "IDENTITY_EMAIL_ENABLE_VERIFICATION" "${IDENTITY_EMAIL_ENABLE_VERIFICATION:-false}" false true
+          set_secret "IDENTITY_EMAIL_TIMEOUT_MS" "${IDENTITY_EMAIL_TIMEOUT_MS:-5000}" false true
+          set_secret "IDENTITY_EMAIL_MAX_RETRY" "${IDENTITY_EMAIL_MAX_RETRY:-3}" false true
+          set_secret "IDENTITY_EMAIL_LOG_CONTENT" "${IDENTITY_EMAIL_LOG_CONTENT:-false}" false true
+          
+          # Identity Configuration (optional)
+          set_secret "IDENTITY_CORS_ORIGINS" "${IDENTITY_CORS_ORIGINS:-https://localhost:3000}" false true
+          set_secret "IDENTITY_BACKEND_URL" "${IDENTITY_BACKEND_URL:-}" false false
+          
+          # Database Options (optional)
+          set_secret "DB_ENABLE_SENSITIVE_LOGGING" "${DB_ENABLE_SENSITIVE_LOGGING:-false}" false true
+          set_secret "DB_ENABLE_DETAILED_ERRORS" "${DB_ENABLE_DETAILED_ERRORS:-false}" false true
+          
+          # AI Service Configuration (optional)
+          set_secret "RESOURCE_GRPC_ENDPOINT" "${RESOURCE_GRPC_ENDPOINT:-resource-api.${AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN}}" false true
+          set_secret "RESOURCE_GRPC_USE_TLS" "${RESOURCE_GRPC_USE_TLS:-false}" false true
+          set_secret "RESOURCE_GRPC_CERT_PATH" "${RESOURCE_GRPC_CERT_PATH:-}" false false
+          set_secret "RESOURCE_GRPC_OVERRIDE_AUTHORITY" "${RESOURCE_GRPC_OVERRIDE_AUTHORITY:-}" false true
+          set_secret "CLASSROOM_GRPC_ENDPOINT" "${CLASSROOM_GRPC_ENDPOINT:-classroom-api.${AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN}}" false true
+          set_secret "CLASSROOM_GRPC_USE_TLS" "${CLASSROOM_GRPC_USE_TLS:-false}" false true
+          set_secret "OPENAI_API_KEY" "${OPENAI_API_KEY:-}" false true
+          set_secret "OPENAI_BASE_URL" "${OPENAI_BASE_URL:-https://api.openai.com/v1}" false true
+          set_secret "LLM_MODEL" "${LLM_MODEL:-gpt-4o-mini}" false true
+          set_secret "LLM_TEMPERATURE" "${LLM_TEMPERATURE:-0.7}" false true
+          set_secret "LLM_MAX_TOKENS" "${LLM_MAX_TOKENS:-2000}" false true
+          set_secret "DEEPSEEK_API_KEY" "${DEEPSEEK_API_KEY:-}" false true
+          set_secret "DEEPSEEK_BASE_URL" "${DEEPSEEK_BASE_URL:-https://api.deepseek.com/v1}" false true
+          set_secret "DEEPSEEK_MODEL" "${DEEPSEEK_MODEL:-deepseek-chat}" false true
+          set_secret "QDRANT_URL" "${QDRANT_URL:-http://localhost:6333}" false true
+          set_secret "QDRANT_GRPC_URL" "${QDRANT_GRPC_URL:-http://localhost:6334}" false true
+          set_secret "QDRANT_COLLECTION" "${QDRANT_COLLECTION:-classroom_insights}" false true
+          set_secret "QDRANT_CLOUD_ENDPOINT" "${QDRANT_CLOUD_ENDPOINT:-}" false false
+          set_secret "QDRANT_CLOUD_API_KEY" "${QDRANT_CLOUD_API_KEY:-}" false false
+          set_secret "NEO4J_URI" "${NEO4J_URI:-bolt://localhost:7687}" false true
+          set_secret "NEO4J_USER" "${NEO4J_USER:-neo4j}" false true
+          set_secret "NEO4J_PASSWORD" "${NEO4J_PASSWORD:-password}" false true
+          set_secret "NEO4J_CLOUD_URI" "${NEO4J_CLOUD_URI:-}" false false
+          set_secret "NEO4J_CLOUD_USERNAME" "${NEO4J_CLOUD_USERNAME:-}" false false
+          set_secret "NEO4J_CLOUD_PASSWORD" "${NEO4J_CLOUD_PASSWORD:-}" false false
+          set_secret "NEO4J_CLOUD_DATABASE" "${NEO4J_CLOUD_DATABASE:-neo4j}" false true
+          set_secret "AURA_INSTANCE_ID" "${AURA_INSTANCE_ID:-}" false false
+          set_secret "AURA_INSTANCE_NAME" "${AURA_INSTANCE_NAME:-}" false false
+          set_secret "EMBEDDING_MODEL" "${EMBEDDING_MODEL:-paraphrase-multilingual-MiniLM-L12-v2}" false true
+          set_secret "EMBEDDING_DEVICE" "${EMBEDDING_DEVICE:-cpu}" false true
+          set_secret "EMBEDDING_BATCH_SIZE" "${EMBEDDING_BATCH_SIZE:-32}" false true
+          set_secret "CONTENT_GENERATION_SYSTEM_PROMPT" "${CONTENT_GENERATION_SYSTEM_PROMPT:-You are a helpful educational designer.}" false true
+          set_secret "CONTENT_GENERATION_SECTION_PROMPT_TEMPLATE" "${CONTENT_GENERATION_SECTION_PROMPT_TEMPLATE:-}" false true
+          set_secret "ENVIRONMENT" "${ENVIRONMENT:-Production}" false true
+          set_secret "LOG_LEVEL" "${LOG_LEVEL:-INFO}" false true
+          set_secret "MONGODB_CONNECTION_STRING" "${MONGODB_CONNECTION_STRING:-mongodb://root:mongopw@mongo}" false true
+          set_secret "EMULATOR_MONGODB_DATABASE" "${EMULATOR_MONGODB_DATABASE:-stemify_emulator}" false true
+          
+          # System variables
+          echo ""
+          echo "Setting system environment variables..."
+          set_secret "DOTNET_ENVIRONMENT" "Production" false
+          set_secret "ASPNETCORE_ENVIRONMENT" "Production" false
+          set_secret "ENABLE_OBSERVABILITY_STACK" "false" false
+          set_secret "ENABLE_DOCKER_ENV" "false" false
+          
+          # Check for failures
+          if [ ${#FAILED_VARS[@]} -gt 0 ]; then
+            echo ""
+            echo "❌ Failed to set required environment variables:"
+            printf '  - %s\n' "${FAILED_VARS[@]}"
+            echo ""
+            echo "Please ensure these secrets are set in GitHub repository settings:"
+            echo "  Settings > Secrets and variables > Actions"
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ All environment secrets configured successfully"
+
+      - name: Provision infrastructure
+        shell: bash
+        run: |
+          echo "=== Provisioning Azure infrastructure ==="
+          azd provision \
+            --environment "${AZURE_ENV_NAME}" \
+            --no-prompt
+          
+          echo ""
+          echo "=== Verifying provisioned values ==="
+          REGISTRY_ENDPOINT=$(azd env get-value AZURE_CONTAINER_REGISTRY_ENDPOINT --environment "${AZURE_ENV_NAME}" 2>/dev/null || echo "")
+          REGISTRY_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment "${AZURE_ENV_NAME}" 2>/dev/null || echo "")
+          MI_ID=$(azd env get-value AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID --environment "${AZURE_ENV_NAME}" 2>/dev/null || echo "")
+          
+          if [ -z "$REGISTRY_ENDPOINT" ] && [ -n "$REGISTRY_NAME" ]; then
+            echo "Setting registry endpoint from registry name..."
+            azd env set AZURE_CONTAINER_REGISTRY_ENDPOINT "${REGISTRY_NAME}.azurecr.io" --environment "${AZURE_ENV_NAME}"
+            REGISTRY_ENDPOINT="${REGISTRY_NAME}.azurecr.io"
+          fi
+          
+          if [ -z "$MI_ID" ]; then
+            echo "Discovering Managed Identity ID..."
+            MI_ID=$(az identity list --resource-group "rg-${AZURE_ENV_NAME}" --query "[0].id" -o tsv 2>/dev/null || echo "")
+            if [ -n "$MI_ID" ]; then
+              azd env set AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID "$MI_ID" --environment "${AZURE_ENV_NAME}"
+            fi
+          fi
+          
+          echo "✅ Registry Endpoint: ${REGISTRY_ENDPOINT:-not set}"
+          echo "✅ Registry Name: ${REGISTRY_NAME:-not set}"
+          echo "✅ Managed Identity ID: ${MI_ID:-not set}"
+          
+          if [ -z "$REGISTRY_ENDPOINT" ]; then
+            echo "❌ Registry endpoint is not set. Deployment may fail."
+            exit 1
+          fi
+
+      - name: Configure ACR authentication
+        shell: bash
+        run: |
+          echo "=== Configuring Azure Container Registry ==="
+          
+          ACR_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment "${AZURE_ENV_NAME}" 2>/dev/null || \
+            az acr list --resource-group "rg-${AZURE_ENV_NAME}" --query "[0].name" -o tsv 2>/dev/null || echo "")
+          
+          if [ -z "$ACR_NAME" ]; then
+            echo "❌ Could not find ACR in resource group rg-${AZURE_ENV_NAME}"
+            exit 1
+          fi
+          
+          echo "Found ACR: $ACR_NAME"
+          
+          # Enable admin user if not already enabled
+          ADMIN_ENABLED=$(az acr show --name "$ACR_NAME" --query "adminUserEnabled" -o tsv 2>/dev/null || echo "false")
+          if [ "$ADMIN_ENABLED" != "true" ]; then
+            echo "Enabling ACR admin user..."
+            az acr update --name "$ACR_NAME" --admin-enabled true || {
+              echo "⚠️  Could not enable admin user (subscription may be read-only)"
+              echo "Please enable manually in Azure Portal: Container Registries > $ACR_NAME > Settings > Access keys"
+            }
+          else
+            echo "✅ ACR admin user is already enabled"
+          fi
+
+
+      - name: Clean old manifests before packaging
+        shell: bash
+        run: |
+          echo "=== Cleaning old manifests ==="
+          
+          # Remove any existing manifest files to force fresh generation
+          if [ -d ".azure/${AZURE_ENV_NAME}" ]; then
+            echo "Removing old manifest files..."
+            find ".azure/${AZURE_ENV_NAME}" -name "manifest.json" -type f -delete 2>/dev/null || true
+            find ".azure/${AZURE_ENV_NAME}" -name "*.bicep" -type f -delete 2>/dev/null || true
+          fi
+          
+          # Also clean AppHost build artifacts
+          if [ -d "src/Services/STEMify-Backend/STEMify-Backend.AppHost/obj" ]; then
+            echo "Removing AppHost build artifacts..."
+            find "src/Services/STEMify-Backend/STEMify-Backend.AppHost/obj" -name "manifest.json" -type f -delete 2>/dev/null || true
+          fi
+          
+          echo "✅ Cleanup complete"
+
+      - name: Verify and prepare deployment templates
+        shell: bash
+        run: |
+          echo "=== Verifying deployment templates ==="
+          
+          TEMPLATE_DIR="src/Services/STEMify-Backend/STEMify-Backend.AppHost/infra"
+          
+          if [ ! -d "$TEMPLATE_DIR" ]; then
+            echo "❌ Template directory not found: $TEMPLATE_DIR"
+            exit 1
+          fi
+          
+          # Count template files
+          TEMPLATE_COUNT=$(find "$TEMPLATE_DIR" -name "*.tmpl.yaml" -type f | wc -l)
+          echo "Found $TEMPLATE_COUNT template files in $TEMPLATE_DIR"
+          
+          # List all templates
+          echo ""
+          echo "Template files:"
+          find "$TEMPLATE_DIR" -name "*.tmpl.yaml" -type f | while read -r template; do
+            echo "  - $(basename "$template")"
+          done
+          
+          # Verify critical templates exist
+          CRITICAL_TEMPLATES=(
+            "stemify-postgres.tmpl.yaml"
+            "identity.tmpl.yaml"
+            "identity-api.tmpl.yaml"
+          )
+          
+          MISSING_TEMPLATES=()
+          for template in "${CRITICAL_TEMPLATES[@]}"; do
+            if [ ! -f "$TEMPLATE_DIR/$template" ]; then
+              MISSING_TEMPLATES+=("$template")
+              echo "❌ Missing critical template: $template"
+            else
+              echo "✅ Found template: $template"
+            fi
+          done
+          
+          if [ ${#MISSING_TEMPLATES[@]} -gt 0 ]; then
+            echo ""
+            echo "❌ Missing critical templates:"
+            printf '  - %s\n' "${MISSING_TEMPLATES[@]}"
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ All deployment templates verified"
+          
+          # Ensure templates are accessible for azd
+          # azd looks for templates in the AppHost project's infra/ directory
+          # or in .azure/${AZURE_ENV_NAME}/infra/ after packaging
+          echo ""
+          echo "Templates will be used by azd during deployment"
+
+      - name: Package and inspect manifest
+        shell: bash
+        env:
+          DOTNET_ENVIRONMENT: Production
+          ASPNETCORE_ENVIRONMENT: Production
+          ASPIRE_ENVIRONMENT: Production
+          ENABLE_OBSERVABILITY_STACK: "false"
+          ENABLE_DOCKER_ENV: "false"
+        run: |
+          echo "=== Packaging services and inspecting manifest ==="
+          echo "Environment variables:"
+          echo "  DOTNET_ENVIRONMENT=${DOTNET_ENVIRONMENT}"
+          echo "  ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}"
+          echo "  ASPIRE_ENVIRONMENT=${ASPIRE_ENVIRONMENT}"
+          echo "  ENABLE_OBSERVABILITY_STACK=${ENABLE_OBSERVABILITY_STACK}"
+          echo "  ENABLE_DOCKER_ENV=${ENABLE_DOCKER_ENV}"
+          
+          # Ensure environment variables are set in azd environment
+          azd env set DOTNET_ENVIRONMENT "Production" --environment "${AZURE_ENV_NAME}" || true
+          azd env set ASPNETCORE_ENVIRONMENT "Production" --environment "${AZURE_ENV_NAME}" || true
+          azd env set ASPIRE_ENVIRONMENT "Production" --environment "${AZURE_ENV_NAME}" || true
+          azd env set ENABLE_OBSERVABILITY_STACK "false" --environment "${AZURE_ENV_NAME}" || true
+          azd env set ENABLE_DOCKER_ENV "false" --environment "${AZURE_ENV_NAME}" || true
+          
+          echo ""
+          echo "Generating manifest via Aspire manifest publisher..."
+          MANIFEST_PROJECT_DIR="src/Services/STEMify-Backend/STEMify-Backend.AppHost"
+          MANIFEST_OUTPUT_DIR="${MANIFEST_PROJECT_DIR}/.azure/${AZURE_ENV_NAME}"
+          MANIFEST_OUTPUT_PATH="${MANIFEST_OUTPUT_DIR}/manifest.json"
+          
+          mkdir -p "${MANIFEST_OUTPUT_DIR}"
+          
+          pushd "${MANIFEST_PROJECT_DIR}" > /dev/null
+          dotnet run \
+            --project STEMify-Backend.AppHost.csproj \
+            --publisher manifest \
+            --output-path ".azure/${AZURE_ENV_NAME}/manifest.json" \
+            -- \
+            --environment Production
+          popd > /dev/null
+          
+          if [ ! -f "${MANIFEST_OUTPUT_PATH}" ]; then
+            echo "❌ Manifest generation failed (file not found at ${MANIFEST_OUTPUT_PATH})"
+            exit 1
+          fi
+          
+          echo "✅ Manifest generated at ${MANIFEST_OUTPUT_PATH}"
+          
+          # Copy manifest to standard azd location (root .azure directory)
+          AZD_MANIFEST_DIR=".azure/${AZURE_ENV_NAME}"
+          mkdir -p "${AZD_MANIFEST_DIR}"
+          cp "${MANIFEST_OUTPUT_PATH}" "${AZD_MANIFEST_DIR}/manifest.json"
+          echo "✅ Manifest copied to ${AZD_MANIFEST_DIR}/manifest.json"
+          
+          echo ""
+          echo "Running azd package (build artifacts for deployment)..."
+          
+          # Backup manifest before azd package (in case it modifies it)
+          if [ -f "${AZD_MANIFEST_DIR}/manifest.json" ]; then
+            cp "${AZD_MANIFEST_DIR}/manifest.json" "${AZD_MANIFEST_DIR}/manifest.json.backup"
+            echo "✅ Backed up manifest before azd package"
+          fi
+          
+          ASPIRE_ENVIRONMENT="${ASPIRE_ENVIRONMENT}" \
+          DOTNET_ENVIRONMENT="${DOTNET_ENVIRONMENT}" \
+          ASPNETCORE_ENVIRONMENT="${ASPNETCORE_ENVIRONMENT}" \
+          azd package \
+            --environment "${AZURE_ENV_NAME}" \
+            --no-prompt || true
+          
+          # Restore manifest if it was modified or missing
+          if [ -f "${AZD_MANIFEST_DIR}/manifest.json.backup" ]; then
+            if [ ! -f "${AZD_MANIFEST_DIR}/manifest.json" ] || ! jq -e '.resources' "${AZD_MANIFEST_DIR}/manifest.json" > /dev/null 2>&1; then
+              echo "⚠️  Manifest missing or invalid after azd package, restoring from backup..."
+              cp "${AZD_MANIFEST_DIR}/manifest.json.backup" "${AZD_MANIFEST_DIR}/manifest.json"
+            fi
+            # Also ensure it's in the AppHost location
+            cp "${AZD_MANIFEST_DIR}/manifest.json" "${MANIFEST_OUTPUT_PATH}" 2>/dev/null || true
+          fi
+          
+          # Verify manifest was generated (check both possible locations)
+          MANIFEST_FOUND=false
+          if [ -f "${MANIFEST_OUTPUT_PATH}" ]; then
+            echo "✅ Manifest available at ${MANIFEST_OUTPUT_PATH}"
+            MANIFEST_FOUND=true
+          elif [ -f "${AZD_MANIFEST_DIR}/manifest.json" ]; then
+            echo "✅ Manifest available at ${AZD_MANIFEST_DIR}/manifest.json"
+            MANIFEST_FOUND=true
+          elif [ -f "src/Services/STEMify-Backend/STEMify-Backend.AppHost/manifest.json" ]; then
+            echo "✅ Manifest generated at src/Services/STEMify-Backend/STEMify-Backend.AppHost/manifest.json"
+            MANIFEST_FOUND=true
+          else
+            echo "⚠️  Manifest not found (may be generated during deployment)"
+          fi
+          
+          # Use the standard azd manifest location for inspection
+          MANIFEST_FILE="${AZD_MANIFEST_DIR}/manifest.json"
+          [ -f "$MANIFEST_FILE" ] || MANIFEST_FILE="${MANIFEST_OUTPUT_PATH}"
+          [ -f "$MANIFEST_FILE" ] || MANIFEST_FILE="src/Services/STEMify-Backend/STEMify-Backend.AppHost/manifest.json"
+          
+          if [ "$MANIFEST_FOUND" = "true" ] && command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
+            RESOURCE_COUNT=$(jq '.resources | length' "$MANIFEST_FILE" 2>/dev/null || echo "0")
+            echo "Manifest contains $RESOURCE_COUNT resources"
+            
+            # List all services in manifest for debugging
+            echo ""
+            echo "Services in manifest:"
+            jq -r '.resources | to_entries[] | "  - \(.key) (\(.value.type))"' "$MANIFEST_FILE" 2>/dev/null || true
+          fi
+          
+          # Remove observability stack services from manifest if they exist
+          if [ -f "$MANIFEST_FILE" ] && command -v jq &> /dev/null; then
+            OBSERVABILITY_SERVICES=("alertmanager" "prometheus" "grafana" "otelcollector")
+            for service in "${OBSERVABILITY_SERVICES[@]}"; do
+              if jq -e ".resources[\"${service}\"]" "$MANIFEST_FILE" > /dev/null 2>&1; then
+                echo "Removing $service from manifest..."
+                jq "del(.resources[\"${service}\"])" "$MANIFEST_FILE" > "${MANIFEST_FILE}.tmp" && \
+                mv "${MANIFEST_FILE}.tmp" "$MANIFEST_FILE"
+              fi
+            done
+            
+            # Ensure manifest is copied back to azd location after modification
+            if [ "$MANIFEST_FILE" != "${AZD_MANIFEST_DIR}/manifest.json" ]; then
+              cp "$MANIFEST_FILE" "${AZD_MANIFEST_DIR}/manifest.json"
+            fi
+          fi
+
+      # - name: Deploy application (excluding observability stack)
+      #   shell: bash
+      #   env:
+      #     DOTNET_ENVIRONMENT: Production
+      #     ASPNETCORE_ENVIRONMENT: Production
+      #     ASPIRE_ENVIRONMENT: Production
+      #     ENABLE_OBSERVABILITY_STACK: "false"
+      #     ENABLE_DOCKER_ENV: "false"
+      #   run: |
+      #     ASPIRE_ENVIRONMENT="${ASPIRE_ENVIRONMENT}" \
+      #     DOTNET_ENVIRONMENT="${DOTNET_ENVIRONMENT}" \
+      #     ASPNETCORE_ENVIRONMENT="${ASPNETCORE_ENVIRONMENT}" \
+      #     azd deploy \
+      #       --environment "${AZURE_ENV_NAME}" \
+      #       --no-prompt
+
+      - name: Deploy application (excluding observability stack)
+        shell: bash
+        env:
+          DOTNET_ENVIRONMENT: Production
+          ASPNETCORE_ENVIRONMENT: Production
+          ASPIRE_ENVIRONMENT: Production
+          ENABLE_OBSERVABILITY_STACK: "false"
+          ENABLE_DOCKER_ENV: "false"
+        run: |
+          echo "=== Deploying application to Azure (excluding observability stack) ==="
+          
+          # Find manifest 
+          MANIFEST_PATHS=(
+            "src/Services/STEMify-Backend/STEMify-Backend.AppHost/.azure/${AZURE_ENV_NAME}/manifest.json"
+            "src/Services/STEMify-Backend/STEMify-Backend.AppHost/manifest.json"
+            ".azure/${AZURE_ENV_NAME}/manifest.json"
+          )
+          
+          MANIFEST_PATH=""
+          for path in "${MANIFEST_PATHS[@]}"; do
+            if [ -f "$path" ]; then
+              MANIFEST_PATH="$path"
+              break
+            fi
+          done
+          
+          if [ -z "$MANIFEST_PATH" ]; then
+            echo "❌ Manifest not found. Cannot proceed with deployment."
+            exit 1
+          fi
+          
+          echo "Using manifest: $MANIFEST_PATH"
+          
+          # Ensure manifest is in standard azd location for azd deploy to find it
+          AZD_MANIFEST_PATH=".azure/${AZURE_ENV_NAME}/manifest.json"
+          if [ "$MANIFEST_PATH" != "$AZD_MANIFEST_PATH" ]; then
+            echo "Copying manifest to standard azd location: $AZD_MANIFEST_PATH"
+            mkdir -p "$(dirname "$AZD_MANIFEST_PATH")"
+            cp "$MANIFEST_PATH" "$AZD_MANIFEST_PATH"
+            MANIFEST_PATH="$AZD_MANIFEST_PATH"
+          fi
+          
+          # Debug: Show manifest info
+          if command -v jq &> /dev/null && [ -f "$MANIFEST_PATH" ]; then
+            echo ""
+            echo "=== Manifest Debug Info ==="
+            echo "Manifest path: $MANIFEST_PATH"
+            echo "Manifest size: $(wc -c < "$MANIFEST_PATH") bytes"
+            RESOURCE_COUNT=$(jq '.resources | length' "$MANIFEST_PATH" 2>/dev/null || echo "0")
+            echo "Total resources: $RESOURCE_COUNT"
+            echo ""
+            echo "All resource keys in manifest:"
+            jq -r '.resources | keys[]' "$MANIFEST_PATH" | sort
+            echo ""
+            
+            # Verify pgadmin exists in manifest before deployment
+            if jq -e ".resources.pgadmin" "$MANIFEST_PATH" > /dev/null 2>&1; then
+              echo "✅ pgadmin found in manifest"
+              jq '.resources.pgadmin' "$MANIFEST_PATH" | head -5
+            else
+              echo "⚠️  WARNING: pgadmin not found in manifest!"
+            fi
+          fi
+          
+          # Get list of observability services to skip
+          OBSERVABILITY_SERVICES=("alertmanager" "prometheus" "grafana" "otelcollector")
+          
+          # Get list of all services from manifest
+          if [ -f "$MANIFEST_PATH" ] && command -v jq &> /dev/null; then
+            # Extract only deployable services (exclude value.v0, parameter.v0, etc.)
+            # Only include: project.v0, container.v0, container.v1, and other deployable types
+            # Use bracket notation to handle service names with hyphens correctly
+            jq -r '.resources | to_entries[] | select(.value.type == "project.v0" or .value.type == "container.v0" or .value.type == "container.v1" or (.value.type | test("^container\\.|^project\\."))) | .key' "$MANIFEST_PATH" > /tmp/all-services.txt 2>/dev/null || {
+              echo "❌ Failed to extract services from manifest"
+              echo "Manifest path: $MANIFEST_PATH"
+              echo "Manifest exists: $([ -f "$MANIFEST_PATH" ] && echo 'yes' || echo 'no')"
+              if [ -f "$MANIFEST_PATH" ]; then
+                echo "First 20 lines of manifest:"
+                head -20 "$MANIFEST_PATH"
+              fi
+              rm -f /tmp/all-services.txt
+              exit 1
+            }
+            
+            echo ""
+            echo "=== Deployable services found in manifest ==="
+            cat /tmp/all-services.txt | while read -r svc; do 
+              SERVICE_TYPE=$(jq -r ".resources[\"${svc}\"].type" "$MANIFEST_PATH" 2>/dev/null || echo "unknown")
+              echo "  - $svc ($SERVICE_TYPE)"
+            done
+            echo ""
+            
+            # Filter out observability stack services
+            SERVICES_TO_DEPLOY=()
+            while IFS= read -r service; do
+              SKIP=false
+              for obs_service in "${OBSERVABILITY_SERVICES[@]}"; do
+                if [ "$service" = "$obs_service" ]; then
+                  SKIP=true
+                  echo "Skipping: $service (observability stack)"
+                  break
+                fi
+              done
+              
+              if [ "$SKIP" = false ]; then
+                SERVICES_TO_DEPLOY+=("$service")
+              fi
+            done < /tmp/all-services.txt
+            
+            rm -f /tmp/all-services.txt
+            
+            # Deploy each service
+            FAILED_SERVICES=()
+            for service in "${SERVICES_TO_DEPLOY[@]}"; do
+              echo ""
+              echo "=== Deploying: $service ==="
+              
+              # Verify service exists in manifest before deploying
+              # Use bracket notation to handle service names with hyphens (e.g., identity-api, classroom-api)
+              if command -v jq &> /dev/null && [ -f "$MANIFEST_PATH" ]; then
+                if ! jq -e ".resources[\"${service}\"]" "$MANIFEST_PATH" > /dev/null 2>&1; then
+                  echo "❌ Service '$service' not found in manifest."
+                  echo "   Manifest path: $MANIFEST_PATH"
+                  echo "   Available services:"
+                  jq -r '.resources | keys[]' "$MANIFEST_PATH" | grep -i "$service" || echo "   (no similar service names found)"
+                  FAILED_SERVICES+=("$service")
+                  continue
+                fi
+                SERVICE_TYPE=$(jq -r ".resources[\"${service}\"].type" "$MANIFEST_PATH" 2>/dev/null || echo "unknown")
+                echo "Service type: $SERVICE_TYPE"
+              else
+                echo "⚠️  Cannot verify service (jq not available or manifest not found)"
+                echo "   Manifest path: $MANIFEST_PATH"
+                echo "   Manifest exists: $([ -f "$MANIFEST_PATH" ] && echo 'yes' || echo 'no')"
+              fi
+              
+              # Ensure manifest is still in the correct location before deploying
+              # Check alternative manifest locations if azd location is missing
+              if [ ! -f "${AZD_MANIFEST_PATH}" ]; then
+                ALTERNATIVE_PATHS=(
+                  "src/Services/STEMify-Backend/STEMify-Backend.AppHost/.azure/${AZURE_ENV_NAME}/manifest.json"
+                  "src/Services/STEMify-Backend/STEMify-Backend.AppHost/manifest.json"
+                )
+                for alt_path in "${ALTERNATIVE_PATHS[@]}"; do
+                  if [ -f "$alt_path" ]; then
+                    echo "Restoring manifest from $alt_path to azd location before deploy..."
+                    mkdir -p "$(dirname "$AZD_MANIFEST_PATH")"
+                    cp "$alt_path" "${AZD_MANIFEST_PATH}"
+                    break
+                  fi
+                done
+              fi
+              
+              # Verify manifest exists before deploying
+              if [ ! -f "${AZD_MANIFEST_PATH}" ]; then
+                echo "❌ Manifest not found at ${AZD_MANIFEST_PATH}. Cannot deploy $service."
+                FAILED_SERVICES+=("$service")
+                continue
+              fi
+              
+              # Run azd deploy from repo root (azd expects manifest in .azure/${AZURE_ENV_NAME}/)
+              echo "Deploying with manifest at: ${AZD_MANIFEST_PATH}"
+              if ASPIRE_ENVIRONMENT="${ASPIRE_ENVIRONMENT}" \
+                DOTNET_ENVIRONMENT="${DOTNET_ENVIRONMENT}" \
+                ASPNETCORE_ENVIRONMENT="${ASPNETCORE_ENVIRONMENT}" \
+                azd deploy "$service" \
+                --environment "${AZURE_ENV_NAME}" \
+                --no-prompt 2>&1 | tee "/tmp/deploy-${service}.log"; then
+                echo "✅ Successfully deployed: $service"
+              else
+                echo "⚠️  Failed to deploy: $service"
+                echo "Last 20 lines of deployment log:"
+                tail -20 "/tmp/deploy-${service}.log" || true
+                FAILED_SERVICES+=("$service")
+              fi
+            done
+            
+            # Summary
+            echo ""
+            echo "=== Deployment Summary ==="
+            echo "Total services: ${#SERVICES_TO_DEPLOY[@]}"
+            if [ ${#FAILED_SERVICES[@]} -gt 0 ]; then
+              echo "Failed services: ${#FAILED_SERVICES[@]}"
+              printf '  - %s\n' "${FAILED_SERVICES[@]}"
+            else
+              echo "✅ All services deployed successfully"
+            fi
+            
+          else
+            echo "❌ Cannot parse manifest (jq not available or manifest invalid)"
+            exit 1
+          fi

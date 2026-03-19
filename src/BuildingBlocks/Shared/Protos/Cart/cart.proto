@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos.Cart";
+
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+package cart;
+
+service CartService {
+  rpc GetCart (GetCartRequest) returns (CartResponse) {
+    option (google.api.http) = {
+      get: "/api/carts"
+    };
+  }
+
+  rpc UpdateCartItem (UpdateCartItemRequest) returns (CartResponse) {
+    option (google.api.http) = {
+      post: "/api/carts"
+      body: "*"
+    };
+  }
+
+  rpc RemoveFromCart (RemoveFromCartRequest) returns (CartResponse) {
+    option (google.api.http) = {
+      delete: "/api/carts/items/{productId}"
+    };
+  }
+
+  rpc ClearCart (ClearCartRequest) returns (CartResponse) {
+    option (google.api.http) = {
+      delete: "/api/carts"
+    };
+  }
+
+  //rpc CheckoutCart (CheckoutCartRequest) returns (google.protobuf.Empty) {
+  //  option (google.api.http) = {
+  //    post: "/api/carts/checkout"
+  //    body: "*"
+  //  };
+  //}
+}
+
+enum CartStatus {
+  STATUS_UNSPECIFIED = 0;
+  ACTIVE = 1;
+  CHECKEDOUT = 2;
+  ABANDONED = 3;
+}
+
+message CartItem {
+  int32 productId = 1;
+  int32 quantity = 2;
+  double unitPrice = 3;
+  double subtotal = 4;
+}
+
+message CartResponse {
+  google.protobuf.StringValue userId = 1;
+  repeated CartItemResponse items = 2;
+  double totalPrice = 3;
+}
+
+message CartItemResponse {
+  int32 productId = 1;
+  string name = 2;
+  string description = 3;
+  string imageUrl = 4;
+  int32 quantity = 5;
+  double unitPrice = 6;
+  double subtotal = 7;
+}
+
+message GetCartRequest {
+  google.protobuf.StringValue userId = 1;
+}
+
+message UpdateCartItemRequest {
+  google.protobuf.StringValue userId = 1;
+  int32 productId = 2;
+  int32 quantity = 3;
+}
+
+message RemoveFromCartRequest {
+  google.protobuf.StringValue userId = 1;
+  int32 productId = 2;
+}
+
+message ClearCartRequest {
+  google.protobuf.StringValue userId = 1;
+}
+
+message CheckoutCartRequest {
+  string userId = 1;
+}

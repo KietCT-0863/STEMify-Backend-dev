@@ -1,0 +1,182 @@
+[
+  {
+    "KitId": 1,
+    "ComponentId": 1,
+    "Quantity": 37,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 1,
+    "ComponentId": 2,
+    "Quantity": 18,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 1,
+    "ComponentId": 3,
+    "Quantity": 25,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 1,
+    "ComponentId": 4,
+    "Quantity": 13,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 1,
+    "ComponentId": 5,
+    "Quantity": 25,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 1,
+    "ComponentId": 6,
+    "Quantity": 12,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 1,
+    "ComponentId": 7,
+    "Quantity": 30,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 1,
+    "ComponentId": 8,
+    "Quantity": 36,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 1,
+    "ComponentId": 9,
+    "Quantity": 34,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 2,
+    "ComponentId": 1,
+    "Quantity": 1024,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 2,
+    "ComponentId": 2,
+    "Quantity": 512,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 2,
+    "ComponentId": 3,
+    "Quantity": 512,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 2,
+    "ComponentId": 4,
+    "Quantity": 256,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 2,
+    "ComponentId": 5,
+    "Quantity": 512,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 2,
+    "ComponentId": 6,
+    "Quantity": 360,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 2,
+    "ComponentId": 7,
+    "Quantity": 512,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 2,
+    "ComponentId": 8,
+    "Quantity": 256,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 2,
+    "ComponentId": 9,
+    "Quantity": 256,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 1,
+    "Quantity": 1024,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 2,
+    "Quantity": 512,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 3,
+    "Quantity": 512,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 4,
+    "Quantity": 256,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 5,
+    "Quantity": 512,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 6,
+    "Quantity": 360,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 7,
+    "Quantity": 512,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 8,
+    "Quantity": 256,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 9,
+    "Quantity": 256,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 10,
+    "Quantity": 30,
+    "IsMainComponent": true
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 11,
+    "Quantity": 60,
+    "IsMainComponent": false
+  },
+  {
+    "KitId": 3,
+    "ComponentId": 12,
+    "Quantity": 120,
+    "IsMainComponent": false
+  }
+]
