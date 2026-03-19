@@ -98,7 +98,9 @@ namespace ApiGateway.Middleware
                 "/metrics",
                 "/api/ai/",
                 "/api/invitations/accept-oauth",  
-                "/api/auth/google/callback"       
+                "/api/auth/google/callback",
+                "/.well-known",
+                "/connect"
             };
 
             var skipExtensions = new[]
