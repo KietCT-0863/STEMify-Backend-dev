@@ -123,16 +123,17 @@ public static class DependencyInjection
             })
             .AddServer(options =>
             {
-                options.SetIssuer(
-                    new Uri(configuration["OpenIddict:Issuer"] ?? "https://localhost:7131")
-                );
+                var issuer = configuration["OpenIddict:Issuer"] ?? "https://localhost:7131";
+                options.SetIssuer(new Uri(issuer));
+                
+                // Use absolute URLs for endpoints to ensure correct public URLs
                 options
-                    .SetAuthorizationEndpointUris("/connect/authorize")
-                    .SetTokenEndpointUris("/connect/token")
-                    .SetUserInfoEndpointUris("/connect/userinfo")
-                    .SetEndSessionEndpointUris("/connect/logout")
-                    .SetIntrospectionEndpointUris("/connect/introspect")
-                    .SetConfigurationEndpointUris("/.well-known/openid-configuration");
+                    .SetAuthorizationEndpointUris(new Uri(new Uri(issuer), "/connect/authorize"))
+                    .SetTokenEndpointUris(new Uri(new Uri(issuer), "/connect/token"))
+                    .SetUserInfoEndpointUris(new Uri(new Uri(issuer), "/connect/userinfo"))
+                    .SetEndSessionEndpointUris(new Uri(new Uri(issuer), "/connect/logout"))
+                    .SetIntrospectionEndpointUris(new Uri(new Uri(issuer), "/connect/introspect"))
+                    .SetConfigurationEndpointUris(new Uri(new Uri(issuer), "/.well-known/openid-configuration"));
 
                 options
                     .AllowAuthorizationCodeFlow()
