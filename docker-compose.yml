@@ -317,8 +317,8 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__stemifyidentity=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_identity
       # OpenIddict configuration for Docker
-      - OpenIddict__Issuer=http://localhost:5000
-      - OpenIddict__Authority=http://localhost:5000
+      - OpenIddict__Issuer=${OPENIDDICT_ISSUER:-https://api.stemify.site}
+      - OpenIddict__Authority=${OPENIDDICT_ISSUER:-https://api.stemify.site}
       - OpenIddict__SigningKey=${OPENIDDICT_SIGNING_KEY}
       - OpenIddict__EncryptionKey=${OPENIDDICT_ENCRYPTION_KEY}
       - OpenIddict__ApiClientSecret=${OPENIDDICT_API_CLIENT_SECRET}
