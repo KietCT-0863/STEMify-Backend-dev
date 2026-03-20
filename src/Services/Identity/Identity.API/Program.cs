@@ -311,7 +311,7 @@ app.MapGet("/api/admin/dashboard", async (
         }, statusCode: 500);
     }
 })
-.RequireAuthorization()
+.RequireAuthorization(new Microsoft.AspNetCore.Authorization.AuthorizeAttribute { AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme })
 .WithName("GetSystemAdminDashboard")
 .WithTags("Admin");
 
