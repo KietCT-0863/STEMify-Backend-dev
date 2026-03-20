@@ -91,6 +91,15 @@ public class OAuthSeeder : IOAuthSeeder
         var applicationManager =
             _serviceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
+        // Check if we should force recreate clients
+        var configuration = _serviceProvider.GetRequiredService<Microsoft.Extensions.Configuration.IConfiguration>();
+        var forceRecreate = configuration.GetValue<bool>("OpenIddict:ForceRecreateClients");
+        
+        if (forceRecreate)
+        {
+            _logger.LogWarning("OpenIddict:ForceRecreateClients is enabled. Will update existing applications.");
+        }
+
         // Use domain constants for applications
         var applications = SeedDataConstants.OAuth.DefaultApplications;
 
@@ -137,9 +146,23 @@ public class OAuthSeeder : IOAuthSeeder
             }
             else
             {
-                // Update existing application to ensure password grant type is enabled
+                // Update existing application
                 var descriptor = new OpenIddictApplicationDescriptor();
                 await applicationManager.PopulateAsync(descriptor, existingApp, cancellationToken);
+
+                // Clear and re-add redirect URIs
+                descriptor.RedirectUris.Clear();
+                foreach (var uri in appData.RedirectUris)
+                {
+                    descriptor.RedirectUris.Add(new Uri(uri));
+                }
+
+                // Clear and re-add post-logout redirect URIs
+                descriptor.PostLogoutRedirectUris.Clear();
+                foreach (var uri in appData.PostLogoutRedirectUris)
+                {
+                    descriptor.PostLogoutRedirectUris.Add(new Uri(uri));
+                }
 
                 // Update permissions for public clients
                 if (appData.Type == "public")
@@ -148,7 +171,11 @@ public class OAuthSeeder : IOAuthSeeder
                 }
 
                 await applicationManager.UpdateAsync(existingApp, descriptor, cancellationToken);
-               
+                _logger.LogInformation(
+                    "Updated OAuth application: {ApplicationName} ({ClientId}) with new redirect URIs",
+                    appData.Name,
+                    appData.ClientId
+                );
             }
         }
     }
