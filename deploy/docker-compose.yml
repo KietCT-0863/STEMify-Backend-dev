@@ -307,7 +307,7 @@ services:
       - OpenIddict__ForceRecreateClients=true
       - OpenIddict__DisableHttpsRequirement=true
       - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
-      - OpenIddict__Issuer=https://www.stemifi.com
+      - OpenIddict__Issuer=https://api.stemify.site
       - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
       # OpenTelemetry Configuration
       # Google Authentication
