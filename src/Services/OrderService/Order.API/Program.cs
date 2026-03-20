@@ -83,7 +83,8 @@ public class Program
         });
 
         // Add services to the container.
-        builder.Services.AddGrpc().AddJsonTranscoding();
+        // Removed .AddJsonTranscoding() to avoid route conflicts with REST API controllers
+        builder.Services.AddGrpc();
         
         // Add REST API controllers
         builder.Services.AddControllers();
