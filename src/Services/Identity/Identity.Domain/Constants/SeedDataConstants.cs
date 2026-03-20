@@ -393,8 +393,8 @@ public static class SeedDataConstants
                 Name: "STEMify Web Client Production",
                 ClientId: "stemify-web-production",
                 Type: "public",
-                RedirectUris: new[] { "https://www.stemifi.com/api/auth/callback/oidc" },
-                PostLogoutRedirectUris: new[] { "https://www.stemifi.com/" }
+                RedirectUris: new[] { "https://www.stemifi.com/api/auth/callback/oidc", "https://robotsteam.com.vn/api/auth/callback/oidc", "https://www.robotsteam.com.vn/api/auth/callback/oidc" },
+                PostLogoutRedirectUris: new[] { "https://www.stemifi.com/", "https://robotsteam.com.vn/", "https://www.robotsteam.com.vn/" }
             ),
             new(
                 Name: "STEMify Web Client Vercel",
@@ -402,11 +402,15 @@ public static class SeedDataConstants
                 Type: "public",
                 RedirectUris: new[] { 
                     "https://ste-mify-frontend-dev.vercel.app/api/auth/callback/oidc",
-                    "https://localhost:3000/api/auth/callback/oidc"
+                    "https://localhost:3000/api/auth/callback/oidc",
+                    "https://robotsteam.com.vn/api/auth/callback/oidc",
+                    "https://www.robotsteam.com.vn/api/auth/callback/oidc"
                 },
                 PostLogoutRedirectUris: new[] { 
                     "https://ste-mify-frontend-dev.vercel.app/",
-                    "https://localhost:3000/"
+                    "https://localhost:3000/",
+                    "https://robotsteam.com.vn/",
+                    "https://www.robotsteam.com.vn/"
                 }
             ),
             new(
