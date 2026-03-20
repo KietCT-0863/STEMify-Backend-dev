@@ -261,7 +261,7 @@ services:
     image: rosie91/stemify:identity-api-service
     build:
       context: .
-      dockerfile: src/Services/Identity/Identity.Api/Dockerfile
+      dockerfile: src/Services/Identity/Identity.API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - Kestrel__Endpoints__WebApi__Protocols=Http1
