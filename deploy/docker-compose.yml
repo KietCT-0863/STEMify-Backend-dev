@@ -105,8 +105,8 @@ services:
       - RedisConfig__Password=secret
       - RedisConfig__Ssl=false
       - GrpcIdentityUrl=http://identity-api-service:5002
-      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
-      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
+      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
       - Gemini__BaseUrl=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
       - Gemini__ApiKey=${GEMINI_API_KEY}
       - Gemini__Model=gemini-2.5-flash
@@ -208,8 +208,8 @@ services:
       - SendGridSettings__ApiKey=${SENDGRID_API_KEY}
       - SendGridSettings__FromEmail=stemify30062025@gmail.com
       - SendGridSettings__FromName=STEMify
-      - ClientApp__BaseUrl=https://www.stemifi.com,https://robotsteam.com.vn
-      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
+      - ClientApp__BaseUrl=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
       - IdentityServiceUrl=http://identity-service
       # OpenTelemetry Configuration
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
@@ -233,8 +233,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
       - IdentityServiceUrl=http://identity-service
-      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
-      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
+      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
       # OpenTelemetry Configuration
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
       - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
@@ -257,8 +257,8 @@ services:
       - Kestrel__Endpoints__Grpc__Protocols=Http2
       - Kestrel__Endpoints__Grpc__Url=http://+:5002
       - ConnectionStrings__stemifyidentity=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_identity
-      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
-      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
+      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
       - BackendUrl=${IDENTITY_BACKEND_URL}
       # RabbitMQ Configuration (for MassTransit)
       - RabbitMq__Url=${RABBITMQ_URL}
@@ -306,9 +306,9 @@ services:
       - OpenIddict__ApiClientSecret=${OPENIDDICT_API_CLIENT_SECRET}
       - OpenIddict__ForceRecreateClients=true
       - OpenIddict__DisableHttpsRequirement=true
-      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn
+      - ClientApp=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
       - OpenIddict__Issuer=https://www.stemifi.com
-      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn
+      - Cors__Origins=https://www.stemifi.com,https://robotsteam.com.vn,https://www.robotsteam.com.vn
       # OpenTelemetry Configuration
       # Google Authentication
       - Authentication__Google__ClientId=${GOOGLE_CLIENT_ID}
