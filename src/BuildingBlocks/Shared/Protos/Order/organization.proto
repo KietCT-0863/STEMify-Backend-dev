@@ -12,67 +12,18 @@ import "Protos/Emulator/emulator.proto";
 package organization;
 
 service GrpcOrganizationService {
-    rpc CreateOrganization (CreateOrganizationRequest) returns (GrpcOrganizationDetail) {
-        option (google.api.http) = {
-            post: "/api/organizations"
-            body: "*"
-        };
-    }
-
-    rpc UpdateOrganization (UpdateOrganizationRequest) returns (GrpcOrganizationDetail) {
-        option (google.api.http) = {
-            patch: "/api/organizations/{id}"
-            body: "*"
-        };
-    }
-
-    rpc DeleteOrganization (DeleteOrganizationRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/api/organizations/{id}"
-        };
-    }
-
-    rpc GetOrganizationById (GetOrganizationRequest) returns (GrpcOrganizationDetail) {
-        option (google.api.http) = {
-            get: "/api/organizations/{id}"
-        };
-    }
-
-    rpc GetOrganizationDashboard (GetOrganizationDashboardRequest) returns (GetOrganizationDashboardResponse) {
-        option (google.api.http) = {
-            get: "/api/organizations/{id}/dashboard"
-        };
-    }
-
-    rpc GetPagedOrganization (GetOrganizationParams) returns (GrpcPagedOrganizationResponse) {
-        option (google.api.http) = {
-            get: "/api/organizations"
-        };
-    }
-
+    rpc CreateOrganization (CreateOrganizationRequest) returns (GrpcOrganizationDetail);
+    rpc UpdateOrganization (UpdateOrganizationRequest) returns (GrpcOrganizationDetail);
+    rpc DeleteOrganization (DeleteOrganizationRequest) returns (google.protobuf.Empty);
+    rpc GetOrganizationById (GetOrganizationRequest) returns (GrpcOrganizationDetail);
+    rpc GetOrganizationDashboard (GetOrganizationDashboardRequest) returns (GetOrganizationDashboardResponse);
+    rpc GetPagedOrganization (GetOrganizationParams) returns (GrpcPagedOrganizationResponse);
+    
     // Method for Identity Service to get organization with email domain and license info
-    rpc GetOrganizationForBulkProvisioning (GetOrganizationRequest) returns (GrpcOrganizationBulkProvisioningInfo) {
-        option (google.api.http) = {
-            get: "/api/organizations/{id}/bulk-provisioning-info"
-        };
-    }
-
-    rpc GetOrganizationCurriculumByOrgId (GetOrganizationRequest) returns (GrpcOrganizationCurriculumList) {
-        option (google.api.http) = {
-            get: "/api/organizations/{id}/curriculums"
-        };
-    }
-
-    rpc GetOrganizationsWithAccessByUserId (GetOrganizationsWithAccessByUserIdRequest) returns (GrpcOrganizationsWithAccessResponse) {
-        option (google.api.http) = {
-            get: "/api/users/{userId}/organizations/access"
-        };
-    }
-    rpc GetOrganizationCurriculumById (GetOrganizationCurriculumByIdRequest) returns (OrganizationCurriculumModel) {
-        option (google.api.http) = {
-            get: "/api/organizations/{organizationId}/curriculums/{curriculumId}"
-        };
-    }
+    rpc GetOrganizationForBulkProvisioning (GetOrganizationRequest) returns (GrpcOrganizationBulkProvisioningInfo);
+    rpc GetOrganizationCurriculumByOrgId (GetOrganizationRequest) returns (GrpcOrganizationCurriculumList);
+    rpc GetOrganizationsWithAccessByUserId (GetOrganizationsWithAccessByUserIdRequest) returns (GrpcOrganizationsWithAccessResponse);
+    rpc GetOrganizationCurriculumById (GetOrganizationCurriculumByIdRequest) returns (OrganizationCurriculumModel);
 }
 
 message GetOrganizationCurriculumByIdRequest {
