@@ -7,7 +7,7 @@ using Shared.Protos.Order;
 namespace Order.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class OrganizationsController : ControllerBase
 {
     private readonly IMediator _mediator;
