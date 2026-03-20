@@ -7,7 +7,6 @@ using Shared.Protos.Order;
 namespace Order.API.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
 public class OrganizationsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -23,6 +22,8 @@ public class OrganizationsController : ControllerBase
     /// Get paginated list of organizations
     /// </summary>
     [HttpGet]
+    [Route("api/organizations")]
+    [Route("api/v1/organizations")]
     [ProducesResponseType(typeof(GrpcPagedOrganizationResponse), StatusCodes.Status200OK)]
     public async Task<ActionResult<GrpcPagedOrganizationResponse>> GetOrganizations(
         [FromQuery] string? search = null,
@@ -67,6 +68,8 @@ public class OrganizationsController : ControllerBase
     /// Get organization by ID
     /// </summary>
     [HttpGet("{id}")]
+    [Route("api/organizations/{id}")]
+    [Route("api/v1/organizations/{id}")]
     [ProducesResponseType(typeof(GrpcOrganizationDetail), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<GrpcOrganizationDetail>> GetOrganizationById(
