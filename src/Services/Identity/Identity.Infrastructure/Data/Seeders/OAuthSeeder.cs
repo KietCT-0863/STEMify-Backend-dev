@@ -1,5 +1,6 @@
 using Identity.Application.Common.Interfaces;
 using Identity.Domain.Constants;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenIddict.Abstractions;
@@ -92,7 +93,7 @@ public class OAuthSeeder : IOAuthSeeder
             _serviceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
         // Check if we should force recreate clients
-        var configuration = _serviceProvider.GetRequiredService<Microsoft.Extensions.Configuration.IConfiguration>();
+        var configuration = _serviceProvider.GetRequiredService<IConfiguration>();
         var forceRecreate = configuration.GetValue<bool>("OpenIddict:ForceRecreateClients");
         
         if (forceRecreate)
