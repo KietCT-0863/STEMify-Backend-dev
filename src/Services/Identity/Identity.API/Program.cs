@@ -278,7 +278,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Admin Dashboard Endpoint
-app.MapGet("/admin/dashboard", async (
+app.MapGet("/api/admin/dashboard", async (
     string? period,
     Shared.Protos.Order.GrpcDashboardService.GrpcDashboardServiceClient dashboardClient,
     HttpContext httpContext) =>
