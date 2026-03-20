@@ -186,6 +186,7 @@ services:
       - Cloudinary__CloudName=${CLOUDINARY_CLOUD_NAME}
       - Cloudinary__ApiKey=${CLOUDINARY_API_KEY}
       - Cloudinary__ApiSecret=${CLOUDINARY_API_SECRET}
+      - ClientApp=http://localhost:3000,https://localhost:3000,https://ste-mify-frontend-dev.vercel.app,https://stemify.site,https://www.robotsteam.com.vn
       # OpenTelemetry Configuration
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
       - OTEL_EXPORTER_OTLP_PROTOCOL=grpc

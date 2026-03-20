@@ -78,12 +78,33 @@ public class Program
             {
                 Title = "Order Service API",
                 Version = "v1",
-                Description = "gRPC service with HTTP/JSON transcoding"
+                Description = "gRPC service with HTTP/JSON transcoding and REST API"
             });
         });
 
         // Add services to the container.
         builder.Services.AddGrpc().AddJsonTranscoding();
+        
+        // Add REST API controllers
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        
+        // Add CORS
+        var clientApp = builder.Configuration["ClientApp"] ?? "http://localhost:3000";
+        var allowedOrigins = clientApp.Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(origin => origin.Trim())
+            .ToArray();
+            
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins(allowedOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            });
+        });
 
         var app = builder.Build();
 
@@ -98,6 +119,9 @@ public class Program
 
         app.MapHealthChecks("/health/ready");
         app.MapHealthChecks("/health/live");
+        
+        // Use CORS
+        app.UseCors();
 
         // middleware to handle errors and return proper gRPC status codes
         app.UseMiddleware<ErrorWrappingMiddleware>();
@@ -108,6 +132,9 @@ public class Program
         app.MapGrpcService<OrganizationTypeGrpcService>();
         app.MapGrpcService<LicenseAssignmentGrpcService>();
         app.MapGrpcService<DashboardGrpcService>();
+        
+        // Map REST API controllers
+        app.MapControllers();
 
         //app.UseAuthentication();
         //app.UseAuthorization();
