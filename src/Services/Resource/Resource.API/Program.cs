@@ -135,8 +135,8 @@ public class Program
             .Services.AddGrpc(options =>
             {
                 options.EnableDetailedErrors = builder.Environment.IsDevelopment();
-                options.MaxReceiveMessageSize = 4 * 1024 * 1024; // 4MB
-                options.MaxSendMessageSize = 4 * 1024 * 1024; // 4MB
+                options.MaxReceiveMessageSize = 30 * 1024 * 1024; // 30MB
+                options.MaxSendMessageSize = 30 * 1024 * 1024; // 30MB
             })
             .AddJsonTranscoding();
 
