@@ -1,5 +1,6 @@
 ﻿using Contracts.Abstractions.Services;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Resource.Application.Commands.LessonAsset;
 using Resource.Application.Common.Interfaces;
 using Shared.DTOs.Cloudinary;
@@ -12,13 +13,17 @@ namespace Resource.Application.Handlers.LessonAsset
     {
         private readonly IResourceUnitOfWork _unitOfWork;
         private readonly ICloudinaryService _cloudinaryService;
+        private readonly ILogger<CreateLessonAssetsCommandHandler> _logger;
+        
         public CreateLessonAssetsCommandHandler(
             IResourceUnitOfWork unitOfWork,
-            ICloudinaryService cloudinaryService
+            ICloudinaryService cloudinaryService,
+            ILogger<CreateLessonAssetsCommandHandler> logger
         )
         {
             _unitOfWork = unitOfWork;
             _cloudinaryService = cloudinaryService;
+            _logger = logger;
         }
         public async Task<CreateLessonAssetsResponse> Handle(CreateLessonAssetsCommand request, CancellationToken cancellationToken)
         {
@@ -33,11 +38,13 @@ namespace Resource.Application.Handlers.LessonAsset
             foreach (var asset in request.Assets)
             {
                 var extension = Path.GetExtension(asset.Name)?.ToLowerInvariant();
+                _logger.LogInformation($"Processing asset: {asset.Name}, Extension: {extension}, Size: {asset.AssetBytes?.Length ?? 0} bytes");
 
                 UploadAssetResponse uploadAssetReponse;
 
                 if (FileTypeHelper.IsImage(asset.AssetBytes))
                 {
+                    _logger.LogInformation($"Detected as IMAGE: {asset.Name} - Uploading to Cloudinary");
                     // Images still use Cloudinary
                     uploadAssetReponse = await _cloudinaryService.UploadImageAsync(new UploadImageBytesRequest
                     {
@@ -47,6 +54,7 @@ namespace Resource.Application.Handlers.LessonAsset
                 }
                 else if (FileTypeHelper.IsVideo(asset.AssetBytes))
                 {
+                    _logger.LogInformation($"Detected as VIDEO: {asset.Name} - Uploading to R2");
                     // Videos now use R2 storage
                     uploadAssetReponse = await _cloudinaryService.UploadVideoToR2Async(new UploadVideoBytesRequest
                     {
@@ -56,6 +64,7 @@ namespace Resource.Application.Handlers.LessonAsset
                 }
                 else if (FileTypeHelper.IsDocument(asset.AssetBytes))
                 {
+                    _logger.LogInformation($"Detected as DOCUMENT: {asset.Name} - Uploading to R2");
                     // Documents (PDF, PPTX, etc.) now use R2 storage
                     uploadAssetReponse = await _cloudinaryService.UploadDocumentToR2Async(new UploadDocumentBytesRequest
                     {
@@ -65,6 +74,7 @@ namespace Resource.Application.Handlers.LessonAsset
                 }
                 else
                 {
+                    _logger.LogError($"UNSUPPORTED file type: {asset.Name}");
                     throw new NotSupportedException($"Unsupported file type: {asset.Name}");
                 }
 
