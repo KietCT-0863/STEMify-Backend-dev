@@ -27,6 +27,8 @@ namespace Resource.Application.Handlers.LessonAsset
         }
         public async Task<CreateLessonAssetsResponse> Handle(CreateLessonAssetsCommand request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation($"=== CreateLessonAssetsCommandHandler START === Assets count: {request.Assets.Count}");
+            
             var lesson = await _unitOfWork.Lessons.FindByIdAsync(request.Assets.First().LessonId, cancellationToken);
             if (lesson == null)
             {
@@ -77,6 +79,8 @@ namespace Resource.Application.Handlers.LessonAsset
                     _logger.LogError($"UNSUPPORTED file type: {asset.Name}");
                     throw new NotSupportedException($"Unsupported file type: {asset.Name}");
                 }
+
+                _logger.LogInformation($"Upload completed for {asset.Name}: {uploadAssetReponse.AssetUrl}");
 
                 // Tạo entity LessonAsset
                 var lessonAsset = new Domain.Entities.LessonAsset
