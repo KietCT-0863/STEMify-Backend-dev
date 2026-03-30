@@ -181,9 +181,37 @@ namespace Shared.Helper
             if (bytes[0] == 0xD0 && bytes[1] == 0xCF && bytes[2] == 0x11 && bytes[3] == 0xE0)
                 return ".doc"; // could also be .xls or .ppt, but .doc is most common
 
-            // DOCX / XLSX / PPTX (ZIP)
+            // DOCX / XLSX / PPTX (ZIP) - need to check content
             if (bytes[0] == 0x50 && bytes[1] == 0x4B && bytes[2] == 0x03 && bytes[3] == 0x04)
-                return ".docx"; // default guess; these are zipped XML files
+            {
+                // Try to detect Office file type by checking ZIP content
+                try
+                {
+                    using var ms = new MemoryStream(bytes);
+                    using var archive = new ZipArchive(ms, ZipArchiveMode.Read);
+                    
+                    // Check for specific Office file markers
+                    var entries = archive.Entries.Select(e => e.FullName.ToLowerInvariant()).ToList();
+                    
+                    // PPTX contains ppt/ folder
+                    if (entries.Any(e => e.Contains("ppt/") || e.Contains("ppt\\") || e.Contains("presentation.xml")))
+                        return ".pptx";
+                    
+                    // XLSX contains xl/ folder
+                    if (entries.Any(e => e.Contains("xl/") || e.Contains("xl\\") || e.Contains("workbook.xml")))
+                        return ".xlsx";
+                    
+                    // DOCX contains word/ folder
+                    if (entries.Any(e => e.Contains("word/") || e.Contains("word\\") || e.Contains("document.xml")))
+                        return ".docx";
+                }
+                catch
+                {
+                    // If ZIP parsing fails, default to .docx
+                }
+                
+                return ".docx"; // default for Office files
+            }
 
             return ".bin";
         }
