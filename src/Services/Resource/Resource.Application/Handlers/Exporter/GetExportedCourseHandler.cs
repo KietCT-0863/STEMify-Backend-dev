@@ -189,7 +189,7 @@ namespace Resource.Application.Handlers.Exporter
                         Id = $"lesson-{lesson.Id}",
                         Title = lesson.Title,
                         Description = lesson.Description,
-                        Folder = $"lessons/lesson-{lesson.Id}",
+                        Folder = $"lessons/lesson-{lesson.Id}", // Relative to course/
                         Duration = lesson.Duration,
                         TotalSlides = totalSlides,
                         Tags = lesson.Topics.Any() ? lesson.Topics : tags,
@@ -233,7 +233,8 @@ namespace Resource.Application.Handlers.Exporter
                     }
                 };
 
-                var manifestEntry = archive.CreateEntry("manifest.json");
+                // Create manifest at course/manifest.json (RSA-ultimate requirement)
+                var manifestEntry = archive.CreateEntry("course/manifest.json");
                 using var manifestStream = manifestEntry.Open();
                 var jsonOptions = new JsonSerializerOptions
                 {
@@ -286,7 +287,7 @@ namespace Resource.Application.Handlers.Exporter
                             {
                                 Id = $"asset-{Guid.NewGuid():N}",
                                 Name = fileName,
-                                Path = $"assets/images/{fileName}",
+                                Path = $"course/assets/images/{fileName}", // Updated path
                                 Type = "image",
                                 Size = await RSAExportHelper.GetFileSizeAsync(imageUrl),
                                 MimeType = RSAExportHelper.GetMimeType(imageUrl)
@@ -307,7 +308,7 @@ namespace Resource.Application.Handlers.Exporter
                             {
                                 Id = $"asset-{Guid.NewGuid():N}",
                                 Name = fileName,
-                                Path = $"assets/video/{fileName}",
+                                Path = $"course/assets/video/{fileName}", // Updated path
                                 Type = "video",
                                 Size = await RSAExportHelper.GetFileSizeAsync(videoUrl),
                                 MimeType = RSAExportHelper.GetMimeType(videoUrl)
@@ -327,7 +328,7 @@ namespace Resource.Application.Handlers.Exporter
                             {
                                 Id = $"asset-{Guid.NewGuid():N}",
                                 Name = fileName,
-                                Path = $"assets/audio/{fileName}",
+                                Path = $"course/assets/audio/{fileName}", // Updated path
                                 Type = "audio",
                                 Size = await RSAExportHelper.GetFileSizeAsync(audioUrl),
                                 MimeType = RSAExportHelper.GetMimeType(audioUrl)
@@ -372,21 +373,26 @@ namespace Resource.Application.Handlers.Exporter
         {
             try
             {
-                // Create shared assets directories
-                archive.CreateEntry("assets/images/");
-                archive.CreateEntry("assets/audio/");
-                archive.CreateEntry("assets/video/");
+                // Create course root directory (RSA-ultimate requirement)
+                archive.CreateEntry("course/");
+                
+                // Create shared assets directories under course/
+                archive.CreateEntry("course/assets/");
+                archive.CreateEntry("course/assets/images/");
+                archive.CreateEntry("course/assets/audio/");
+                archive.CreateEntry("course/assets/video/");
 
                 // Copy all unique assets first
                 await CopyCourseAssetsToArchiveAsync(archive, course);
 
-                // Create lessons folder structure
+                // Create lessons folder structure under course/
+                archive.CreateEntry("course/lessons/");
                 foreach (var lesson in course.Lessons)
                 {
-                    var lessonFolder = $"lessons/lesson-{lesson.Id}/slides/";
+                    var lessonFolder = $"course/lessons/lesson-{lesson.Id}/slides/";
 
                     // Create lesson folder
-                    archive.CreateEntry($"lessons/lesson-{lesson.Id}/");
+                    archive.CreateEntry($"course/lessons/lesson-{lesson.Id}/");
                     archive.CreateEntry(lessonFolder);
 
                     var slideIndex = 1;
@@ -457,7 +463,9 @@ namespace Resource.Application.Handlers.Exporter
             // Replace Cloudinary URLs with local asset paths
             contentBody = await RSAExportHelper.ReplaceUrlsWithLocalPathsForCourse(contentBody, isInCourse);
 
-            var cssPath = isInCourse ? "../../../config/style.css" : "../config/style.css";
+            // CSS path relative to slide location: course/lessons/lesson-X/slides/001.html
+            // Need to go up 4 levels: ../../../config/style.css
+            var cssPath = "../../../config/style.css";
 
             var template = $@"<!DOCTYPE html>
             <html lang=""en"">
@@ -615,7 +623,8 @@ namespace Resource.Application.Handlers.Exporter
                             {
                                 try
                                 {
-                                    var assetPath = $"assets/images/{fileName}";
+                                    // Assets now under course/assets/
+                                    var assetPath = $"course/assets/images/{fileName}";
                                     await RSAExportHelper.CopyFileToArchiveAsync(archive, imageUrl, assetPath);
                                     processedAssets.Add(fileName);
                                 }
@@ -635,7 +644,8 @@ namespace Resource.Application.Handlers.Exporter
                             {
                                 try
                                 {
-                                    var assetPath = $"assets/video/{fileName}";
+                                    // Assets now under course/assets/
+                                    var assetPath = $"course/assets/video/{fileName}";
                                     await RSAExportHelper.CopyFileToArchiveAsync(archive, videoUrl, assetPath);
                                     processedAssets.Add(fileName);
                                 }
@@ -655,7 +665,8 @@ namespace Resource.Application.Handlers.Exporter
                             {
                                 try
                                 {
-                                    var assetPath = $"assets/audio/{fileName}";
+                                    // Assets now under course/assets/
+                                    var assetPath = $"course/assets/audio/{fileName}";
                                     await RSAExportHelper.CopyFileToArchiveAsync(archive, audioUrl, assetPath);
                                     processedAssets.Add(fileName);
                                 }
@@ -674,7 +685,9 @@ namespace Resource.Application.Handlers.Exporter
         {
             var cssContent = await GetExportCssContentAsync();
 
-            var styleEntry = archive.CreateEntry("config/style.css");
+            // Create config under course/ directory (RSA-ultimate requirement)
+            archive.CreateEntry("course/config/");
+            var styleEntry = archive.CreateEntry("course/config/style.css");
             using var styleStream = styleEntry.Open();
             using var writer = new StreamWriter(styleStream, Encoding.UTF8);
             await writer.WriteAsync(cssContent);
