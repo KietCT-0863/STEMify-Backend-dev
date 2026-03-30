@@ -103,6 +103,7 @@ public class Program
         app.MapGrpcService<KitComponentGrpcService>();
         app.MapGrpcService<PlanGrpcService>();
         app.MapGrpcService<PlanBillingCycleGrpcService>();
+        app.MapGrpcService<ProductGrpcService>();
 
         //app.UseAuthentication();
         //app.UseAuthorization();
