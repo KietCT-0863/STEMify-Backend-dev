@@ -1,10 +1,12 @@
-﻿using Google.Protobuf.WellKnownTypes;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
 using Resource.Application.Commands.Curriculum;
 using Resource.Application.Queries.Curriculum;
 using Shared.Extensions;
 using Shared.Protos.Resource;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Resource.API.Services
 {
@@ -24,17 +26,52 @@ namespace Resource.API.Services
             ServerCallContext context
         )
         {
+            var userId = string.IsNullOrWhiteSpace(request.CreatedByUserId)
+                ? ExtractUserIdOrThrow(context)
+                : request.CreatedByUserId;
+
             var command = new CreateCurriculumCommand
             {
                 Title = request.Title,
                 ImageBytes = request.Image?.ToByteArray(),
                 Code = request.Code,
                 Description = request.Description,
-                CreatedByUserId = request.CreatedByUserId,
+                CreatedByUserId = userId,
             };
 
             var result = await _mediator.Send(command);
             return result;
+        }
+
+        private string ExtractUserIdOrThrow(ServerCallContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            // Try principal claims
+            var principal = httpContext.User;
+            var userId = principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                         ?? principal?.FindFirst("sub")?.Value
+                         ?? httpContext.Request.Headers["X-User-Id"].FirstOrDefault();
+
+            // Fallback: parse Authorization header (no validation)
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                var authHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(authHeader))
+                {
+                    var token = authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+                        ? authHeader.Substring("Bearer ".Length)
+                        : authHeader;
+                    var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
+                    userId = jwt.Claims.FirstOrDefault(c => c.Type == "sub")?.Value
+                          ?? jwt.Claims.FirstOrDefault(c => c.Type == "nameid")?.Value;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new RpcException(new Status(StatusCode.Unauthenticated, "Missing user identity"));
+
+            return userId;
         }
 
         public override async Task<CurriculumDetails> GetCurriculum(
