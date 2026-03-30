@@ -130,7 +130,7 @@ public class Program
 
         app.MapGrpcService<NotificationGrpcService>();
 
-        app.MapHub<NotificationHub>("/api/notifications");
+        app.MapHub<NotificationHub>("/hub/notifications");
         app.UseCors("customPolicy");
 
         app.UseAuthentication();
