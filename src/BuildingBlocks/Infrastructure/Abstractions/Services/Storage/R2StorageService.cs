@@ -23,7 +23,8 @@ namespace Infrastructure.Abstractions.Services.Storage
             var config = new AmazonS3Config
             {
                 ServiceURL = endpoint,
-                ForcePathStyle = true
+                ForcePathStyle = true,
+                SignatureVersion = "4"
             };
 
             _s3Client = new AmazonS3Client(accessKeyId, secretAccessKey, config);
@@ -45,7 +46,9 @@ namespace Infrastructure.Abstractions.Services.Storage
                         Key = fileKey,
                         InputStream = stream,
                         ContentType = request.ContentType,
-                        AutoCloseStream = true
+                        AutoCloseStream = true,
+                        DisablePayloadSigning = false,
+                        UseChunkEncoding = false // Disable chunked encoding for R2
                     };
 
                     var response = await _s3Client.PutObjectAsync(putRequest);
