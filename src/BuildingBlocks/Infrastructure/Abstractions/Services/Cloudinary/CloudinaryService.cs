@@ -152,8 +152,6 @@ namespace Infrastructure.Abstractions.Services.Cloudinary
                 throw new Exception($"Error uploading video: {ex.Message}");
             }
         }
-    }
-}
 
         public async Task<UploadAssetResponse> UploadVideoToR2Async(UploadVideoBytesRequest request)
         {
