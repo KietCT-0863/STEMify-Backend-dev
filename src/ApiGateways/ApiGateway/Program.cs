@@ -19,6 +19,12 @@ namespace ApiGateway
         {
             var builder = WebApplication.CreateBuilder(args);
             
+            // Allow large file uploads for presentation/lesson assets
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.Limits.MaxRequestBodySize = 250_000_000; // 250 MB
+            });
+            
             // Configure ForwardedHeaders to handle HTTPS properly behind reverse proxy (Cloudflare)
             builder.Services.Configure<ForwardedHeadersOptions>(options =>
             {

@@ -50,7 +50,7 @@ public class Program
 
                 options.Limits.MaxConcurrentConnections = 1000;
                 options.Limits.MaxConcurrentUpgradedConnections = 100;
-                options.Limits.MaxRequestBodySize = 30_000_000; // 30MB
+                options.Limits.MaxRequestBodySize = 250_000_000; // 250 MB (Increased to support large PPTX / Asset uploads)
                 options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(30);
                 options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2);
             });
@@ -135,8 +135,8 @@ public class Program
             .Services.AddGrpc(options =>
             {
                 options.EnableDetailedErrors = builder.Environment.IsDevelopment();
-                options.MaxReceiveMessageSize = 30 * 1024 * 1024; // 30MB
-                options.MaxSendMessageSize = 30 * 1024 * 1024; // 30MB
+                options.MaxReceiveMessageSize = 250 * 1024 * 1024; // 250 MB
+                options.MaxSendMessageSize = 250 * 1024 * 1024; // 250 MB
             })
             .AddJsonTranscoding();
 
