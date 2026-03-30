@@ -47,14 +47,18 @@ public class Program
                         listenOptions.UseConnectionLogging();
                     }
                 );
-
-                options.Limits.MaxConcurrentConnections = 1000;
-                options.Limits.MaxConcurrentUpgradedConnections = 100;
-                options.Limits.MaxRequestBodySize = 250_000_000; // 250 MB (Increased to support large PPTX / Asset uploads)
-                options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(30);
-                options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2);
             });
         }
+
+        // Apply limits globally (including Development environment where Docker runs)
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.Limits.MaxConcurrentConnections = 1000;
+            options.Limits.MaxConcurrentUpgradedConnections = 100;
+            options.Limits.MaxRequestBodySize = 250_000_000; // 250 MB
+            options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(30);
+            options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2);
+        });
 
         // Enhanced logging configuration for debugging gRPC issues
         builder.Logging.ClearProviders();
