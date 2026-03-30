@@ -11,5 +11,10 @@ namespace Contracts.Abstractions.Services
         Task<UploadAssetResponse> UploadVideoAsync(UploadVideoBytesRequest request);
 
         Task<UploadAssetResponse> UploadDocumentAsync(UploadDocumentBytesRequest request);
+        
+        // New methods for R2 storage
+        Task<UploadAssetResponse> UploadVideoToR2Async(UploadVideoBytesRequest request);
+        
+        Task<UploadAssetResponse> UploadDocumentToR2Async(UploadDocumentBytesRequest request);
     }
 }

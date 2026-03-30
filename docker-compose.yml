@@ -79,6 +79,12 @@ services:
       - Cloudinary__CloudName=${CLOUDINARY_CLOUD_NAME}
       - Cloudinary__ApiKey=${CLOUDINARY_API_KEY}
       - Cloudinary__ApiSecret=${CLOUDINARY_API_SECRET}
+      # R2 Storage Configuration
+      - R2__AccountId=${R2_ACCOUNT_ID}
+      - R2__AccessKeyId=${R2_ACCESS_KEY_ID}
+      - R2__SecretAccessKey=${R2_SECRET_ACCESS_KEY}
+      - R2__BucketName=${R2_BUCKET_NAME}
+      - R2__Endpoint=${R2_ENDPOINT}
       - Pdflayer__ApiKey=e4a39484d4c94acacd0da61ba5970b09
     ports:
       - 7001:80
@@ -104,6 +110,12 @@ services:
       - Cloudinary__CloudName=${CLOUDINARY_CLOUD_NAME}
       - Cloudinary__ApiKey=${CLOUDINARY_API_KEY}
       - Cloudinary__ApiSecret=${CLOUDINARY_API_SECRET}
+      # R2 Storage Configuration
+      - R2__AccountId=${R2_ACCOUNT_ID}
+      - R2__AccessKeyId=${R2_ACCESS_KEY_ID}
+      - R2__SecretAccessKey=${R2_SECRET_ACCESS_KEY}
+      - R2__BucketName=${R2_BUCKET_NAME}
+      - R2__Endpoint=${R2_ENDPOINT}
       - RedisConfig__Host=redis
       - RedisConfig__Port=6379
       - RedisConfig__Password=secret
@@ -141,6 +153,14 @@ services:
       - Kestrel__Endpoints__Grpc__Url=http://+:5005
       - ConnectionStrings__stemifyproduct=Server=postgres:5432;User Id=postgres;Password=${DB_PASSWORD};Database=stemify_product
       - Cloudinary__CloudName=${CLOUDINARY_CLOUD_NAME}
+      - Cloudinary__ApiKey=${CLOUDINARY_API_KEY}
+      - Cloudinary__ApiSecret=${CLOUDINARY_API_SECRET}
+      # R2 Storage Configuration
+      - R2__AccountId=${R2_ACCOUNT_ID}
+      - R2__AccessKeyId=${R2_ACCESS_KEY_ID}
+      - R2__SecretAccessKey=${R2_SECRET_ACCESS_KEY}
+      - R2__BucketName=${R2_BUCKET_NAME}
+      - R2__Endpoint=${R2_ENDPOINT}
       - Cloudinary__ApiKey=${CLOUDINARY_API_KEY}
       - Cloudinary__ApiSecret=${CLOUDINARY_API_SECRET}
       - RedisConfig__Host=redis

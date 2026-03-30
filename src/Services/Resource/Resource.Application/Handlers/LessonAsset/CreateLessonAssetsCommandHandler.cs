@@ -38,6 +38,7 @@ namespace Resource.Application.Handlers.LessonAsset
 
                 if (FileTypeHelper.IsImage(asset.AssetBytes))
                 {
+                    // Images still use Cloudinary
                     uploadAssetReponse = await _cloudinaryService.UploadImageAsync(new UploadImageBytesRequest
                     {
                         FileBytes = asset.AssetBytes,
@@ -46,7 +47,8 @@ namespace Resource.Application.Handlers.LessonAsset
                 }
                 else if (FileTypeHelper.IsVideo(asset.AssetBytes))
                 {
-                    uploadAssetReponse = await _cloudinaryService.UploadVideoAsync(new UploadVideoBytesRequest
+                    // Videos now use R2 storage
+                    uploadAssetReponse = await _cloudinaryService.UploadVideoToR2Async(new UploadVideoBytesRequest
                     {
                         FileBytes = asset.AssetBytes,
                         FileName = asset.Name
@@ -54,7 +56,8 @@ namespace Resource.Application.Handlers.LessonAsset
                 }
                 else if (FileTypeHelper.IsDocument(asset.AssetBytes))
                 {
-                    uploadAssetReponse = await _cloudinaryService.UploadDocumentAsync(new UploadDocumentBytesRequest
+                    // Documents (PDF, PPTX, etc.) now use R2 storage
+                    uploadAssetReponse = await _cloudinaryService.UploadDocumentToR2Async(new UploadDocumentBytesRequest
                     {
                         FileBytes = asset.AssetBytes,
                         FileName = asset.Name

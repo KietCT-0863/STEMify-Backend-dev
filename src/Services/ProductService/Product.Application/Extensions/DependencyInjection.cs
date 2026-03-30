@@ -1,6 +1,7 @@
 ﻿using Contracts.Abstractions.Services;
 using FluentValidation;
 using Infrastructure.Abstractions.Services.Cloudinary;
+using Infrastructure.Abstractions.Services.Storage;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace Product.Application.Extensions
             IConfiguration configuration
         )
         {
+            services.AddScoped<IR2StorageService, R2StorageService>();
             services.AddScoped<ICloudinaryService, CloudinaryService>();
 
             Assembly currentAssembly = Assembly.GetExecutingAssembly();
