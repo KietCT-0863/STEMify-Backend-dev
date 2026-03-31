@@ -457,6 +457,33 @@ namespace Shared.Helper
             if (Uri.TryCreate(sourceUrl, UriKind.Absolute, out var uri) &&
                 (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
             {
+                // Check if URL needs encoding (has spaces or non-ASCII characters)
+                if (sourceUrl.Contains(" ") || sourceUrl.Any(c => c > 127))
+                {
+                    // Encode the path and query parts
+                    var uriBuilder = new UriBuilder(uri);
+                    var pathAndQuery = uri.PathAndQuery;
+                    
+                    // Split path and query
+                    var parts = pathAndQuery.Split('?');
+                    var path = parts[0];
+                    var query = parts.Length > 1 ? parts[1] : string.Empty;
+                    
+                    // Encode path segments
+                    var segments = path.Split('/');
+                    var encodedSegments = segments.Select(s => Uri.EscapeDataString(s)).ToArray();
+                    var encodedPath = string.Join("/", encodedSegments);
+                    
+                    // Rebuild URL
+                    uriBuilder.Path = encodedPath;
+                    if (!string.IsNullOrEmpty(query))
+                    {
+                        uriBuilder.Query = query;
+                    }
+                    
+                    return uriBuilder.Uri.AbsoluteUri;
+                }
+                
                 return uri.AbsoluteUri;
             }
 
