@@ -103,6 +103,16 @@ namespace Resource.Application.Handlers.Exporter
                         LearningOutcome = l.LearningOutcome,
                         Duration = l.Duration,
                         CreatedDate = l.CreatedDate,
+                        Assets = l.LessonAssets
+                            .Select(a => new LessonAssetExportModel
+                            {
+                                Id = a.Id,
+                                Name = a.Name,
+                                Type = a.Type,
+                                AssetUrl = a.AssetUrl,
+                                Format = a.Format,
+                                Size = a.Size
+                            }).ToList(),
                         Sections = l.Sections
                             .OrderBy(s => s.OrderIndex)
                             .Select(s => new SectionExportModel
@@ -737,6 +747,51 @@ namespace Resource.Application.Handlers.Exporter
                                     _logger.LogError(ex, "Failed to copy file from FileUrl {FileUrl} to archive", content.FileUrl);
                                 }
                             }
+                        }
+                    }
+                }
+                
+                // Download LessonAssets (PPTX, PDF, etc.)
+                _logger.LogInformation("  Processing {AssetCount} LessonAssets", lesson.Assets.Count);
+                foreach (var asset in lesson.Assets)
+                {
+                    var fileName = RSAExportHelper.GetFileNameFromCloudinaryUrl(asset.AssetUrl);
+                    if (!processedAssets.Contains(fileName))
+                    {
+                        try
+                        {
+                            var fileExtension = Path.GetExtension(fileName).ToLowerInvariant();
+                            string assetPath;
+                            
+                            // Determine asset folder based on file type
+                            if (fileExtension == ".pptx" || fileExtension == ".ppt")
+                            {
+                                assetPath = $"course/assets/slides/{fileName}";
+                                _logger.LogInformation("    📊 Downloading PPTX: {AssetUrl} -> {AssetPath}", asset.AssetUrl, assetPath);
+                            }
+                            else if (fileExtension == ".pdf")
+                            {
+                                assetPath = $"course/assets/documents/{fileName}";
+                                _logger.LogInformation("    📄 Downloading PDF: {AssetUrl} -> {AssetPath}", asset.AssetUrl, assetPath);
+                            }
+                            else if (fileExtension == ".mp4" || fileExtension == ".avi" || fileExtension == ".mov")
+                            {
+                                assetPath = $"course/assets/video/{fileName}";
+                                _logger.LogInformation("    🎥 Downloading Video: {AssetUrl} -> {AssetPath}", asset.AssetUrl, assetPath);
+                            }
+                            else
+                            {
+                                assetPath = $"course/assets/documents/{fileName}";
+                                _logger.LogInformation("    📎 Downloading file: {AssetUrl} -> {AssetPath}", asset.AssetUrl, assetPath);
+                            }
+                            
+                            await RSAExportHelper.CopyFileToArchiveAsync(archive, asset.AssetUrl, assetPath);
+                            processedAssets.Add(fileName);
+                            _logger.LogInformation("    ✓ Downloaded successfully");
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Failed to copy LessonAsset {AssetUrl} to archive", asset.AssetUrl);
                         }
                     }
                 }

@@ -319,6 +319,7 @@ namespace Resource.Application.Models.ExportData
         public int Duration { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public List<SectionExportModel> Sections { get; set; } = new();
+        public List<LessonAssetExportModel> Assets { get; set; } = new();
     }
 
     public class SectionExportModel
@@ -339,6 +340,16 @@ namespace Resource.Application.Models.ExportData
         public string ContentBody { get; set; } = string.Empty;
         public string? FileName { get; set; }
         public string? FileUrl { get; set; }
+    }
+
+    public class LessonAssetExportModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public string AssetUrl { get; set; } = string.Empty;
+        public string Format { get; set; } = string.Empty;
+        public long Size { get; set; }
     }
 
     public class QuizExportDataModel

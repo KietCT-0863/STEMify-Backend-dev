@@ -46,6 +46,8 @@ namespace Resource.Application.Specifications.Courses
                 .Include(c => c.Lessons)
                     .ThenInclude(l => l.Sections)
                         .ThenInclude(st => st.Contents)
+                .Include(c => c.Lessons)
+                    .ThenInclude(l => l.LessonAssets)
                 ;
         }
     }
