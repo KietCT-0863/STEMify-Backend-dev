@@ -11,6 +11,7 @@ namespace Infrastructure.Abstractions.Services.Storage
         private readonly IAmazonS3 _s3Client;
         private readonly string _bucketName;
         private readonly string _accountId;
+        private readonly string _publicDomain;
 
         public R2StorageService(IConfiguration configuration)
         {
@@ -18,6 +19,7 @@ namespace Infrastructure.Abstractions.Services.Storage
             var secretAccessKey = configuration["R2:SecretAccessKey"] ?? throw new ArgumentNullException("R2:SecretAccessKey");
             _accountId = configuration["R2:AccountId"] ?? throw new ArgumentNullException("R2:AccountId");
             _bucketName = configuration["R2:BucketName"] ?? throw new ArgumentNullException("R2:BucketName");
+            _publicDomain = configuration["R2:PublicDomain"] ?? throw new ArgumentNullException("R2:PublicDomain");
             var endpoint = configuration["R2:Endpoint"] ?? $"https://{_accountId}.r2.cloudflarestorage.com";
 
             var config = new AmazonS3Config
@@ -61,8 +63,8 @@ namespace Infrastructure.Abstractions.Services.Storage
                         throw new Exception($"Failed to upload file to R2. Status: {response.HttpStatusCode}");
                     }
 
-                    // Generate public URL - fileKey is already encoded
-                    var fileUrl = $"https://pub-{_accountId}.r2.dev/{fileKey}";
+                    // Generate public URL using configured public domain
+                    var fileUrl = $"{_publicDomain}/{fileKey}";
 
                     return new UploadR2Response
                     {
