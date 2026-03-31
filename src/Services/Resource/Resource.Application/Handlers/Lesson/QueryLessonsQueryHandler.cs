@@ -115,10 +115,44 @@ namespace Resource.Application.Handlers.Lesson
                 cancellationToken: cancellationToken
             );
 
+            // Batch load all users in parallel to avoid N+1 query problem
+            var userIds = paged.Items
+                .Select(l => l.CreatedByUserId)
+                .Where(id => !string.IsNullOrEmpty(id) && Guid.TryParse(id, out _))
+                .Distinct()
+                .Select(id => Guid.Parse(id))
+                .ToList();
+
+            var userTasks = userIds.Select(async userId =>
+            {
+                try
+                {
+                    var user = await _userCache.GetByIdAsync(userId, cancellationToken);
+                    return (userId, userName: user?.Name);
+                }
+                catch
+                {
+                    return (userId, userName: (string?)null);
+                }
+            });
+
+            var userResults = await Task.WhenAll(userTasks);
+            var users = userResults
+                .Where(r => r.userName != null)
+                .ToDictionary(r => r.userId, r => r.userName!);
+
             foreach (var lesson in paged.Items)
             {
-                var user = await _userCache.GetByIdAsync(Guid.Parse(lesson.CreatedByUserId), cancellationToken);
-                lesson.CreatedByUserName = user?.Name ?? lesson.CreatedByUserId;
+                if (!string.IsNullOrEmpty(lesson.CreatedByUserId) && 
+                    Guid.TryParse(lesson.CreatedByUserId, out var userId) &&
+                    users.TryGetValue(userId, out var userName))
+                {
+                    lesson.CreatedByUserName = userName;
+                }
+                else
+                {
+                    lesson.CreatedByUserName = lesson.CreatedByUserId;
+                }
             }
 
             return paged.ToGrpcPagedLessonList(x => x.ToGrpcLessonResponse());
