@@ -100,6 +100,13 @@ services:
       - Cloudinary__CloudName=${CLOUDINARY_CLOUD_NAME}
       - Cloudinary__ApiKey=${CLOUDINARY_API_KEY}
       - Cloudinary__ApiSecret=${CLOUDINARY_API_SECRET}
+      # R2 Storage Configuration
+      - R2__AccountId=${R2_ACCOUNT_ID}
+      - R2__AccessKeyId=${R2_ACCESS_KEY_ID}
+      - R2__SecretAccessKey=${R2_SECRET_ACCESS_KEY}
+      - R2__BucketName=${R2_BUCKET_NAME}
+      - R2__Endpoint=${R2_ENDPOINT}
+      - R2__PublicDomain=https://pub-3a191cd2852f498db95051185edec726.r2.dev
       - RedisConfig__Host=redis
       - RedisConfig__Port=6379
       - RedisConfig__Password=secret
