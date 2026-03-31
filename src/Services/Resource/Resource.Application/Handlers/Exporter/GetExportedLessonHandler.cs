@@ -115,12 +115,11 @@ namespace Resource.Application.Handlers.Exporter
                             Duration = s.Duration,
                             Contents = s.Contents
                                 //.Where(c => c.Status == Domain.Enums.ContentStatus.Published)
-                                .Where(l =>
-                                    l.Status != Domain.Enums.ContentStatus.Archived &&
-                                    l.Status != Domain.Enums.ContentStatus.Deleted
+                                .Where(c =>
+                                    c.Status != Domain.Enums.ContentStatus.Archived &&
+                                    c.Status != Domain.Enums.ContentStatus.Deleted
                                 )
-                                .OrderByDescending(c => c.Id)
-                                .Take(1)
+                                .OrderBy(c => c.Id)
                                 .Select(c => new ContentExportModel
                                 {
                                     Id = c.Id,
