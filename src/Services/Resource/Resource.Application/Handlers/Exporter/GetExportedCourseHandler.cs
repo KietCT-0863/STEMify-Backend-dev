@@ -122,7 +122,9 @@ namespace Resource.Application.Handlers.Exporter
                                     {
                                         Id = c.Id,
                                         ContentType = c.ContentType.ToString(),
-                                        ContentBody = c.ContentBody
+                                        ContentBody = c.ContentBody,
+                                        FileName = c.FileName,
+                                        FileUrl = c.FileUrl
                                     }).ToList()
                                 //Quizzes = s.Quizzes
                                 //    //.Where(q => q.Status == Domain.Enums.QuizStatus.Published)
@@ -378,6 +380,8 @@ namespace Resource.Application.Handlers.Exporter
                 archive.CreateEntry("course/assets/images/");
                 archive.CreateEntry("course/assets/audio/");
                 archive.CreateEntry("course/assets/video/");
+                archive.CreateEntry("course/assets/slides/");
+                archive.CreateEntry("course/assets/documents/");
 
                 // Copy all unique assets first
                 await CopyCourseAssetsToArchiveAsync(archive, course);
@@ -605,14 +609,34 @@ namespace Resource.Application.Handlers.Exporter
         {
             var processedAssets = new HashSet<string>();
 
+            _logger.LogInformation("=== START CopyCourseAssetsToArchiveAsync ===");
+            _logger.LogInformation("Course ID: {CourseId}, Total Lessons: {LessonCount}", course.Id, course.Lessons.Count);
+
             foreach (var lesson in course.Lessons)
             {
+                _logger.LogInformation("Processing Lesson {LessonId}: {LessonTitle}", lesson.Id, lesson.Title);
+                
                 foreach (var section in lesson.Sections)
                 {
+                    _logger.LogInformation("  Section {SectionId}: {SectionTitle}, Contents: {ContentCount}", 
+                        section.Id, section.Title, section.Contents.Count);
+                    
                     foreach (var content in section.Contents)
                     {
+                        _logger.LogInformation("    Content {ContentId}, Type: {ContentType}, BodyLength: {BodyLength}", 
+                            content.Id, content.ContentType, content.ContentBody?.Length ?? 0);
+                        
+                        // Log FileUrl if exists
+                        if (!string.IsNullOrEmpty(content.FileUrl))
+                        {
+                            _logger.LogInformation("      ⚠️ Content has FileUrl: {FileUrl}, FileName: {FileName}", 
+                                content.FileUrl, content.FileName ?? "N/A");
+                        }
+                        
                         // Extract and copy images from HTML content
                         var imageUrls = RSAExportHelper.ExtractImageUrlsFromHtml(content.ContentBody);
+                        _logger.LogInformation("      Found {ImageCount} images", imageUrls.Count);
+                        
                         foreach (var imageUrl in imageUrls)
                         {
                             var fileName = RSAExportHelper.GetFileNameFromCloudinaryUrl(imageUrl);
@@ -622,12 +646,14 @@ namespace Resource.Application.Handlers.Exporter
                                 {
                                     // Assets now under course/assets/
                                     var assetPath = $"course/assets/images/{fileName}";
+                                    _logger.LogInformation("      Downloading image: {ImageUrl} -> {AssetPath}", imageUrl, assetPath);
                                     await RSAExportHelper.CopyFileToArchiveAsync(archive, imageUrl, assetPath);
                                     processedAssets.Add(fileName);
+                                    _logger.LogInformation("      ✓ Downloaded successfully");
                                 }
                                 catch (Exception ex)
                                 {
-                                    _logger.LogError(ex, $"Failed to copy image asset {imageUrl} to archive");
+                                    _logger.LogError(ex, "Failed to copy image asset {imageUrl} to archive", imageUrl);
                                 }
                             }
                         }
@@ -673,9 +699,51 @@ namespace Resource.Application.Handlers.Exporter
                                 }
                             }
                         }
+
+                        // Download PPTX/Document files from FileUrl if exists
+                        if (!string.IsNullOrEmpty(content.FileUrl))
+                        {
+                            var fileName = RSAExportHelper.GetFileNameFromCloudinaryUrl(content.FileUrl);
+                            if (!processedAssets.Contains(fileName))
+                            {
+                                try
+                                {
+                                    var fileExtension = Path.GetExtension(fileName).ToLowerInvariant();
+                                    string assetPath;
+                                    
+                                    // Determine asset folder based on file extension
+                                    if (fileExtension == ".pptx" || fileExtension == ".ppt")
+                                    {
+                                        assetPath = $"course/assets/slides/{fileName}";
+                                        _logger.LogInformation("      📊 Downloading PPTX: {FileUrl} -> {AssetPath}", content.FileUrl, assetPath);
+                                    }
+                                    else if (fileExtension == ".pdf")
+                                    {
+                                        assetPath = $"course/assets/documents/{fileName}";
+                                        _logger.LogInformation("      📄 Downloading PDF: {FileUrl} -> {AssetPath}", content.FileUrl, assetPath);
+                                    }
+                                    else
+                                    {
+                                        assetPath = $"course/assets/documents/{fileName}";
+                                        _logger.LogInformation("      📎 Downloading file: {FileUrl} -> {AssetPath}", content.FileUrl, assetPath);
+                                    }
+                                    
+                                    await RSAExportHelper.CopyFileToArchiveAsync(archive, content.FileUrl, assetPath);
+                                    processedAssets.Add(fileName);
+                                    _logger.LogInformation("      ✓ Downloaded successfully");
+                                }
+                                catch (Exception ex)
+                                {
+                                    _logger.LogError(ex, "Failed to copy file from FileUrl {FileUrl} to archive", content.FileUrl);
+                                }
+                            }
+                        }
                     }
                 }
             }
+            
+            _logger.LogInformation("=== END CopyCourseAssetsToArchiveAsync ===");
+            _logger.LogInformation("Total assets processed: {AssetCount}", processedAssets.Count);
         }
 
         private async Task CreateConfigAsync(ZipArchive archive)

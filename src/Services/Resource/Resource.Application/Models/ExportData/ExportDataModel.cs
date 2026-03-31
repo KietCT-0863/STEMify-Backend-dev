@@ -337,8 +337,8 @@ namespace Resource.Application.Models.ExportData
         public int Id { get; set; }
         public string ContentType { get; set; }
         public string ContentBody { get; set; } = string.Empty;
-        //public string? FileName { get; set; }
-        //public string? FileUrl { get; set; }
+        public string? FileName { get; set; }
+        public string? FileUrl { get; set; }
     }
 
     public class QuizExportDataModel
