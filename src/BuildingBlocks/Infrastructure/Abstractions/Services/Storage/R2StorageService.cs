@@ -34,9 +34,12 @@ namespace Infrastructure.Abstractions.Services.Storage
         {
             try
             {
+                // Encode filename to handle spaces and special characters
+                var encodedFileName = Uri.EscapeDataString(request.FileName);
+                
                 var fileKey = string.IsNullOrEmpty(request.Folder)
-                    ? request.FileName
-                    : $"{request.Folder}/{request.FileName}";
+                    ? encodedFileName
+                    : $"{request.Folder}/{encodedFileName}";
 
                 using (var stream = new MemoryStream(request.FileBytes))
                 {
@@ -58,10 +61,8 @@ namespace Infrastructure.Abstractions.Services.Storage
                         throw new Exception($"Failed to upload file to R2. Status: {response.HttpStatusCode}");
                     }
 
-                    // Generate public URL (if bucket has public access configured)
-                    // Encode the file key to handle spaces and special characters
-                    var encodedFileKey = string.Join("/", fileKey.Split('/').Select(Uri.EscapeDataString));
-                    var fileUrl = $"https://pub-{_accountId}.r2.dev/{encodedFileKey}";
+                    // Generate public URL - fileKey is already encoded
+                    var fileUrl = $"https://pub-{_accountId}.r2.dev/{fileKey}";
 
                     return new UploadR2Response
                     {
