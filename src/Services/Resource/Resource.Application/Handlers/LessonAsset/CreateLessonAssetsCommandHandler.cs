@@ -82,16 +82,19 @@ namespace Resource.Application.Handlers.LessonAsset
 
                 _logger.LogInformation($"Upload completed for {asset.Name}: {uploadAssetReponse.AssetUrl}");
 
-                // Encode URL to handle spaces and special characters
+                // Encode URL only if it contains unencoded spaces or special characters
                 var encodedUrl = uploadAssetReponse.AssetUrl;
-                if (Uri.TryCreate(uploadAssetReponse.AssetUrl, UriKind.Absolute, out var uri))
+                if (uploadAssetReponse.AssetUrl.Contains(" ") || uploadAssetReponse.AssetUrl.Any(c => c > 127 && c != '%'))
                 {
-                    var uriBuilder = new UriBuilder(uri);
-                    var segments = uri.AbsolutePath.Split('/');
-                    var encodedSegments = segments.Select(s => Uri.EscapeDataString(s)).ToArray();
-                    uriBuilder.Path = string.Join("/", encodedSegments);
-                    encodedUrl = uriBuilder.Uri.AbsoluteUri;
-                    _logger.LogInformation($"Encoded URL: {encodedUrl}");
+                    if (Uri.TryCreate(uploadAssetReponse.AssetUrl, UriKind.Absolute, out var uri))
+                    {
+                        var uriBuilder = new UriBuilder(uri);
+                        var segments = uri.AbsolutePath.Split('/');
+                        var encodedSegments = segments.Select(s => Uri.EscapeDataString(s)).ToArray();
+                        uriBuilder.Path = string.Join("/", encodedSegments);
+                        encodedUrl = uriBuilder.Uri.AbsoluteUri;
+                        _logger.LogInformation($"Encoded URL: {encodedUrl}");
+                    }
                 }
 
                 // Tạo entity LessonAsset
