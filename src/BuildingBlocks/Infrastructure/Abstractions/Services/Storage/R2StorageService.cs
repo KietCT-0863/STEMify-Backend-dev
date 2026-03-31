@@ -36,12 +36,10 @@ namespace Infrastructure.Abstractions.Services.Storage
         {
             try
             {
-                // Encode filename to handle spaces and special characters
-                var encodedFileName = Uri.EscapeDataString(request.FileName);
-                
+                // Use original filename for S3 key (S3 handles special characters)
                 var fileKey = string.IsNullOrEmpty(request.Folder)
-                    ? encodedFileName
-                    : $"{request.Folder}/{encodedFileName}";
+                    ? request.FileName
+                    : $"{request.Folder}/{request.FileName}";
 
                 using (var stream = new MemoryStream(request.FileBytes))
                 {
@@ -63,8 +61,9 @@ namespace Infrastructure.Abstractions.Services.Storage
                         throw new Exception($"Failed to upload file to R2. Status: {response.HttpStatusCode}");
                     }
 
-                    // Generate public URL using configured public domain
-                    var fileUrl = $"{_publicDomain}/{fileKey}";
+                    // Generate public URL - encode each path segment for URL safety
+                    var encodedPath = string.Join("/", fileKey.Split('/').Select(Uri.EscapeDataString));
+                    var fileUrl = $"{_publicDomain}/{encodedPath}";
 
                     return new UploadR2Response
                     {
