@@ -59,7 +59,9 @@ namespace Infrastructure.Abstractions.Services.Storage
                     }
 
                     // Generate public URL (if bucket has public access configured)
-                    var fileUrl = $"https://pub-{_accountId}.r2.dev/{fileKey}";
+                    // Encode the file key to handle spaces and special characters
+                    var encodedFileKey = string.Join("/", fileKey.Split('/').Select(Uri.EscapeDataString));
+                    var fileUrl = $"https://pub-{_accountId}.r2.dev/{encodedFileKey}";
 
                     return new UploadR2Response
                     {

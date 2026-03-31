@@ -82,27 +82,12 @@ namespace Resource.Application.Handlers.LessonAsset
 
                 _logger.LogInformation($"Upload completed for {asset.Name}: {uploadAssetReponse.AssetUrl}");
 
-                // Encode URL only if it contains unencoded spaces or special characters
-                var encodedUrl = uploadAssetReponse.AssetUrl;
-                if (uploadAssetReponse.AssetUrl.Contains(" ") || uploadAssetReponse.AssetUrl.Any(c => c > 127 && c != '%'))
-                {
-                    if (Uri.TryCreate(uploadAssetReponse.AssetUrl, UriKind.Absolute, out var uri))
-                    {
-                        var uriBuilder = new UriBuilder(uri);
-                        var segments = uri.AbsolutePath.Split('/');
-                        var encodedSegments = segments.Select(s => Uri.EscapeDataString(s)).ToArray();
-                        uriBuilder.Path = string.Join("/", encodedSegments);
-                        encodedUrl = uriBuilder.Uri.AbsoluteUri;
-                        _logger.LogInformation($"Encoded URL: {encodedUrl}");
-                    }
-                }
-
-                // Tạo entity LessonAsset
+                // Tạo entity LessonAsset - use URL as-is from R2
                 var lessonAsset = new Domain.Entities.LessonAsset
                 {
                     LessonId = asset.LessonId,
                     //FileName = asset.Name,
-                    AssetUrl = encodedUrl,
+                    AssetUrl = uploadAssetReponse.AssetUrl,
                     Width = uploadAssetReponse.Width,
                     Height = uploadAssetReponse.Height,
                     Duration = uploadAssetReponse.Duration,
