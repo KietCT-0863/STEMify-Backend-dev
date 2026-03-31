@@ -350,6 +350,30 @@ namespace Resource.Application.Handlers.Exporter
                         }
                     }
                 }
+                
+                // Add LessonAssets (PPTX, PDF, etc.) to manifest
+                foreach (var asset in lesson.Assets)
+                {
+                    var fileName = RSAExportHelper.GetFileNameFromCloudinaryUrl(asset.AssetUrl);
+                    var fileExtension = Path.GetExtension(fileName).ToLowerInvariant();
+                    
+                    var assetItem = new AssetItem
+                    {
+                        Id = $"asset-{Guid.NewGuid():N}",
+                        Name = fileName,
+                        Path = fileExtension == ".pptx" || fileExtension == ".ppt" 
+                            ? $"course/assets/slides/{fileName}"
+                            : $"course/assets/documents/{fileName}",
+                        Type = fileExtension == ".pptx" || fileExtension == ".ppt" ? "presentation" : "document",
+                        Size = asset.Size,
+                        MimeType = RSAExportHelper.GetMimeType(asset.AssetUrl)
+                    };
+                    
+                    if (!assets.Documents.Any(a => a.Name == fileName))
+                    {
+                        assets.Documents.Add(assetItem);
+                    }
+                }
             }
 
             return assets;
