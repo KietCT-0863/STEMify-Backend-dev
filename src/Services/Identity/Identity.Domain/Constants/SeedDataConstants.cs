@@ -403,6 +403,7 @@ public static class SeedDataConstants
                 RedirectUris: new[] { 
                     "https://ste-mify-frontend-dev.vercel.app/api/auth/callback/oidc",
                     "https://localhost:3000/api/auth/callback/oidc",
+                    "http://localhost:3000/api/auth/callback/oidc",
                     "https://robotsteam.com.vn/api/auth/callback/oidc",
                     "https://www.robotsteam.com.vn/api/auth/callback/oidc",
                     "https://stemify.site/api/auth/callback/oidc"
@@ -410,6 +411,7 @@ public static class SeedDataConstants
                 PostLogoutRedirectUris: new[] { 
                     "https://ste-mify-frontend-dev.vercel.app/",
                     "https://localhost:3000/",
+                    "http://localhost:3000/",
                     "https://robotsteam.com.vn/",
                     "https://www.robotsteam.com.vn/",
                     "https://stemify.site/"
