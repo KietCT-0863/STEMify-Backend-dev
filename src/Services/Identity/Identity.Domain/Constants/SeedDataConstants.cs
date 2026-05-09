@@ -431,6 +431,19 @@ public static class SeedDataConstants
                 RedirectUris: new[] { "https://localhost:7002/signin-oidc" },
                 PostLogoutRedirectUris: new[] { "https://localhost:7002/signout-oidc" }
             ),
+            new(
+                Name: "STEMify Import Data Tool",
+                ClientId: "stemify-web-import-tool",
+                Type: "public",
+                RedirectUris: new[] { 
+                    "https://localhost:3000/api/auth/callback/oidc",
+                    "http://localhost:3000/api/auth/callback/oidc"
+                },
+                PostLogoutRedirectUris: new[] { 
+                    "https://localhost:3000/",
+                    "http://localhost:3000/"
+                }
+            ),
         };
     }
 }
