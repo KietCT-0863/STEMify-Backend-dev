@@ -388,8 +388,42 @@ namespace ApiGateway
             //        branch.UseCors("aiPublic");
             //    });
             
-            // CORS is handled in YARP response transform - don't use middleware to avoid conflicts
-            // app.UseCors("customPolicy");
+            // Handle CORS preflight requests (OPTIONS) before YARP
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Method == "OPTIONS")
+                {
+                    var origin = context.Request.Headers["Origin"].ToString();
+                    if (!string.IsNullOrEmpty(origin))
+                    {
+                        var config = context.RequestServices.GetRequiredService<IConfiguration>();
+                        var clientApps = config["ClientApp"]?
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                            ?? Array.Empty<string>();
+                        
+                        var microbitApp = config["MicrobitApp"];
+                        var allowedOrigins = clientApps
+                            .Concat(string.IsNullOrWhiteSpace(microbitApp) ? Array.Empty<string>() : new[] { microbitApp })
+                            .Select(o => o.Trim())
+                            .Where(o => !string.IsNullOrEmpty(o))
+                            .ToArray();
+
+                        if (allowedOrigins.Any(allowed => allowed.Equals(origin, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            context.Response.Headers.Append("Access-Control-Allow-Origin", origin);
+                            context.Response.Headers.Append("Access-Control-Allow-Credentials", "true");
+                            context.Response.Headers.Append("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+                            context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Active-Organization, X-Active-Subscription");
+                            context.Response.Headers.Append("Access-Control-Max-Age", "86400"); // 24 hours
+                            context.Response.StatusCode = 200;
+                            return;
+                        }
+                    }
+                }
+                await next();
+            });
+            
+            // CORS for non-OPTIONS requests is handled in YARP response transform
             
             // Observability
             app.UseHttpLogging();
