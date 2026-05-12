@@ -388,7 +388,9 @@ namespace ApiGateway
             //        branch.UseCors("aiPublic");
             //    });
             
-            app.UseCors("customPolicy");
+            // CORS is handled in YARP response transform - don't use middleware to avoid conflicts
+            // app.UseCors("customPolicy");
+            
             // Observability
             app.UseHttpLogging();
 
