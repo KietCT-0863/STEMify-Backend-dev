@@ -1,4 +1,4 @@
-﻿using Contracts.Abstractions.Services;
+using Contracts.Abstractions.Services;
 using MediatR;
 using Resource.Application.Commands.Lesson;
 using Resource.Application.Common.Interfaces;
@@ -27,7 +27,7 @@ namespace Resource.Application.Handlers.Lesson
             CancellationToken cancellationToken
         )
         {
-            var spec = new LessonByIdSpecification(request.Id);
+            var spec = new LessonDetailByIdSpecification(request.Id);
             var lesson = await _unitOfWork.Lessons.FirstOrDefaultAsync(spec, cancellationToken);
             if (lesson == null)
                 throw new KeyNotFoundException($"Lesson with ID {request.Id} not found.");
@@ -48,12 +48,18 @@ namespace Resource.Application.Handlers.Lesson
             if (request.Status.HasValue)
             {
                 lesson.Status = request.Status.Value;
-                foreach (var section in lesson.Sections)
+                if (lesson.Sections != null)
                 {
-                    section.Status = (Domain.Enums.SectionStatus)request.Status.Value;
-                    foreach (var content in section.Contents)
+                    foreach (var section in lesson.Sections)
                     {
-                        content.Status = (Domain.Enums.ContentStatus)request.Status.Value;
+                        section.Status = (Domain.Enums.SectionStatus)request.Status.Value;
+                        if (section.Contents != null)
+                        {
+                            foreach (var content in section.Contents)
+                            {
+                                content.Status = (Domain.Enums.ContentStatus)request.Status.Value;
+                            }
+                        }
                     }
                 }
             }
@@ -140,7 +146,7 @@ namespace Resource.Application.Handlers.Lesson
                 duration += l.Duration;
             }
 
-            var course = await _unitOfWork.Courses.FindByIdAsync(lesson.CourseId, cancellationToken);
+            var course = await _unitOfWork.Courses.FindByIdForUpdateAsync(lesson.CourseId, cancellationToken);
             if (course != null)
             {
                 course.Duration = duration;

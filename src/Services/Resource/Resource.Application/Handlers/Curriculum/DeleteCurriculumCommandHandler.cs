@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Curriculum;
 using Resource.Application.Common.Interfaces;
 
@@ -15,7 +15,7 @@ namespace Resource.Application.Handlers.Curriculum
 
         public async Task Handle(DeleteCurriculumCommand request, CancellationToken cancellationToken)
         {
-            var curriculum = await _unitOfWork.Curriculums.FindByIdAsync(request.Id, cancellationToken);
+            var curriculum = await _unitOfWork.Curriculums.FindByIdForUpdateAsync(request.Id, cancellationToken);
             if (curriculum == null)
                 throw new KeyNotFoundException($"Curriculum with ID {request.Id} not found.");
 

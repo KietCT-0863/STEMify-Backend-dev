@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Course;
 using Resource.Application.Common.Interfaces;
 
@@ -16,7 +16,7 @@ namespace Resource.Application.Handlers.Course
         public async Task Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
         {
 
-                var course = await _unitOfWork.Courses.FindByIdAsync(request.Id, cancellationToken);
+                var course = await _unitOfWork.Courses.FindByIdForUpdateAsync(request.Id, cancellationToken);
                 if (course == null)
                     throw new KeyNotFoundException($"Course with ID {request.Id} not found.");
 

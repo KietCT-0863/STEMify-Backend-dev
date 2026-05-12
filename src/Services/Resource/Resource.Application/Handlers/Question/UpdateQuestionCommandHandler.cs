@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Question;
 using Resource.Application.Common.Interfaces;
 using Resource.Application.Extensions.Mapping;
@@ -19,7 +19,7 @@ namespace Resource.Application.Handlers.Question
 
         public async Task<QuestionList> Handle(UpdateQuestionsCommand request, CancellationToken cancellationToken)
         {
-            var quiz = await _unitOfWork.Quizzes.FindByIdAsync(request.QuizId, cancellationToken);
+            var quiz = await _unitOfWork.Quizzes.FindByIdForUpdateAsync(request.QuizId, cancellationToken);
             if (quiz == null)
             {
                 throw new KeyNotFoundException($"Quiz with ID {request.QuizId} not found.");

@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Content;
 using Resource.Application.Common.Interfaces;
 
@@ -15,7 +15,7 @@ namespace Resource.Application.Handlers.Content
 
         public async Task Handle(DeleteContentCommand request, CancellationToken cancellationToken)
         {
-            var content = await _unitOfWork.Contents.FindByIdAsync(
+            var content = await _unitOfWork.Contents.FindByIdForUpdateAsync(
                 request.Id,
                 cancellationToken
             );

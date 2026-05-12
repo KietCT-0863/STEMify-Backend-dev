@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Assignment;
 using Resource.Application.Common.Interfaces;
 
@@ -16,7 +16,7 @@ namespace Resource.Application.Handlers.Assignment
 
         public async Task Handle(DeleteAssignmentsCommand request, CancellationToken cancellationToken)
         {
-            var assignment = await _unitOfWork.Assignments.FindByIdAsync(request.Id, cancellationToken);
+            var assignment = await _unitOfWork.Assignments.FindByIdForUpdateAsync(request.Id, cancellationToken);
             if (assignment == null)
                 throw new KeyNotFoundException($"Assignment with ID {request.Id} not found.");
 

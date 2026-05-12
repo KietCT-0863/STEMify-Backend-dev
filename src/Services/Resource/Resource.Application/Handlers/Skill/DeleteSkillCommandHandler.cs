@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Skill;
 using Resource.Application.Common.Interfaces;
 
@@ -15,7 +15,7 @@ namespace Resource.Application.Handlers.Skill
 
         public async Task Handle(DeleteSkillCommand request, CancellationToken cancellationToken)
         {
-            var skill = await _unitOfWork.Skills.FindByIdAsync(request.Id, cancellationToken);
+            var skill = await _unitOfWork.Skills.FindByIdForUpdateAsync(request.Id, cancellationToken);
             if (skill == null)
                 throw new KeyNotFoundException($"Skill with ID {request.Id} not found.");
 

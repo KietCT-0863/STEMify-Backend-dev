@@ -19,17 +19,18 @@ namespace Resource.Application.Handlers.Quiz
             CancellationToken cancellationToken
         )
         {
-            // Retrieve the existing Quiz
-            var quiz = await _unitOfWork.Quizzes.FindByIdAsync(request.Id, cancellationToken);
+            // Retrieve the existing Quiz with tracking enabled for update
+            var quiz = await _unitOfWork.Quizzes.FindByIdForUpdateAsync(request.Id, cancellationToken);
             if (quiz == null)
                 throw new KeyNotFoundException($"Quiz with ID {request.Id} not found.");
 
-            // Retrieve the associated Content
-            var content = await _unitOfWork.Contents.FindByIdAsync(quiz.ContentId, cancellationToken);
+            // Retrieve the associated Content with tracking enabled for update
+            var content = await _unitOfWork.Contents.FindByIdForUpdateAsync(quiz.ContentId, cancellationToken);
             if (content == null)
                 throw new KeyNotFoundException($"Content with ID {quiz.ContentId} not found.");
 
             // Update fields if they are provided in the request
+            // EF Core will automatically track these changes
             if (request.TimeLimitMinutes.HasValue)
                 quiz.TimeLimitInMinutes = request.TimeLimitMinutes.Value;
             if (request.DurationDays.HasValue)
@@ -49,8 +50,11 @@ namespace Resource.Application.Handlers.Quiz
 
             // Update Content status if provided
             if (request.Status.HasValue)
+            {
                 content.Status = request.Status.Value;
+            }
 
+            // SaveChanges will automatically update tracked entities
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             var response = new QuizResponse

@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Answer;
 using Resource.Application.Common.Interfaces;
 using Shared.Protos.Resource;
@@ -21,7 +21,7 @@ namespace Resource.Application.Handlers.Answer
         {
             try
             {
-                var answer = await _unitOfWork.Answers.FindByIdAsync(request.Id, cancellationToken);
+                var answer = await _unitOfWork.Answers.FindByIdForUpdateAsync(request.Id, cancellationToken);
                 if (answer == null)
                     return null;
 

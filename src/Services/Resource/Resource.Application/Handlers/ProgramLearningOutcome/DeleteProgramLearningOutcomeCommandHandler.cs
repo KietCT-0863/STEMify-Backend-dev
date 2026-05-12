@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.ProgramLearningOutcome;
 using Resource.Application.Common.Interfaces;
 
@@ -15,7 +15,7 @@ namespace Resource.Application.Handlers.ProgramLearningOutcome
 
         public async Task Handle(DeleteProgramLearningOutcomeCommand request, CancellationToken cancellationToken)
         {
-            var programLearningOutcome = await _unitOfWork.ProgramLearningOutcomes.FindByIdAsync(
+            var programLearningOutcome = await _unitOfWork.ProgramLearningOutcomes.FindByIdForUpdateAsync(
                 request.Id,
                 cancellationToken
             );

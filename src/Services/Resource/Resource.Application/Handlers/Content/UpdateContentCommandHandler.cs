@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Content;
 using Resource.Application.Common.Interfaces;
 using Shared.Protos.Resource;
@@ -58,7 +58,7 @@ namespace Resource.Application.Handlers.Content
             //    fileUrl = "";
             //}
 
-            var content = await _unitOfWork.Contents.FindByIdAsync(
+            var content = await _unitOfWork.Contents.FindByIdForUpdateAsync(
                 request.Id,
                 cancellationToken
             );

@@ -14,6 +14,12 @@ namespace Contracts.Abstractions.Persistence
     {
         Task<TEntity?> FindByIdAsync(TId id, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Find entity by ID with tracking enabled for update/delete operations.
+        /// Use this method when you need to modify the entity.
+        /// </summary>
+        Task<TEntity?> FindByIdForUpdateAsync(TId id, CancellationToken cancellationToken = default);
+
         Task<TEntity?> FindOneAsync(
             Expression<Func<TEntity, bool>> predicate,
             CancellationToken cancellationToken = default

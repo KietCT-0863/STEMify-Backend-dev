@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Section;
 using Resource.Application.Common.Interfaces;
 using Resource.Application.Specifications.Lessons;
@@ -33,10 +33,13 @@ namespace Resource.Application.Handlers.Section
             for (int i = 0; i < request.OrderedSectionIds.Count; i++)
             {
                 var id = request.OrderedSectionIds[i];
-                var s = await _unitOfWork.Sections.FindByIdAsync(id, cancellationToken);
+                var s = await _unitOfWork.Sections.FindByIdForUpdateAsync(id, cancellationToken);
                 if (s != null && s.OrderIndex != i)
                 {
                     s.OrderIndex = i;
+                    // ?? PERFORMANCE: Explicitly call UpdateAsync to attach entity
+                    // Required because global NoTracking is enabled
+                    await _unitOfWork.Sections.UpdateAsync(s, cancellationToken);
                 }
 
                 lesson.LastModifiedDate = DateTime.UtcNow;

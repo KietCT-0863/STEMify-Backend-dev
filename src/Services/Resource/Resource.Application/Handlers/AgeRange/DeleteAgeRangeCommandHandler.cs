@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.AgeRange;
 using Resource.Application.Common.Interfaces;
 
@@ -15,7 +15,7 @@ namespace Resource.Application.Handlers.AgeRange
 
         public async Task Handle(DeleteAgeRangeCommand request, CancellationToken cancellationToken)
         {
-            var ageRange = await _unitOfWork.AgeRanges.FindByIdAsync(
+            var ageRange = await _unitOfWork.AgeRanges.FindByIdForUpdateAsync(
                 request.Id,
                 cancellationToken
             );

@@ -1,4 +1,4 @@
-﻿using Resource.Application.Commands.RubricCriterion;
+using Resource.Application.Commands.RubricCriterion;
 using Resource.Application.Common.Interfaces;
 using Shared.Protos.Resource;
 
@@ -21,7 +21,7 @@ namespace Resource.Application.Handlers.RubricCriterion
         {
             try
             {
-                var rubricCriterion = await _unitOfWork.RubricCriterions.FindByIdAsync(
+                var rubricCriterion = await _unitOfWork.RubricCriterions.FindByIdForUpdateAsync(
                     request.Id,
                     cancellationToken
                 );

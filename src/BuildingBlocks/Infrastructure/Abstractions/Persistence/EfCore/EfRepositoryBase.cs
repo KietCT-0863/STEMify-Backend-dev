@@ -26,7 +26,12 @@ namespace Infrastructure.Abstractions.Persistence.EfCore
 
         public Task<TEntity?> FindByIdAsync(TKey id, CancellationToken cancellationToken = default)
         {
-            return DbSet.SingleOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
+            return DbSet.AsNoTracking().SingleOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
+        }
+
+        public Task<TEntity?> FindByIdForUpdateAsync(TKey id, CancellationToken cancellationToken = default)
+        {
+            return DbSet.AsTracking().SingleOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
         }
 
         public Task<TEntity?> FindOneAsync(
@@ -36,7 +41,7 @@ namespace Infrastructure.Abstractions.Persistence.EfCore
         {
             ArgumentNullException.ThrowIfNull(predicate);
 
-            return DbSet.SingleOrDefaultAsync(predicate, cancellationToken);
+            return DbSet.AsNoTracking().SingleOrDefaultAsync(predicate, cancellationToken);
         }
 
         public async Task<IReadOnlyList<TEntity>> FindAsync(
@@ -44,7 +49,7 @@ namespace Infrastructure.Abstractions.Persistence.EfCore
             CancellationToken cancellationToken = default
         )
         {
-            return await DbSet.Where(predicate).ToListAsync(cancellationToken);
+            return await DbSet.AsNoTracking().Where(predicate).ToListAsync(cancellationToken);
         }
 
         public async Task<bool> AnyAsync(
@@ -67,7 +72,7 @@ namespace Infrastructure.Abstractions.Persistence.EfCore
             CancellationToken cancellationToken = default
         )
         {
-            return await DbSet.ToListAsync(cancellationToken);
+            return await DbSet.AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public async Task<IReadOnlyList<TEntity>> GetAllAsync(
@@ -148,7 +153,7 @@ namespace Infrastructure.Abstractions.Persistence.EfCore
         )
             where TResult : class
         {
-            var query = DbSet.AsQueryable();
+            var query = DbSet.AsNoTracking().AsQueryable();
             if (predicate is not null)
             {
                 query = query.Where(predicate);
@@ -169,7 +174,7 @@ namespace Infrastructure.Abstractions.Persistence.EfCore
             CancellationToken cancellationToken = default
         )
         {
-            var query = DbSet.AsQueryable();
+            var query = DbSet.AsNoTracking().AsQueryable();
             if (predicate is not null)
             {
                 query = query.Where(predicate);
@@ -203,7 +208,7 @@ namespace Infrastructure.Abstractions.Persistence.EfCore
         )
             where TResult : class
         {
-            var query = DbSet.AsQueryable();
+            var query = DbSet.AsNoTracking().AsQueryable();
             if (predicate is not null)
             {
                 query = query.Where(predicate);
@@ -239,7 +244,7 @@ namespace Infrastructure.Abstractions.Persistence.EfCore
         )
             where TResult : class
         {
-            var query = DbSet.AsQueryable();
+            var query = DbSet.AsNoTracking().AsQueryable();
             if (predicate is not null)
             {
                 query = query.Where(predicate);
@@ -339,7 +344,7 @@ namespace Infrastructure.Abstractions.Persistence.EfCore
 
         public async Task DeleteByIdAsync(TKey id, CancellationToken cancellationToken = default)
         {
-            var item = await DbSet.SingleOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
+            var item = await DbSet.AsTracking().SingleOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
             if (item is null)
                 throw new NotFoundException($"Item with ID '{id}' not found");
 

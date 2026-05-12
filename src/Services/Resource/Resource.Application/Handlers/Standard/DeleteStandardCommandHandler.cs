@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Standard;
 using Resource.Application.Common.Interfaces;
 
@@ -15,7 +15,7 @@ namespace Resource.Application.Handlers.Standard
 
         public async Task Handle(DeleteStandardCommand request, CancellationToken cancellationToken)
         {
-            var standard = await _unitOfWork.Standards.FindByIdAsync(
+            var standard = await _unitOfWork.Standards.FindByIdForUpdateAsync(
                 request.Id,
                 cancellationToken
             );

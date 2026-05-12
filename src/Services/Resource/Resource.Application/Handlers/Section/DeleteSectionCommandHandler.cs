@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Section;
 using Resource.Application.Common.Interfaces;
 using Resource.Application.Specifications.Sections;
@@ -18,7 +18,7 @@ namespace Resource.Application.Handlers.Section
 
         public async Task Handle(DeleteSectionCommand request, CancellationToken cancellationToken)
         {
-            var section = await _unitOfWork.Sections.FindByIdAsync(
+            var section = await _unitOfWork.Sections.FindByIdForUpdateAsync(
                 request.Id,
                 cancellationToken
             );

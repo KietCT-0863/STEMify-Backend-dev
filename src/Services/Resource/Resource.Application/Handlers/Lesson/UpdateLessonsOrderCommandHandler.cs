@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Lesson;
 using Resource.Application.Common.Interfaces;
 using Resource.Application.Specifications.Courses;
@@ -32,11 +32,14 @@ namespace Resource.Application.Handlers.Lesson
             for (int i = 0; i < request.OrderedLessonIds.Count; i++)
             {
                 var id = request.OrderedLessonIds[i];
-                var s = await _unitOfWork.Lessons.FindByIdAsync(id, cancellationToken);
+                var s = await _unitOfWork.Lessons.FindByIdForUpdateAsync(id, cancellationToken);
                 if (s != null && s.OrderIndex != i)
                 {
                     s.OrderIndex = i;
                     s.LastModifiedDate = DateTime.UtcNow;
+                    // ?? PERFORMANCE: Explicitly call UpdateAsync to attach entity
+                    // Required because global NoTracking is enabled
+                    await _unitOfWork.Lessons.UpdateAsync(s, cancellationToken);
                 }
 
                 course.LastModifiedDate = DateTime.UtcNow;

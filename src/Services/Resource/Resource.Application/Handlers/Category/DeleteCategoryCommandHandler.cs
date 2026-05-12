@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Resource.Application.Commands.Category;
 using Resource.Application.Common.Interfaces;
 
@@ -15,7 +15,7 @@ namespace Resource.Application.Handlers.Category
 
         public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = await _unitOfWork.Topics.FindByIdAsync(
+            var category = await _unitOfWork.Topics.FindByIdForUpdateAsync(
                 request.Id,
                 cancellationToken
             );

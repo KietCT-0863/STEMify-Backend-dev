@@ -39,6 +39,15 @@ namespace Resource.Application.Handlers.Curriculum
                 throw new NotFoundException("Curriculum not found");
             var currentStatus = curriculum.Status;
 
+            // Check authorization for status change to Published
+            if (request.Status.HasValue && request.Status.Value == Domain.Enums.CurriculumStatus.Published)
+            {
+                // Get user info from request context (you'll need to pass userId in the command)
+                // For now, we'll add a check that can be implemented later
+                // TODO: Add user role check here
+                // Only Admin or Staff who created the curriculum can publish
+            }
+
             // Check for duplicate code if code is being updated
             if (!string.IsNullOrWhiteSpace(request.Code) &&
                 !string.Equals(curriculum.Code, request.Code, StringComparison.OrdinalIgnoreCase))
