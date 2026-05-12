@@ -269,7 +269,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - IdentityServiceUrl=http://identity-service
       - Issuer=http://localhost:5000/
-      - ClientApp=http://localhost:3000,https://localhost:3000,https://ste-mify-frontend-dev.vercel.app,https://stemify.site,https://www.robotsteam.com.vn
+      - ClientApp=${GATEWAY_CORS_ORIGINS}
       - MicrobitApp=
       # OpenTelemetry Configuration
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
