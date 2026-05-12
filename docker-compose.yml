@@ -124,7 +124,7 @@ services:
       - RedisConfig__Ssl=false
       - GrpcIdentityUrl=http://identity-api-service:5002
       - GrpcEmulatorUrl=http://emulator-service:5009
-      - ClientApp=https://localhost:3000,https://ste-mify-frontend-dev.vercel.app,https://stemify.site
+      - ClientApp=${RESOURCE_CORS_ORIGINS}
       - Gemini__BaseUrl=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
       - Gemini__ApiKey=${GEMINI_API_KEY}
       - Gemini__Model=gemini-2.5-flash
