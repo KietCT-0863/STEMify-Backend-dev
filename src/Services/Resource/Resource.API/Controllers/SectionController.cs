@@ -138,8 +138,10 @@ public class SectionController : ControllerBase
     {
         try
         {
+            _logger.LogInformation("Attempting to delete section {SectionId}", id);
             var command = new DeleteSectionCommand { Id = id };
             await _mediator.Send(command);
+            _logger.LogInformation("Successfully deleted section {SectionId}", id);
             return NoContent();
         }
         catch (KeyNotFoundException ex)
@@ -149,8 +151,9 @@ public class SectionController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting section {SectionId}", id);
-            return StatusCode(500, new { message = "An error occurred while deleting the section" });
+            _logger.LogError(ex, "Error deleting section {SectionId}. Exception: {ExceptionType}, Message: {Message}, StackTrace: {StackTrace}", 
+                id, ex.GetType().Name, ex.Message, ex.StackTrace);
+            return StatusCode(500, new { message = "An error occurred while deleting the section", error = ex.Message });
         }
     }
 

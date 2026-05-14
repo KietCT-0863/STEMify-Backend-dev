@@ -53,15 +53,16 @@ namespace Resource.Application.Handlers.Section
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
+            // Update lesson duration directly instead of using UpdateLessonCommand
             var duration = sections.Sum(s => s.Duration);
-
-            var updateLessonCommand = new Commands.Lesson.UpdateLessonCommand
+            var lesson = await _unitOfWork.Lessons.FindByIdForUpdateAsync(section.LessonId, cancellationToken);
+            if (lesson != null)
             {
-                Id = section.LessonId,
-                Duration = duration
-            };
-
-            await _mediator.Send(updateLessonCommand, cancellationToken);
+                lesson.Duration = duration;
+                lesson.LastModifiedDate = DateTimeOffset.UtcNow;
+                await _unitOfWork.Lessons.UpdateAsync(lesson, cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
         }
     }
 }
