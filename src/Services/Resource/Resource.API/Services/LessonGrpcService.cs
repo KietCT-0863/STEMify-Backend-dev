@@ -25,7 +25,9 @@ namespace Resource.API.Services
             var command = new CreateLessonCommand
             {
                 Title = request.Title,
-                ImageBytes = request.Image?.ToByteArray(),
+                Image = request.Image?.ToByteArray() != null && request.Image.ToByteArray().Length > 0 
+                    ? Convert.ToBase64String(request.Image.ToByteArray()) 
+                    : null,
                 Description = request.Description,
                 //OrderIndex = request.OrderIndex,
                 CreatedByUserId = request.CreatedByUserId,
