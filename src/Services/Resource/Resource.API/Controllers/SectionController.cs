@@ -45,10 +45,37 @@ public class SectionController : ControllerBase
     /// Query sections with filters
     /// </summary>
     [HttpGet]
-    public async Task<IActionResult> QuerySections([FromQuery] QuerySectionsQuery query)
+    public async Task<IActionResult> QuerySections(
+        [FromQuery] string? search,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? orderBy = null,
+        [FromQuery] int? sortDirection = null,
+        [FromQuery] int? lessonId = null,
+        [FromQuery] string? status = null)
     {
         try
         {
+            Resource.Domain.Enums.SectionStatus? statusEnum = null;
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                if (Enum.TryParse<Resource.Domain.Enums.SectionStatus>(status, true, out var parsedStatus))
+                {
+                    statusEnum = parsedStatus;
+                }
+            }
+
+            var query = new QuerySectionsQuery
+            {
+                Search = search,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                OrderBy = orderBy,
+                SortDirection = sortDirection,
+                LessonId = lessonId,
+                Status = statusEnum
+            };
+
             var result = await _mediator.Send(query);
             return Ok(result);
         }
