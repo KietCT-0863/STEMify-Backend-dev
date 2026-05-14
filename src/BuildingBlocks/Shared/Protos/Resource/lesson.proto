@@ -5,45 +5,17 @@ option csharp_namespace = "Shared.Protos.Resource";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
-import "google/api/annotations.proto";
 
 package resource;
 
 service LessonService {
-    rpc CreateLesson (CreateLessonRequest) returns (LessonResponse) {
-        option (google.api.http) = {
-            post: "/api/lessons"
-            body: "*"
-        };
-    }
-    rpc GetLesson (GetLessonRequest) returns (LessonResponse) {
-        option (google.api.http) = {
-            get: "/api/lessons/{id}"
-        };
-    }
-    rpc UpdateLesson (UpdateLessonRequest) returns (LessonResponse) {
-        option (google.api.http) = {
-            patch: "/api/lessons/{id}"
-            body: "*"
-        };
-    }
-    rpc DeleteLesson (DeleteLessonRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/api/lessons/{id}"
-        };
-    }
+    rpc CreateLesson (CreateLessonRequest) returns (LessonResponse);
+    rpc GetLesson (GetLessonRequest) returns (LessonResponse);
+    rpc UpdateLesson (UpdateLessonRequest) returns (LessonResponse);
+    rpc DeleteLesson (DeleteLessonRequest) returns (google.protobuf.Empty);
     rpc ListLessons (google.protobuf.Empty) returns (LessonList);
-    rpc QueryLessons (QueryLessonsRequest) returns (PagedLessonList) {
-        option (google.api.http) = {
-            get: "/api/lessons"
-        };
-    }
-    rpc UpdateLessonsOrder (UpdateLessonsOrderRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            patch: "/api/courses/{courseId}/lessons-reorder"
-            body: "*"
-        };
-    }
+    rpc QueryLessons (QueryLessonsRequest) returns (PagedLessonList);
+    rpc UpdateLessonsOrder (UpdateLessonsOrderRequest) returns (google.protobuf.Empty);
 }
 
 message Lesson {

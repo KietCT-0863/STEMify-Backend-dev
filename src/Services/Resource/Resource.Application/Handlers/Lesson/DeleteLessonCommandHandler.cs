@@ -21,13 +21,12 @@ namespace Resource.Application.Handlers.Lesson
             if (lesson == null)
                 throw new KeyNotFoundException($"Lesson with ID {request.Id} not found.");
 
-            var updateLessonCommand = new UpdateLessonCommand
-            {
-                Id = lesson.Id,
-                Status = Domain.Enums.LessonStatus.Deleted
-            };
-
-            await _mediator.Send(updateLessonCommand, cancellationToken);
+            // Soft delete: mark as Deleted
+            lesson.Status = Domain.Enums.LessonStatus.Deleted;
+            lesson.LastModifiedDate = DateTimeOffset.UtcNow;
+            
+            await _unitOfWork.Lessons.UpdateAsync(lesson, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }
