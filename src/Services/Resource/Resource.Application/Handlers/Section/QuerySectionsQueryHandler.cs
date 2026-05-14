@@ -45,7 +45,8 @@ namespace Resource.Application.Handlers.Section
                     || c.Description.ToLower().Contains(filter.Search) || c.Title.ToLower().Contains(filter.Search)
                 )
                 && (!filter.Status.HasValue || c.Status == filter.Status.Value)
-                && (!filter.LessonId.HasValue || c.LessonId == filter.LessonId.Value);
+                && (!filter.LessonId.HasValue || c.LessonId == filter.LessonId.Value)
+                && c.Status != Domain.Enums.SectionStatus.Deleted; // Exclude deleted sections
 
             Expression<Func<Domain.Entities.Section, object>>? sortExpression =
                 request.OrderBy?.ToLower() switch
