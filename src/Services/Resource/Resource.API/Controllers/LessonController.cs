@@ -120,6 +120,16 @@ public class LessonController : ControllerBase
     {
         try
         {
+            _logger.LogInformation("Creating lesson with Title: {Title}, CourseId: {CourseId}, CreatedByUserId: {UserId}, ImageBytes length: {ImageLength}", 
+                command.Title, command.CourseId, command.CreatedByUserId, command.ImageBytes?.Length ?? 0);
+            
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Model validation failed: {Errors}", 
+                    string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
+                return BadRequest(ModelState);
+            }
+            
             var result = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetLesson), new { id = result.Id }, result);
         }
