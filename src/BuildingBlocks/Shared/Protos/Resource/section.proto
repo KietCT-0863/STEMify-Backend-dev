@@ -9,40 +9,13 @@ import "google/api/annotations.proto";
 package resource;
 
 service SectionService {
-    rpc CreateSection (CreateSectionRequest) returns (SectionResponse) {
-        option (google.api.http) = {
-            post: "/api/sections"
-            body: "*"
-        };
-    }
-    rpc GetSection (GetSectionRequest) returns (SectionResponse) {
-        option (google.api.http) = {
-            get: "/api/sections/{id}"
-        };
-    }
-    rpc UpdateSection (UpdateSectionRequest) returns (SectionResponse) {
-        option (google.api.http) = {
-            patch: "/api/sections/{id}"
-            body: "*"
-        };
-    }
-    rpc DeleteSection (DeleteSectionRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/api/sections/{id}"
-        };
-    }
+    rpc CreateSection (CreateSectionRequest) returns (SectionResponse);
+    rpc GetSection (GetSectionRequest) returns (SectionResponse);
+    rpc UpdateSection (UpdateSectionRequest) returns (SectionResponse);
+    rpc DeleteSection (DeleteSectionRequest) returns (google.protobuf.Empty);
     rpc ListSections (google.protobuf.Empty) returns (SectionList);
-    rpc QuerySections (QuerySectionsRequest) returns (PagedSectionList) {
-        option (google.api.http) = {
-            get: "/api/sections"
-        };
-    }
-    rpc UpdateSectionsOrder (UpdateSectionsOrderRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            patch: "/api/lessons/{lessonId}/sections-reorder"
-            body: "*"
-        };
-    }
+    rpc QuerySections (QuerySectionsRequest) returns (PagedSectionList);
+    rpc UpdateSectionsOrder (UpdateSectionsOrderRequest) returns (google.protobuf.Empty);
 }
 
 message Section {
