@@ -9,6 +9,7 @@ namespace Resource.Application.Queries.Section
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public string OrderBy { get; set; }
+        public int? SortDirection { get; set; }
         public int? LessonId { get; set; }
         public Resource.Domain.Enums.SectionStatus? Status { get; set; }
     }

@@ -35,6 +35,9 @@ namespace Resource.Application.Handlers.Section
             };
 
             var pageRequest = filter.ToPageRequest();
+            
+            // Determine sort direction: 0 = Ascending, 1 = Descending
+            bool isDescending = request.SortDirection.HasValue && request.SortDirection.Value == 1;
 
             Expression<Func<Domain.Entities.Section, bool>> predicate = c =>
                 (
@@ -72,7 +75,7 @@ namespace Resource.Application.Handlers.Section
                                     : new List<int>()
                         }),
                 sortExpression: sortExpression,
-                descending: false,
+                descending: isDescending,
                 predicate: predicate,
                 cancellationToken: cancellationToken
             );
