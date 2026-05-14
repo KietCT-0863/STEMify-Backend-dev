@@ -9,7 +9,7 @@ namespace Resource.Application.Specifications.Lessons
         public LessonByIdSpecification(int id)
         {
             Query
-                .Where(c => c.Id == id)
+                .Where(c => c.Id == id && c.Status != LessonStatus.Deleted)
                 .Include(c => c.Sections)
                 .Include(c => c.Course)
                 .ThenInclude(c => c.AgeRange)
@@ -54,7 +54,7 @@ namespace Resource.Application.Specifications.Lessons
     {
         public LessonsByCourseIdSpecification(int courseId)
         {
-            Query.Where(l => l.CourseId == courseId);
+            Query.Where(l => l.CourseId == courseId && l.Status != LessonStatus.Deleted);
         }
     }
 
