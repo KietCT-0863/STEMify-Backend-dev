@@ -18,7 +18,8 @@ namespace Resource.Application.Specifications.Lessons
                 .Include(c => c.LessonSkills)
                 .ThenInclude(c => c.Skill)
                 .Include(c => c.LessonTopics)
-                .ThenInclude(c => c.Topic);
+                .ThenInclude(c => c.Topic)
+                .AsNoTracking();
         }
     }
 

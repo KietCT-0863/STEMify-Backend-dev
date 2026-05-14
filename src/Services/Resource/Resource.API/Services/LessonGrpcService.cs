@@ -46,15 +46,24 @@ namespace Resource.API.Services
             ServerCallContext context
         )
         {
-            var query = new GetLessonByIdQuery(request.Id);
-            var result = await _mediator.Send(query);
+            try
+            {
+                var query = new GetLessonByIdQuery(request.Id);
+                var result = await _mediator.Send(query);
 
-            if (result == null)
+                if (result == null)
+                    throw new RpcException(
+                        new Status(StatusCode.NotFound, $"Lesson with ID {request.Id} not found.")
+                    );
+
+                return result;
+            }
+            catch (KeyNotFoundException ex)
+            {
                 throw new RpcException(
-                    new Status(StatusCode.NotFound, $"Lesson with ID {request.Id} not found.")
+                    new Status(StatusCode.NotFound, ex.Message)
                 );
-
-            return result;
+            }
         }
 
         public override async Task<LessonResponse> UpdateLesson(
