@@ -20,7 +20,22 @@ namespace Resource.Application.Commands.Lesson
         public List<int> StandardIds { get; set; } = new List<int>();
         
         // Helper property to convert base64 to bytes
-        public byte[]? ImageBytes => !string.IsNullOrEmpty(Image) ? Convert.FromBase64String(Image) : null;
+        public byte[]? ImageBytes 
+        { 
+            get 
+            {
+                if (string.IsNullOrEmpty(Image))
+                    return null;
+                try
+                {
+                    return Convert.FromBase64String(Image);
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
     }
 
     public class CreateLessonCommandValidator : AbstractValidator<CreateLessonCommand>
