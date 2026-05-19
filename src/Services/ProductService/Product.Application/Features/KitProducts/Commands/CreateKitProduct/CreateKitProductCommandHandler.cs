@@ -29,17 +29,23 @@ namespace Product.Application.Features.KitProducts.Commands.CreateKitProduct
                 Weight = request.Weight,
             };
 
-            kit.KitImages = await UploadKitImagesAsync(request, kit.Id, cancellationToken);
-
             await _unitOfWork.KitProducts.AddAsync(kit, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            // Upload images after SaveChanges to get kit.Id
+            kit.KitImages = await UploadKitImagesAsync(request, kit.Id, cancellationToken);
+            
+            if (kit.KitImages.Any())
+            {
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
 
             return new KitResponse()
             {
                 Id = kit.Id,
                 Name = kit.Name,
                 Description = kit.Description,
-                TotalComponents = kit.KitComponents.Count(),
+                TotalComponents = 0, // New kit has no components yet
                 CreatedDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(
                     kit.CreatedDate
                 ),
