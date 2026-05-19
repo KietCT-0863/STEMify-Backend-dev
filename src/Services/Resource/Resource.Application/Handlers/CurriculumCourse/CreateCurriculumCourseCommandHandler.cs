@@ -22,7 +22,7 @@ namespace Resource.Application.Handlers.CurriculumCourse
                 throw new NotFoundException($"Curriculum with ID '{request.CurriculumId}' does not exist.");
             }
             // calculate the number of courses in this curriculum
-            orderIndex = (await _unitOfWork.CurriculumCourses.FindAsync(c => c.CurriculumId == request.CurriculumId)).Count();
+            orderIndex = (await _unitOfWork.CurriculumCourses.FindAsync(c => c.CurriculumId == request.CurriculumId, cancellationToken)).Count;
 
             foreach (var courseId in request.CourseIds)
             {

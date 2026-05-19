@@ -26,6 +26,7 @@ namespace Resource.Application.Specifications.Curriculums
                         .ThenInclude(cc => cc.Lessons)
                             .ThenInclude(l => l.LessonTopics)
                                 .ThenInclude(la => la.Topic)
+                .AsSplitQuery()
                 ;
         }
     }
@@ -49,7 +50,8 @@ namespace Resource.Application.Specifications.Curriculums
                 .Where(c => c.Id == curriculumId)
                 .Include(c => c.CurriculumCourses)
                     .ThenInclude(cc => cc.Course)
-                .Include(c => c.CurriculumEmulations);
+                .Include(c => c.CurriculumEmulations)
+                .AsSplitQuery();
         }
     }
 }
