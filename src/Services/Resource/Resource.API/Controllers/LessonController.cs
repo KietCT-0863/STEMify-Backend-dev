@@ -148,8 +148,8 @@ public class LessonController : ControllerBase
     {
         try
         {
-            if (id != command.Id)
-                return BadRequest(new { message = "ID mismatch" });
+            // Auto-set ID from URL to avoid mismatch
+            command.Id = id;
 
             var result = await _mediator.Send(command);
             return Ok(result);
