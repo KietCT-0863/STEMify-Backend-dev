@@ -27,10 +27,17 @@ namespace Resource.Application.Handlers.Lesson
             CancellationToken cancellationToken
         )
         {
-            var spec = new LessonDetailByIdSpecification(request.Id);
-            var lesson = await _unitOfWork.Lessons.FirstOrDefaultAsync(spec, cancellationToken);
+            var lesson = await _unitOfWork.Lessons.FindByIdForUpdateAsync(request.Id, cancellationToken);
             if (lesson == null)
                 throw new KeyNotFoundException($"Lesson with ID {request.Id} not found.");
+
+            // Load related data if needed
+            var spec = new LessonDetailByIdSpecification(request.Id);
+            var lessonWithDetails = await _unitOfWork.Lessons.FirstOrDefaultAsync(spec, cancellationToken);
+            if (lessonWithDetails != null)
+            {
+                lesson = lessonWithDetails;
+            }
 
             string imageUrl = lesson.ImageUrl;
             if (request.ImageBytes != null && request.ImageBytes.Length > 0)
