@@ -39,7 +39,7 @@ namespace Resource.Application.Specifications.Lessons
                     .ThenInclude(c => c.Topic)
                 .Include(c => c.Sections)
                     .ThenInclude(s => s.Contents)
-            ;
+                .AsTracking(); // Enable tracking for update operations
         }
     }
 
