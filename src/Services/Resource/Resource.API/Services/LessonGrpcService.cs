@@ -1,4 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
 using Resource.Application.Commands.Lesson;
@@ -82,7 +82,7 @@ namespace Resource.API.Services
                 StandardIds = request.StandardIds.ToList(),
                 SkillIds = request.SkillIds.ToList(),
                 TopicIds = request.TopicIds.ToList(),
-                ImageBytes = request.Image?.ToByteArray(),
+                Image = request.Image?.ToByteArray() is { Length: > 0 } bytes ? Convert.ToBase64String(bytes) : null,
                 Description = request.Description,
                 Status = string.IsNullOrEmpty(request.Status) ? null : request.Status.ToEnumOrDefault(Domain.Enums.LessonStatus.Draft),
                 OrderIndex = request.OrderIndex,
